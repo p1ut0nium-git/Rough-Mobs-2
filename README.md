@@ -1,4 +1,4 @@
-# Rough-Mobs-2
+# Rough-Mobs-Revamped
 This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Thanks to Lellson for open sourcing the mod.
 
 Bug Fixes:
