@@ -147,7 +147,6 @@ public class EquipHelper {
 					ItemStack stack = pool.getRandom(entity, enchChance, enchMultiplier);
 					if (stack != null) 
 					{
-						System.out.println("Item Added: " + stack);
 						entity.setItemStackToSlot(slot, stack);
 						entity.setDropChance(slot, dropChance);
 					}
