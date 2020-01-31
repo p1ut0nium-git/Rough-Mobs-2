@@ -29,6 +29,7 @@ public class BossHelper {
 		private String[] bossNames;
 		
 		public BossApplier(String name, int defaultBossChance, float defaultEnchMultiplier, float defaultDropChance, String[] defaultBossNames) {
+			
 			this.name = name;
 			this.defaultBossChance = defaultBossChance;
 			this.defaultEnchMultiplier = defaultEnchMultiplier;
@@ -36,8 +37,8 @@ public class BossHelper {
 			this.defaultBossNames = defaultBossNames;
 			
 			equipApplier = new EquipmentApplier(name + " boss", 1, 1, 1, defaultEnchMultiplier, defaultDropChance);
-		}
-
+		}	
+		
 		public void initConfig() {
 
 			equipApplier.initConfig(Constants.DEFAULT_BOSS_MAINHAND, 
@@ -58,10 +59,10 @@ public class BossHelper {
 			equipApplier.createPools();
 		}
 		
-		public void trySetBoss(EntityLiving entity) {
+		public boolean trySetBoss(EntityLiving entity) {
 			
 			if (bossChance <= 0 || RND.nextInt(bossChance) != 0 || (entity instanceof EntityZombie && ((EntityZombie)entity).isChild()))
-				return;
+				return false;
 			
 			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, entity.getMaxHealth()*2);
 			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
@@ -72,6 +73,8 @@ public class BossHelper {
 			entity.getEntityData().setBoolean(BOSS, true);
 			
 			addBossFeatures(entity);
+			
+			return true;
 		}
 		
 		public abstract void addBossFeatures(EntityLiving entity);

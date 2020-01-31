@@ -118,7 +118,7 @@ public class ZombieFeatures extends EntityFeatures {
 		helmetBurn = RoughConfig.getBoolean(name, "HelmetBurn", false, "Set this to true to make all %ss burn in sunlight even if they wear a helmet");
 		
 		breakBlocks = RoughConfig.getStringArray(name, "BreakBlocks", Constants.DEFAULT_DESTROY_BLOCKS, "Blocks which can be destroyed by %ss if they have no attack target\nDelete all lines to disable this feature");
-		
+
 		equipApplier.initConfig(
 			Constants.DEFAULT_MAINHAND,
 			Constants.DEFAULT_OFFHAND,
@@ -130,7 +130,7 @@ public class ZombieFeatures extends EntityFeatures {
 			Constants.DEFAULT_ARMOR_ENCHANTS,
 			false
 		);
-		
+
 		bossApplier.initConfig();
 	}
 	
@@ -159,8 +159,13 @@ public class ZombieFeatures extends EntityFeatures {
 		if (!(entity instanceof EntityLiving) || entity.getEntityData().getBoolean(BOSS_MINION))
 			return;
 		
-		equipApplier.equipEntity((EntityLiving) entity);
-		bossApplier.trySetBoss((EntityLiving) entity);
+		// Test to see if Zombie is a boss
+		boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+		
+		// If Zombie is not a boss, use normal equipment
+		if (!isBoss) {
+			equipApplier.equipEntity((EntityLiving) entity);
+		}
 		MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
 	}
 	

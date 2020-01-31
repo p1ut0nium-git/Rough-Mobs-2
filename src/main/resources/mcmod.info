@@ -1,14 +1,14 @@
 [
 {
-  "modid": "roughmobs",
-  "name": "Rough Mobs 2",
+  "modid": "roughmobsrevamped",
+  "name": "Rough Mobs Revamped",
   "description": "Makes hostile creatures significantly more hostile",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "1.12.2-2.0.16",
+  "mcversion": "1.12.2",
   "url": "",
   "updateUrl": "",
-  "authorList": ["Lellson"],
-  "credits": "The Forge and FML guys",
+  "authorList": ["p1ut0nium_94", "Lellson"],
+  "credits": "Thanks to Lellson8 for open sourcing his original mod.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

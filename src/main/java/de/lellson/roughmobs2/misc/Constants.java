@@ -14,9 +14,9 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class Constants {
 	
-	public static final String MODID = "roughmobs";
-	public static final String MODNAME = "Rough Mobs 2";
-	public static final String MODVERSION = "2.0.0";
+	public static final String MODID = "roughmobsrevamped";
+	public static final String MODNAME = "Rough Mobs Revamped";
+	public static final String MODVERSION = "2.0.16";
 	
 	public static String unique(String id) {
 		return MODID + ":" + id;

@@ -82,13 +82,13 @@ public class SkeletonFeatures extends EntityFeatures {
 			Constants.DEFAULT_ARMOR_ENCHANTS,
 			false
 		);
-		
+
 		bossApplier.initConfig();
 	}
 	
 	@Override
 	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
-		
+
 		if (changeWeapons && entity instanceof EntityLiving)
 			targetTasks.addTask(1, new RoughAIWeaponSwitch((EntityLiving) entity, 12D));
 		
@@ -104,14 +104,18 @@ public class SkeletonFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
-		
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {	
 		if (entity instanceof EntitySkeleton && entity.getEntityWorld().provider.getDimension() == -1)
 			changeToWither(event, (EntitySkeleton)entity);
-		else if (entity instanceof EntityLiving)
-		{
-			equipApplier.equipEntity((EntityLiving) entity);
-			bossApplier.trySetBoss((EntityLiving) entity);
+		else if (entity instanceof EntityLiving) {
+			// Test to see if Skeleton is a boss
+			boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+			
+			// If Skeleton is not a boss, use normal equipment
+			if (!isBoss) {
+				equipApplier.equipEntity((EntityLiving) entity);
+			}
+			
 			MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
 		}
 	}
