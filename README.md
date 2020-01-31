@@ -7,5 +7,5 @@ Bug Fixes:
 
 * Boss mobs now spawn with boss equipment as specified in config file.
 
-Mod on CurseForge: (link tbd)
+Mod on CurseForge: (link tbd) 
 Original mod: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-2
