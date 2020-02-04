@@ -70,6 +70,7 @@ public class ZombieFeatures extends EntityFeatures {
 	private List<Block> allowedBreakBlocks;
 	
 	public ZombieFeatures() {
+		// Sends name and list of classes back to EntityFeatures
 		super("zombie", EntityZombie.class, EntityZombieVillager.class, EntityHusk.class, EntityPigZombie.class);
 	}
 	
