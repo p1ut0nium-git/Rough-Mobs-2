@@ -1,11 +1,16 @@
 # Rough-Mobs-Revamped
-This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Thanks to Lellson for open sourcing the mod.
+This is a revamp of Rough Mobs 2 for Minecraft 1.14.4, originally by Lellson. Thanks to Lellson for open sourcing the mod.
 
-Compiled against Forge version: 1.12.2-14.23.5.2847
+Compiled against Forge version: 1.14.4-28.1.0
 
-Bug Fixes:
+Planned Features
 
-* Boss mobs now spawn with boss equipment as specified in config file.
+Stages support (toggleable)
+Serene Seasons support - only spawn with equipment in specified season (toggleable)
+Player level affects equipment spawn chance (toggleable)
+Distance from spawn affects equipment spawn chance (toggleable)
+Only equip if underground (toggleable)
+
 
 Mod on CurseForge: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
 
