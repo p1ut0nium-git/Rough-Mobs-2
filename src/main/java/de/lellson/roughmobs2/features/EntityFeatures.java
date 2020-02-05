@@ -49,7 +49,7 @@ public abstract class EntityFeatures {
 		
 		if (!hasDefaultConfig())
 			return;
-		
+	
 		RoughConfig.getConfig().addCustomCategoryComment(name, "Configuration options which affect " + name + " features");
 		
 		featuresEnabled = RoughConfig.getBoolean(name, "FeaturesEnabled", true, "Set to false to disable ALL %s features", true);

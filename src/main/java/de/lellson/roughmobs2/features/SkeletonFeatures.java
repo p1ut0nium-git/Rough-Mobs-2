@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import de.lellson.roughmobs2.ai.combat.RoughAIWeaponSwitch;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
 import de.lellson.roughmobs2.config.RoughConfig;
+import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import de.lellson.roughmobs2.misc.MountHelper;
@@ -21,6 +22,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityStray;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -38,6 +40,8 @@ public class SkeletonFeatures extends EntityFeatures {
 	private EquipmentApplier equipApplier;
 	
 	private BossApplier bossApplier;
+	
+	//private GameStages gameStageApplier;
 
 	public SkeletonFeatures() {
 		super("skeleton", EntitySkeleton.class, EntityStray.class, EntityWitherSkeleton.class);
@@ -50,12 +54,14 @@ public class SkeletonFeatures extends EntityFeatures {
 			@Override
 			public void addBossFeatures(EntityLiving entity) {}
 		};
+		//gameStageApplier = new GameStages();
 	}
 	
 	@Override
 	public void postInit() {
 		equipApplier.createPools();
 		bossApplier.postInit();
+		//gameStageApplier.postInit();
 	}
 	
 	@Override
@@ -84,6 +90,7 @@ public class SkeletonFeatures extends EntityFeatures {
 		);
 
 		bossApplier.initConfig();
+		//gameStageApplier.initConfig();
 	}
 	
 	@Override
@@ -108,15 +115,22 @@ public class SkeletonFeatures extends EntityFeatures {
 		if (entity instanceof EntitySkeleton && entity.getEntityWorld().provider.getDimension() == -1)
 			changeToWither(event, (EntitySkeleton)entity);
 		else if (entity instanceof EntityLiving) {
-			// Test to see if Skeleton is a boss
-			boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
 			
-			// If Skeleton is not a boss, use normal equipment
-			if (!isBoss) {
-				equipApplier.equipEntity((EntityLiving) entity);
+			// Get nearest player
+			EntityPlayer playerNew = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+			
+			// Test to see if player has GameStage, before spawning a rough mob
+			if (!GameStages.isStagesEnabled() || GameStages.isStagesEnabled() && GameStages.hasGameStage(playerNew)) {
+				// Test to see if Skeleton is a boss
+				boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+				
+				// If Skeleton is not a boss, use normal equipment
+				if (!isBoss) {
+					equipApplier.equipEntity((EntityLiving) entity);
+				}
+				
+				MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
 			}
-			
-			MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
 		}
 	}
 

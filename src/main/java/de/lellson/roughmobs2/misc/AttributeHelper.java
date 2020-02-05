@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class AttributeHelper {
 	
 	private static Multimap<Class<? extends Entity>, AttributeEntry> map;
+
 	public static final String KEY_ATTRIBUTES = Constants.unique("attributesApplied");
 	
 	public static class AttributeEntry {
