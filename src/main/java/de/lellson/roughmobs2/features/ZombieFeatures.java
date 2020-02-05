@@ -8,6 +8,7 @@ import de.lellson.roughmobs2.ai.combat.RoughAILeapAtTargetChanced;
 import de.lellson.roughmobs2.ai.misc.RoughAIBreakBlocks;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
 import de.lellson.roughmobs2.config.RoughConfig;
+import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.EquipHelper;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
@@ -65,6 +66,8 @@ public class ZombieFeatures extends EntityFeatures {
 	private EquipmentApplier equipApplier;
 	
 	private BossApplier bossApplier;
+	
+	//private GameStages gameStageApplier;
 
 	private String[] breakBlocks;
 	private List<Block> allowedBreakBlocks;
@@ -93,12 +96,14 @@ public class ZombieFeatures extends EntityFeatures {
 				}
 			}
 		};
+		//gameStageApplier = new GameStages();
 	}
 	
 	@Override
 	public void postInit() {
 		equipApplier.createPools();
 		bossApplier.postInit();
+		//gameStageApplier.postInit();
 		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
 	}
 	
@@ -133,6 +138,8 @@ public class ZombieFeatures extends EntityFeatures {
 		);
 
 		bossApplier.initConfig();
+		
+		//gameStageApplier.initConfig();
 	}
 	
 	@Override
@@ -160,14 +167,20 @@ public class ZombieFeatures extends EntityFeatures {
 		if (!(entity instanceof EntityLiving) || entity.getEntityData().getBoolean(BOSS_MINION))
 			return;
 		
-		// Test to see if Zombie is a boss
-		boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+		// Get nearest player
+		EntityPlayer playerNew = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 		
-		// If Zombie is not a boss, use normal equipment
-		if (!isBoss) {
-			equipApplier.equipEntity((EntityLiving) entity);
+		// Test to see if player has GameStage, before spawning a rough mob
+		if (!GameStages.isStagesEnabled() || GameStages.isStagesEnabled() && GameStages.hasGameStage(playerNew)) {
+			// Test to see if Zombie is a boss
+			boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+		
+			// If Zombie is not a boss, use normal equipment
+			if (!isBoss) {
+				equipApplier.equipEntity((EntityLiving) entity);
+			}
+			MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
 		}
-		MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
 	}
 	
 	@Override

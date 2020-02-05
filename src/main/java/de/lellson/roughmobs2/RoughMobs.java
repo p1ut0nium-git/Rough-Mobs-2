@@ -4,15 +4,17 @@ import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.AttributeHelper;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.proxy.ServerProxy;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.MODVERSION, acceptableRemoteVersions="*")
+@Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.MODVERSION, updateJSON = Constants.MODUPDATE, acceptableRemoteVersions="*")
 public class RoughMobs {
 	
 	@SidedProxy(clientSide = "de.lellson.roughmobs2.proxy.ClientProxy", serverSide = "de.lellson.roughmobs2.proxy.ServerProxy")
@@ -20,6 +22,10 @@ public class RoughMobs {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		
+		// Check for newer veresion
+		// ForgeVersion.getResult(Loader.instance().activeModContainer());
+		
 		new RoughConfig(event);
 		proxy.preInit(event);
 	}

@@ -16,7 +16,8 @@ public class Constants {
 	
 	public static final String MODID = "roughmobsrevamped";
 	public static final String MODNAME = "Rough Mobs Revamped";
-	public static final String MODVERSION = "2.0.17";
+	public static final String MODVERSION = "@VERSION@";
+	public static final String MODUPDATE = "https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/blob/1.12.2/update.json";
 	
 	public static String unique(String id) {
 		return MODID + ":" + id;
@@ -31,6 +32,13 @@ public class Constants {
 		
 		return regNames;
 	}
+	
+	public static final String[] GAME_STAGES = {
+		"roughmobsall",
+		"roughmobsbosses",
+		"roughmobsabilities",
+		"roughmobsequipment"
+	};
 	
 	public static final String[] ATTRIBUTE_DEFAULT = {
 			"zombie;generic.maxHealth;1;0.5;/;1",
