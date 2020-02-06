@@ -1,7 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
-    "2.2.1": "GameStages support completed. Plus other spawn conditions such as dist from world, max height, player level, etc."
+    "2.2.1": "GameStages support completed. Plus other spawn conditions such as dist from world, max height, player level, etc.",
     "2.1.0": "Initial support for GameStages added. Built against GameStages 2.0.117",
     "2.0.17": "Removed console debug output of equipment given to spawned skeletons and zombies.",
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
