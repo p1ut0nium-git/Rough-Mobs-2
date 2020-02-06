@@ -59,7 +59,7 @@ public class PlayerHelper {
 	}
 	
 	public static void setPlayerMobKills() {
-		System.out.println("playerMobKills++");
+		// System.out.println("playerMobKills++");
 		playerMobKills++;
 	}
 
