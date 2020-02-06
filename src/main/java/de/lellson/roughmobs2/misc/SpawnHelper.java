@@ -6,12 +6,17 @@ import java.util.Map;
 
 import de.lellson.roughmobs2.RoughMobs;
 import de.lellson.roughmobs2.config.RoughConfig;
+import de.lellson.roughmobs2.gamestages.GameStages;
+import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
+import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEnd;
 import net.minecraft.world.biome.BiomeHell;
@@ -26,6 +31,11 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class SpawnHelper {
 	
 	public static final List<SpawnEntry> ENTRIES = new ArrayList<SpawnEntry>();
+	
+	private static int mobKillsNeeded;
+	private static int playerSpawnLevel;
+	private static boolean isUndergroundEnabled;
+	private static int maxSpawnHeight;
 	
 	public static class SpawnEntry {
 		
@@ -175,6 +185,15 @@ public class SpawnHelper {
 	}
 	
 	public static void initSpawnOption() {
+		if (!hasDefaultConfig())
+			return;
+		
+		RoughConfig.getConfig().addCustomCategoryComment("SpawnConditions", "Configuration options which affect when Rough Mobs can spawn");
+		
+		playerSpawnLevel = RoughConfig.getInteger("SpawnConditions", "_MinPlayerLevel", 0, 0, 1000, "Player's Minecraft Experience Level required before a Rough Mob will spawn.");
+		//TODO mobKillsNeeded = RoughConfig.getInteger("SpawnConditions", "_MobsToKillForBoss", 0, 0, 1000, "Number of Rough Mobs to kill before a Rough Mob Boss has a chance to spawn.");
+		isUndergroundEnabled = RoughConfig.getBoolean("SpawnConditions", "_MustBeUnderground", false, "Enable this to require Rough Mobs be underground in order to spawn.");
+		maxSpawnHeight = RoughConfig.getInteger("SpawnConditions", "_MaxSpawnHeight", 256, 0, 256, "Set maximum height for Rough Mobs to spawn. Works in conjunction with MustBeUnderground.");
 		
 		RoughConfig.getConfig().addCustomCategoryComment("spawnEntries", "Add custom entity spawn entries or override old ones. Takes 5+ values seperated by a semicolon:\n" +
 														"Format: entity;chance;min;max;type;biome1;biome2;...\n" +
@@ -243,5 +262,49 @@ public class SpawnHelper {
 			
 			EntityRegistry.removeSpawn(entry.entityClass, entry.type, entry.biomes.getSecond());
 		}
+	}
+	
+	public void attemptSpawn(Entity entity, World world, BossApplier bossApplier, EquipmentApplier equipApplier) {
+		
+		// Get nearest player to the spawned mob
+		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+		// EntityPlayer playerHelper = new PlayerHelper(entity.world, playerClosest.getGameProfile());
+		
+		// Test to see if player is high enough level to spawn rough mobs
+		if (playerClosest != null && playerClosest.experienceLevel >= playerSpawnLevel) {
+			
+			// Test to see if player has the GameStage to spawn a rough mob
+			if (!GameStages.isStagesEnabled() || GameStages.isStagesEnabled() && GameStages.hasGameStage(playerClosest)) {
+				
+				// Test to see if mob is underground
+				if(!isUndergroundEnabled || !world.canBlockSeeSky(entity.getPosition()) && isUndergroundEnabled) {
+					
+					// Test to see if mob is below maximum spawn height
+					if (entity.getPosition().getY() <= maxSpawnHeight) {
+						
+						// Test to see if Zombie is a boss
+						boolean isBoss = false;
+						
+						// Test to see if player has killed enough regular rough mobs before a boss has a chance to spawn
+						/* TODO
+						if (PlayerHelper.getPlayerMobKills() >= mobKillsNeeded) {
+							isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+						}
+						*/
+						
+						isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+					
+						// If Zombie is not a boss, use normal equipment
+						if (!isBoss) {
+							equipApplier.equipEntity((EntityLiving) entity);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public static boolean hasDefaultConfig() {
+		return true;
 	}
 }

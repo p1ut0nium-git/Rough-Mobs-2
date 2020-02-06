@@ -9,6 +9,8 @@ import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import de.lellson.roughmobs2.misc.MountHelper;
+import de.lellson.roughmobs2.misc.PlayerHelper;
+import de.lellson.roughmobs2.misc.SpawnHelper;
 import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
 import de.lellson.roughmobs2.misc.MountHelper.HorseType;
@@ -116,21 +118,11 @@ public class SkeletonFeatures extends EntityFeatures {
 			changeToWither(event, (EntitySkeleton)entity);
 		else if (entity instanceof EntityLiving) {
 			
-			// Get nearest player
-			EntityPlayer playerNew = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+			SpawnHelper spawnHelper = new SpawnHelper();
+			spawnHelper.attemptSpawn(entity, entity.world, bossApplier, equipApplier);
 			
-			// Test to see if player has GameStage, before spawning a rough mob
-			if (!GameStages.isStagesEnabled() || GameStages.isStagesEnabled() && GameStages.hasGameStage(playerNew)) {
-				// Test to see if Skeleton is a boss
-				boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
-				
-				// If Skeleton is not a boss, use normal equipment
-				if (!isBoss) {
-					equipApplier.equipEntity((EntityLiving) entity);
-				}
-				
-				MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
-			}
+			// Attempt to spawn zombie on a horse
+			MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
 		}
 	}
 

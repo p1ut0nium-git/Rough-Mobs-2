@@ -17,6 +17,8 @@ import de.lellson.roughmobs2.misc.FeatureHelper;
 import de.lellson.roughmobs2.misc.MountHelper;
 import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
 import de.lellson.roughmobs2.misc.MountHelper.HorseType;
+import de.lellson.roughmobs2.misc.PlayerHelper;
+import de.lellson.roughmobs2.misc.SpawnHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneDiode;
 import net.minecraft.block.BlockRedstoneLight;
@@ -66,8 +68,6 @@ public class ZombieFeatures extends EntityFeatures {
 	private EquipmentApplier equipApplier;
 	
 	private BossApplier bossApplier;
-	
-	//private GameStages gameStageApplier;
 
 	private String[] breakBlocks;
 	private List<Block> allowedBreakBlocks;
@@ -96,14 +96,12 @@ public class ZombieFeatures extends EntityFeatures {
 				}
 			}
 		};
-		//gameStageApplier = new GameStages();
 	}
 	
 	@Override
 	public void postInit() {
 		equipApplier.createPools();
 		bossApplier.postInit();
-		//gameStageApplier.postInit();
 		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
 	}
 	
@@ -138,8 +136,6 @@ public class ZombieFeatures extends EntityFeatures {
 		);
 
 		bossApplier.initConfig();
-		
-		//gameStageApplier.initConfig();
 	}
 	
 	@Override
@@ -167,20 +163,11 @@ public class ZombieFeatures extends EntityFeatures {
 		if (!(entity instanceof EntityLiving) || entity.getEntityData().getBoolean(BOSS_MINION))
 			return;
 		
-		// Get nearest player
-		EntityPlayer playerNew = entity.world.getClosestPlayerToEntity(entity, -1.0D);
-		
-		// Test to see if player has GameStage, before spawning a rough mob
-		if (!GameStages.isStagesEnabled() || GameStages.isStagesEnabled() && GameStages.hasGameStage(playerNew)) {
-			// Test to see if Zombie is a boss
-			boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
-		
-			// If Zombie is not a boss, use normal equipment
-			if (!isBoss) {
-				equipApplier.equipEntity((EntityLiving) entity);
-			}
-			MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
-		}
+		SpawnHelper spawnHelper = new SpawnHelper();
+		spawnHelper.attemptSpawn(entity, entity.world, bossApplier, equipApplier);
+
+		// Attempt to spawn zombie on a horse
+		MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
 	}
 	
 	@Override

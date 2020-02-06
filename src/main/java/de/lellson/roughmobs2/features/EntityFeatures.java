@@ -7,6 +7,7 @@ import java.util.Random;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.AttributeHelper;
 import de.lellson.roughmobs2.misc.Constants;
+import de.lellson.roughmobs2.misc.PlayerHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -73,6 +74,10 @@ public abstract class EntityFeatures {
 	}
 
 	public void onDeath(Entity deadEntity, DamageSource source) {
+		// If the mob was killed by a player, update the player's kill count.
+		if (source.getTrueSource() instanceof EntityPlayer) {
+			PlayerHelper.setPlayerMobKills();
+		}
 	}
 	
 	public void onFall(Entity entity, LivingFallEvent event) {
