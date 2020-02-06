@@ -21,7 +21,7 @@ compileJava {
 }
 
 minecraft {
-	version = minecraft_version + "-" + forge_version // "1.12.2-14.23.5.2847"
+	version = minecraft_version + "-" + forge_version
     runDir = "run"
     
     // Set version stored in Constants based upon gradle.properties
@@ -65,7 +65,7 @@ dependencies {
     
 	// Game-Stages support
 	compile "net.darkhax.gamestages:GameStages-${minecraft_version}:${gameStages_version}"
-
+	compile "net.darkhax.bookshelf:Bookshelf-${minecraft_version}:${bookshelf_version}"
 }
 
 // Store properties into Manifest file.
