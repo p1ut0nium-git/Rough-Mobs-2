@@ -61,7 +61,7 @@ public class SpiderFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
 		if (entity instanceof EntityLivingBase)
 			rider.tryAddRider((EntityLivingBase) entity);
 	}

@@ -158,13 +158,22 @@ public class ZombieFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
 		
 		if (!(entity instanceof EntityLiving) || entity.getEntityData().getBoolean(BOSS_MINION))
 			return;
+
+		// Test to see if mob is a boss
+		boolean isBoss = false;
+
+		if (bossesEnabled) {
+			isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+		}
 		
-		SpawnHelper spawnHelper = new SpawnHelper();
-		spawnHelper.attemptSpawn(entity, entity.world, bossApplier, equipApplier);
+		// If mob is not a boss, use normal equipment
+		if (!isBoss) {
+			equipApplier.equipEntity((EntityLiving) entity);
+		}
 
 		// Attempt to spawn zombie on a horse
 		MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);

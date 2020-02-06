@@ -113,13 +113,22 @@ public class SkeletonFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {	
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {	
 		if (entity instanceof EntitySkeleton && entity.getEntityWorld().provider.getDimension() == -1)
 			changeToWither(event, (EntitySkeleton)entity);
 		else if (entity instanceof EntityLiving) {
 			
-			SpawnHelper spawnHelper = new SpawnHelper();
-			spawnHelper.attemptSpawn(entity, entity.world, bossApplier, equipApplier);
+			// Test to see if mob is a boss
+			boolean isBoss = false;
+
+			if (bossesEnabled) {
+				isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+			}
+			
+			// If mob is not a boss, use normal equipment
+			if (!isBoss) {
+				equipApplier.equipEntity((EntityLiving) entity);
+			}
 			
 			// Attempt to spawn zombie on a horse
 			MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);

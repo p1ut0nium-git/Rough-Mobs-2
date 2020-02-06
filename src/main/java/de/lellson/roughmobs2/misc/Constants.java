@@ -19,6 +19,12 @@ public class Constants {
 	public static final String MODVERSION = "@VERSION@";
 	public static final String MODUPDATE = "https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/blob/1.12.2/update.json";
 	
+	public static final String ROUGHMOBSALL = "roughmobsall";
+	public static final String ROUGHMOBSEQUIP = "roughmobsequip";
+	public static final String ROUGHMOBSBOSS = "roughmobsboss";
+	public static final String ROUGHMOBSABILS = "roughmobsabils";
+	public static final String ROUGHMOBSENCHANT = "roughmobsenchant";
+	
 	public static String unique(String id) {
 		return MODID + ":" + id;
 	}
@@ -32,14 +38,7 @@ public class Constants {
 		
 		return regNames;
 	}
-	
-	public static final String[] GAME_STAGES = {
-		"roughmobsall",
-		"roughmobsbosses",
-		"roughmobsabilities",
-		"roughmobsequipment"
-	};
-	
+
 	public static final String[] ATTRIBUTE_DEFAULT = {
 			"zombie;generic.maxHealth;1;0.5;/;1",
 			"zombie_pigman;generic.maxHealth;1;0.5;/;1",

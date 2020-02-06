@@ -10,16 +10,19 @@ import com.ibm.icu.impl.CalendarAstronomer.Equatorial;
 
 import de.lellson.roughmobs2.RoughMobs;
 import de.lellson.roughmobs2.config.RoughConfig;
+import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentPool;
 
 import java.util.Random;
 
+import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -35,6 +38,11 @@ public class EquipHelper {
 	
 	private static final String KEY_APPLIED = Constants.unique("equipApplied");
 	private static final Random RND = new Random();
+	
+	private static Boolean gameStagesEnabled;
+	private static Boolean playerHasEnchantStage;
+	private static Boolean enchantStageEnabled;
+	private static Boolean allStagesEnabled;
 	
 	public static class EquipmentApplier {
 		
@@ -131,6 +139,21 @@ public class EquipHelper {
 			
 			if (entity == null || entity.getEntityData().getBoolean(KEY_APPLIED))
 				return;
+			
+			// Get nearest player to the spawned mob
+			EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+			
+			// Get all Game Stage related info
+			gameStagesEnabled = GameStages.isStagesEnabled();
+			allStagesEnabled = GameStages.enableAllStages;
+			
+			if (allStagesEnabled) {
+				enchantStageEnabled = true;
+			} else {
+				enchantStageEnabled = GameStages.enableEnchantStage;			
+			}
+			
+			playerHasEnchantStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT);
 			
 			EquipmentPool[] pools = new EquipmentPool[] {
 					poolMainhand, poolOffhand, poolBoots, poolLeggings, poolChestplate, poolHelmet
@@ -252,7 +275,7 @@ public class EquipHelper {
 					
 					if (ench == null)
 						return "Invalid enchantment: " + parts[0] + " in line: " + s;
-					else
+					else	
 						addEnchantment(ench, probability, dimension);
 				}
 				catch(NumberFormatException e) 
@@ -328,25 +351,29 @@ public class EquipHelper {
 			
 			ItemStack randomStack = ITEM_POOL.getRandom(entity);
 			
-			if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) 
-			{
-				Enchantment ench = ENCHANTMENT_POOL.getRandom(entity);
+			// Test to see if player has Enchantment stage
+			if (gameStagesEnabled == false || enchantStageEnabled == false || enchantStageEnabled && playerHasEnchantStage) {
 				
-				int i = 10;
-				while (!ench.canApply(randomStack) && i > 0) 
+				if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) 
 				{
-					ench = ENCHANTMENT_POOL.getRandom(entity);
-					i--;
+					Enchantment ench = ENCHANTMENT_POOL.getRandom(entity);
+					
+					int i = 10;
+					while (!ench.canApply(randomStack) && i > 0) 
+					{
+						ench = ENCHANTMENT_POOL.getRandom(entity);
+						i--;
+					}
+					
+					if (!ench.canApply(randomStack))
+						return randomStack;
+					
+					double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
+					int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
+					
+					if (!randomStack.isItemEnchanted())
+						randomStack.addEnchantment(ench, level);
 				}
-				
-				if (!ench.canApply(randomStack))
-					return randomStack;
-				
-				double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
-				int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
-				
-				if (!randomStack.isItemEnchanted())
-					randomStack.addEnchantment(ench, level);
 			}
 			
 			return randomStack;

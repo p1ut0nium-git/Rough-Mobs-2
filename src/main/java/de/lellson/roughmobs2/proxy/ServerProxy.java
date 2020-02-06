@@ -13,11 +13,11 @@ public class ServerProxy {
 	
 	public void preInit(FMLPreInitializationEvent event) {
 		
-		applier = new RoughApplier();
-		applier.preInit();
-		
 		gameStage = new GameStages();
 		gameStage.preInit();
+		
+		applier = new RoughApplier();
+		applier.preInit();
 	}
 	
 	public void postInit(FMLPostInitializationEvent event) {

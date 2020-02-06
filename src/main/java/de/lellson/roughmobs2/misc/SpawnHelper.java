@@ -9,6 +9,7 @@ import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
+import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -32,10 +33,11 @@ public class SpawnHelper {
 	
 	public static final List<SpawnEntry> ENTRIES = new ArrayList<SpawnEntry>();
 	
-	private static int mobKillsNeeded;
+	//TODO private static int mobKillsNeeded;
 	private static int playerSpawnLevel;
 	private static boolean isUndergroundEnabled;
 	private static int maxSpawnHeight;
+	private static int minDistFromSpawn;
 	
 	public static class SpawnEntry {
 		
@@ -194,6 +196,7 @@ public class SpawnHelper {
 		//TODO mobKillsNeeded = RoughConfig.getInteger("SpawnConditions", "_MobsToKillForBoss", 0, 0, 1000, "Number of Rough Mobs to kill before a Rough Mob Boss has a chance to spawn.");
 		isUndergroundEnabled = RoughConfig.getBoolean("SpawnConditions", "_MustBeUnderground", false, "Enable this to require Rough Mobs be underground in order to spawn.");
 		maxSpawnHeight = RoughConfig.getInteger("SpawnConditions", "_MaxSpawnHeight", 256, 0, 256, "Set maximum height for Rough Mobs to spawn. Works in conjunction with MustBeUnderground.");
+		minDistFromSpawn = RoughConfig.getInteger("SpawnConditions", "_MinDistanceFromSpawn", 0, 0, 100000, "Set the minimum distance from the world spawn before a Rough Mob can spawn.");
 		
 		RoughConfig.getConfig().addCustomCategoryComment("spawnEntries", "Add custom entity spawn entries or override old ones. Takes 5+ values seperated by a semicolon:\n" +
 														"Format: entity;chance;min;max;type;biome1;biome2;...\n" +
@@ -264,44 +267,26 @@ public class SpawnHelper {
 		}
 	}
 	
-	public void attemptSpawn(Entity entity, World world, BossApplier bossApplier, EquipmentApplier equipApplier) {
-		
-		// Get nearest player to the spawned mob
-		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
-		// EntityPlayer playerHelper = new PlayerHelper(entity.world, playerClosest.getGameProfile());
-		
-		// Test to see if player is high enough level to spawn rough mobs
-		if (playerClosest != null && playerClosest.experienceLevel >= playerSpawnLevel) {
-			
-			// Test to see if player has the GameStage to spawn a rough mob
-			if (!GameStages.isStagesEnabled() || GameStages.isStagesEnabled() && GameStages.hasGameStage(playerClosest)) {
-				
+	public boolean canMobSpawn(Entity entity, World world, EntityPlayer playerClosest) {
+
+		// Check to see if mob spawn is far enough away from world spawn.
+		Double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
+		if (distanceToSpawn >= minDistFromSpawn) {
+	
+			// Test to see if player is high enough level to spawn rough mobs
+			if (playerClosest != null && playerClosest.experienceLevel >= playerSpawnLevel) {
+										
 				// Test to see if mob is underground
 				if(!isUndergroundEnabled || !world.canBlockSeeSky(entity.getPosition()) && isUndergroundEnabled) {
-					
+						
 					// Test to see if mob is below maximum spawn height
 					if (entity.getPosition().getY() <= maxSpawnHeight) {
-						
-						// Test to see if Zombie is a boss
-						boolean isBoss = false;
-						
-						// Test to see if player has killed enough regular rough mobs before a boss has a chance to spawn
-						/* TODO
-						if (PlayerHelper.getPlayerMobKills() >= mobKillsNeeded) {
-							isBoss = bossApplier.trySetBoss((EntityLiving) entity);
-						}
-						*/
-						
-						isBoss = bossApplier.trySetBoss((EntityLiving) entity);
-					
-						// If Zombie is not a boss, use normal equipment
-						if (!isBoss) {
-							equipApplier.equipEntity((EntityLiving) entity);
-						}
+						return true;
 					}
 				}
 			}
 		}
+		return false;
 	}
 
 	public static boolean hasDefaultConfig() {

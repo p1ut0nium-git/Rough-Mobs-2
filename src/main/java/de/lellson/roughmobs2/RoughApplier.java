@@ -24,10 +24,12 @@ import de.lellson.roughmobs2.features.WitchFeatures;
 import de.lellson.roughmobs2.features.WitherFeatures;
 import de.lellson.roughmobs2.features.ZombieFeatures;
 import de.lellson.roughmobs2.features.ZombiePigmanFeatures;
+import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.AttributeHelper;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.SpawnHelper;
 import de.lellson.roughmobs2.misc.TargetHelper;
+import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -49,6 +51,16 @@ public class RoughApplier {
 	public static final String FEATURES_APPLIED = Constants.unique("featuresApplied");
 	
 	public static final List<EntityFeatures> FEATURES = new ArrayList<EntityFeatures>();
+	
+	private static Boolean gameStagesEnabled;
+	private static Boolean playerHasAbilsStage;
+	private static Boolean abilsStageEnabled;
+	private static Boolean equipStageEnabled;
+	private static Boolean bossStageEnabled;
+	private static Boolean playerHasEquipStage;
+	private static Boolean playerHasBossStage;
+	private static Boolean bossesCanSpawn;
+	private static Boolean allStagesEnabled;
 	
 	public RoughApplier() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -102,18 +114,64 @@ public class RoughApplier {
 		
 		Entity entity = event.getEntity();
 		
-		if (entity instanceof EntityLiving)
-			AttributeHelper.addAttributes((EntityLiving)entity);
+		// Get nearest player to the spawned mob
+		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+		
+		// Test spawn conditions (from config file)
+		SpawnHelper spawnHelper = new SpawnHelper();
+		if (!spawnHelper.canMobSpawn(entity, entity.world, playerClosest))
+			return;
+		
+		// Get all Game Stage related info
+		gameStagesEnabled = GameStages.isStagesEnabled();
+		allStagesEnabled = GameStages.enableAllStages;
+	
+		if (allStagesEnabled) {
+			abilsStageEnabled = true;
+			equipStageEnabled = true;
+			bossStageEnabled = true;
+		} else {
+			abilsStageEnabled = GameStages.enableAbilitiesStage;
+			equipStageEnabled = GameStages.enableEquipmentStage;
+			bossStageEnabled = GameStages.enableBossStage;			
+		}
+	
+		playerHasEquipStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP);
+		playerHasAbilsStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS);
+		playerHasBossStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS);
+		
+		// Test to see if player has boss stage
+		if (gameStagesEnabled == false || bossStageEnabled == false || bossStageEnabled && playerHasBossStage) {
+			bossesCanSpawn = true;
+		} else {
+			bossesCanSpawn = false;
+		}
+		
+		// Test to see if player has abilities game stage
+		if (gameStagesEnabled == false || abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
+			
+			if (entity instanceof EntityLiving)
+				AttributeHelper.addAttributes((EntityLiving)entity);
+		}
 		
 		for (EntityFeatures features : FEATURES) 
 		{
 			if (features.isEntity(entity))
 			{
-				if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
-					features.addFeatures(event, entity);
+
+				// Test to see if player has equipment game stage
+				if (gameStagesEnabled == false || equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
+
+					if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
+						features.addFeatures(event, entity, bossesCanSpawn);
+				}
 				
-				if (entity instanceof EntityLiving)
-					features.addAI(event, entity, ((EntityLiving)entity).tasks, ((EntityLiving)entity).targetTasks);
+				// Test to see if player has abilities game stage
+				if (gameStagesEnabled == false || abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
+					
+					if (entity instanceof EntityLiving)
+						features.addAI(event, entity, ((EntityLiving)entity).tasks, ((EntityLiving)entity).targetTasks);
+				}
 			}
 		}
 		

@@ -61,7 +61,7 @@ public abstract class EntityFeatures {
 		return true;
 	}
 	
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
 	}
 	
 	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
