@@ -57,9 +57,9 @@ This mod creates its own config file (roughmobsrevamped.cfg). You can simply cop
 _How do I add modded items to the config?_
 By using: modid:itemname;weight - Here's an example config for More Swords Legacy swords:
 
-S:zombiebossEquipmentMainhand <
-    msmlegacy:draconic_blade;10
-    msmlegacy:vampiric_blade;10
-    msmlegacy:relic_molten;10
-    msmlegacy:wither_bane;10
+S:zombiebossEquipmentMainhand <  
+    msmlegacy:draconic_blade;10  
+    msmlegacy:vampiric_blade;10  
+    msmlegacy:relic_molten;10  
+    msmlegacy:wither_bane;10  
 >
