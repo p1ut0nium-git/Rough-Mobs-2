@@ -3,15 +3,12 @@ package de.lellson.roughmobs2.ai.misc;
 import java.util.List;
 
 import de.lellson.roughmobs2.misc.Constants;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 
 public class RoughAISearchForRider extends EntityAIBase {
 

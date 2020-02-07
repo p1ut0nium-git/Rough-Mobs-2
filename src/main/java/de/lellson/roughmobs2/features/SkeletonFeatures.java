@@ -4,11 +4,13 @@ import java.lang.reflect.Field;
 
 import de.lellson.roughmobs2.ai.combat.RoughAIWeaponSwitch;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
+import de.lellson.roughmobs2.compat.GameStages;
 import de.lellson.roughmobs2.config.RoughConfig;
-import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import de.lellson.roughmobs2.misc.MountHelper;
+import de.lellson.roughmobs2.misc.PlayerHelper;
+import de.lellson.roughmobs2.misc.SpawnHelper;
 import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
 import de.lellson.roughmobs2.misc.MountHelper.HorseType;
@@ -111,26 +113,25 @@ public class SkeletonFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {	
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {	
 		if (entity instanceof EntitySkeleton && entity.getEntityWorld().provider.getDimension() == -1)
 			changeToWither(event, (EntitySkeleton)entity);
 		else if (entity instanceof EntityLiving) {
 			
-			// Get nearest player
-			EntityPlayer playerNew = entity.world.getClosestPlayerToEntity(entity, -1.0D);
-			
-			// Test to see if player has GameStage, before spawning a rough mob
-			if (!GameStages.isStagesEnabled() || GameStages.isStagesEnabled() && GameStages.hasGameStage(playerNew)) {
-				// Test to see if Skeleton is a boss
-				boolean isBoss = bossApplier.trySetBoss((EntityLiving) entity);
-				
-				// If Skeleton is not a boss, use normal equipment
-				if (!isBoss) {
-					equipApplier.equipEntity((EntityLiving) entity);
-				}
-				
-				MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
+			// Test to see if mob is a boss
+			boolean isBoss = false;
+
+			if (bossesEnabled) {
+				isBoss = bossApplier.trySetBoss((EntityLiving) entity);
 			}
+			
+			// If mob is not a boss, use normal equipment
+			if (!isBoss) {
+				equipApplier.equipEntity((EntityLiving) entity);
+			}
+			
+			// Attempt to spawn zombie on a horse
+			MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
 		}
 	}
 

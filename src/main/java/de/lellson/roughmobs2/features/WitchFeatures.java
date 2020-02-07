@@ -89,7 +89,7 @@ public class WitchFeatures extends EntityFeatures {
 		}
 		
 		@Override
-		public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+		public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
 
 			if (features.lingeringChance <= 0 || !(entity instanceof EntityPotion) || !(((EntityPotion)entity).getThrower() instanceof EntityWitch))
 				return;

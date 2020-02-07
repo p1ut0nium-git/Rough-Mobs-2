@@ -10,7 +10,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 
 public class RoughAISummonSkeleton extends EntityAIBase {

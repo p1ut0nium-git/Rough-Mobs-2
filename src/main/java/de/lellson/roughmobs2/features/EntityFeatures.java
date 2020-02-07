@@ -5,19 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import de.lellson.roughmobs2.config.RoughConfig;
-import de.lellson.roughmobs2.misc.AttributeHelper;
 import de.lellson.roughmobs2.misc.Constants;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -60,7 +54,7 @@ public abstract class EntityFeatures {
 		return true;
 	}
 	
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
 	}
 	
 	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
@@ -73,6 +67,10 @@ public abstract class EntityFeatures {
 	}
 
 	public void onDeath(Entity deadEntity, DamageSource source) {
+		// If the mob was killed by a player, update the player's kill count.
+		if (source.getTrueSource() instanceof EntityPlayer) {
+			//TODO PlayerHelper.setPlayerMobKills();
+		}
 	}
 	
 	public void onFall(Entity entity, LivingFallEvent event) {

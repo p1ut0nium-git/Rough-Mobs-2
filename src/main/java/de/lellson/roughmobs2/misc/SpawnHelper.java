@@ -10,15 +10,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEnd;
 import net.minecraft.world.biome.BiomeHell;
 import net.minecraft.world.biome.BiomeVoid;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -26,6 +27,12 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class SpawnHelper {
 	
 	public static final List<SpawnEntry> ENTRIES = new ArrayList<SpawnEntry>();
+	
+	//TODO private static int mobKillsNeeded;
+	private static int playerSpawnLevel;
+	private static boolean isUndergroundEnabled;
+	private static int maxSpawnHeight;
+	private static int minDistFromSpawn;
 	
 	public static class SpawnEntry {
 		
@@ -175,6 +182,16 @@ public class SpawnHelper {
 	}
 	
 	public static void initSpawnOption() {
+		if (!hasDefaultConfig())
+			return;
+		
+		RoughConfig.getConfig().addCustomCategoryComment("SpawnConditions", "Configuration options which affect when Rough Mobs can spawn");
+		
+		playerSpawnLevel = RoughConfig.getInteger("SpawnConditions", "_MinPlayerLevel", 0, 0, 1000, "Player's Minecraft Experience Level required before a Rough Mob will spawn.");
+		//TODO mobKillsNeeded = RoughConfig.getInteger("SpawnConditions", "_MobsToKillForBoss", 0, 0, 1000, "Number of Rough Mobs to kill before a Rough Mob Boss has a chance to spawn.");
+		isUndergroundEnabled = RoughConfig.getBoolean("SpawnConditions", "_MustBeUnderground", false, "Enable this to require Rough Mobs be underground in order to spawn.");
+		maxSpawnHeight = RoughConfig.getInteger("SpawnConditions", "_MaxSpawnHeight", 256, 0, 256, "Set maximum height for Rough Mobs to spawn. Works in conjunction with MustBeUnderground.");
+		minDistFromSpawn = RoughConfig.getInteger("SpawnConditions", "_MinDistanceFromSpawn", 0, 0, 100000, "Set the minimum distance from the world spawn before a Rough Mob can spawn.");
 		
 		RoughConfig.getConfig().addCustomCategoryComment("spawnEntries", "Add custom entity spawn entries or override old ones. Takes 5+ values seperated by a semicolon:\n" +
 														"Format: entity;chance;min;max;type;biome1;biome2;...\n" +
@@ -243,5 +260,31 @@ public class SpawnHelper {
 			
 			EntityRegistry.removeSpawn(entry.entityClass, entry.type, entry.biomes.getSecond());
 		}
+	}
+	
+	public boolean canMobSpawn(Entity entity, World world, EntityPlayer playerClosest) {
+
+		// Check to see if mob spawn is far enough away from world spawn.
+		Double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
+		if (distanceToSpawn >= minDistFromSpawn) {
+	
+			// Test to see if player is high enough level to spawn rough mobs
+			if (playerClosest != null && playerClosest.experienceLevel >= playerSpawnLevel) {
+										
+				// Test to see if mob is underground
+				if(!isUndergroundEnabled || !world.canBlockSeeSky(entity.getPosition()) && isUndergroundEnabled) {
+						
+					// Test to see if mob is below maximum spawn height
+					if (entity.getPosition().getY() <= maxSpawnHeight) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean hasDefaultConfig() {
+		return true;
 	}
 }

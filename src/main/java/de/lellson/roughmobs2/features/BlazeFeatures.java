@@ -1,16 +1,13 @@
 package de.lellson.roughmobs2.features;
 
-import de.lellson.roughmobs2.ai.combat.RoughAIAggressiveTouch;
 import de.lellson.roughmobs2.ai.combat.RoughAIFlameTouch;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.FakePlayer;
