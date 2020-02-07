@@ -32,30 +32,30 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 
 ## FAQ
 
-_Can you update to Minecraft version 1.14, 1.15, etc.?_
-I might, but I am new to modding so it will take some time for me to figure it out.
+**Can you update to Minecraft version 1.14, 1.15, etc.?**  
+I might, but I am new to modding so it will take some time for me to figure it out.  
 
-_Can you add a feature?_
-Again I might. Feel free to make a request here or on my Github.
+**Can you add a feature?**  
+Again I might. Feel free to make a request.  
 
-_Can you fix this bug?_
-Please report all issues on my GitHub Issue Tracker.
+**Can you fix this bug?**  
+Please report all issues on my GitHub Issue Tracker.  
 
-_What version of Forge is this compiled against?_
-2.0.17 is compiled against Forge version: 14.23.5.2847
-2.1.1+ had to be reverted to Forge version 14.23.5.2768
+**What version of Forge is this compiled against?**  
+2.0.17 is compiled against Forge version: 14.23.5.2847  
+2.1.1+ had to be reverted to Forge version 14.23.5.2768  
 
-_How do I use Game Stages?_
-Required: GameStages mod. First, you must enable the GameStages_FeaturesEnabled option in the config, if you don't, rough mobs will spawn regardless of game stages. After that, you can enable each stage you want to use in the config, or simply enable the GameStages_AllStages option to enable all of them at the same time. Now, you must give the player the stages at runtime(via quests, achievements, etc.) in order for rough mobs to spawn near them. The names of each stage to be used in game are found in the config file's gamestages comment section. Adding a game stage can be tested with: /gamestage add @p roughmobsequip
+**How do I use Game Stages?**  
+Required: GameStages mod. First, you must enable the GameStages_FeaturesEnabled option in the config, if you don't, rough mobs will spawn regardless of game stages. After that, you can enable each stage you want to use in the config, or simply enable the GameStages_AllStages option to enable all of them at the same time. Now, you must give the player the stages at runtime(via quests, achievements, etc.) in order for rough mobs to spawn near them. The names of each stage to be used in game are found in the config file's gamestages comment section. Adding a game stage can be tested with: /gamestage add @p roughmobsequip  
 
-_Do I keep the old Rough Mobs 2 mod?_
-No. Delete that mod, and use this one instead. It has all the same functionality, and will conflict with the old version.
+**Do I keep the old Rough Mobs 2 mod?**  
+No. Delete that mod, and use this one instead. It has all the same functionality, and will conflict with the old version.  
 
-_Can I use the old Rough Mobs 2 config file?_
-This mod creates its own config file (roughmobsrevamped.cfg). You can simply copy the contents of the old config into the new one. But new version of Rough Mobs Revamped have new config options that need to generate in a new file.
+**Can I use the old Rough Mobs 2 config file?**  
+This mod creates its own config file (roughmobsrevamped.cfg). You can simply copy the contents of the old config into the new one. But new version of Rough Mobs Revamped have new config options that need to generate in a new file.  
 
-_How do I add modded items to the config?_
-By using: modid:itemname;weight - Here's an example config for More Swords Legacy swords:
+**How do I add modded items to the config?**  
+By using: modid:itemname;weight - Here's an example config for More Swords Legacy swords:  
 
 S:zombiebossEquipmentMainhand <  
     msmlegacy:draconic_blade;10  
