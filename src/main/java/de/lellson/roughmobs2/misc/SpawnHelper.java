@@ -6,10 +6,6 @@ import java.util.Map;
 
 import de.lellson.roughmobs2.RoughMobs;
 import de.lellson.roughmobs2.config.RoughConfig;
-import de.lellson.roughmobs2.gamestages.GameStages;
-import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
-import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
-import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -24,7 +20,6 @@ import net.minecraft.world.biome.BiomeHell;
 import net.minecraft.world.biome.BiomeVoid;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;

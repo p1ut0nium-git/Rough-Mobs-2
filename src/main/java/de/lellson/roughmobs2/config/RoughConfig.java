@@ -2,9 +2,6 @@ package de.lellson.roughmobs2.config;
 
 import de.lellson.roughmobs2.RoughApplier;
 import de.lellson.roughmobs2.features.EntityFeatures;
-import de.lellson.roughmobs2.misc.AttributeHelper;
-import de.lellson.roughmobs2.misc.SpawnHelper;
-import net.minecraft.block.BlockDoor;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 

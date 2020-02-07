@@ -5,34 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.ibm.icu.impl.CalendarAstronomer.Equatorial;
+import java.util.Random;
 
 import de.lellson.roughmobs2.RoughMobs;
+import de.lellson.roughmobs2.compat.GameStages;
 import de.lellson.roughmobs2.config.RoughConfig;
-import de.lellson.roughmobs2.gamestages.GameStages;
-import de.lellson.roughmobs2.misc.EquipHelper.EquipmentPool;
-
-import java.util.Random;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class EquipHelper {
 	
@@ -42,7 +31,6 @@ public class EquipHelper {
 	private static Boolean gameStagesEnabled;
 	private static Boolean playerHasEnchantStage;
 	private static Boolean enchantStageEnabled;
-	private static Boolean allStagesEnabled;
 	
 	public static class EquipmentApplier {
 		
@@ -145,16 +133,14 @@ public class EquipHelper {
 			
 			// Get all Game Stage related info
 			gameStagesEnabled = GameStages.isStagesEnabled();
-			allStagesEnabled = GameStages.enableAllStages;
+			enchantStageEnabled = GameStages.useEnchantStage();			
 			
-			if (allStagesEnabled) {
-				enchantStageEnabled = true;
+			// Test to see if player has enchantment stage unlocked
+			if (gameStagesEnabled) {
+				playerHasEnchantStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT);
 			} else {
-				enchantStageEnabled = GameStages.enableEnchantStage;			
+				playerHasEnchantStage = false;
 			}
-			
-			playerHasEnchantStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT);
-			
 			EquipmentPool[] pools = new EquipmentPool[] {
 					poolMainhand, poolOffhand, poolBoots, poolLeggings, poolChestplate, poolHelmet
 			};

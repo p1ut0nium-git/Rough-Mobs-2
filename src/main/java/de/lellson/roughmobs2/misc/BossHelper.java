@@ -6,7 +6,6 @@ import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
 

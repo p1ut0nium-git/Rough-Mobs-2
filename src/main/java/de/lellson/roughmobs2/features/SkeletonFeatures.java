@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 
 import de.lellson.roughmobs2.ai.combat.RoughAIWeaponSwitch;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
+import de.lellson.roughmobs2.compat.GameStages;
 import de.lellson.roughmobs2.config.RoughConfig;
-import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import de.lellson.roughmobs2.misc.MountHelper;

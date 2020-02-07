@@ -1,11 +1,7 @@
 package de.lellson.roughmobs2.ai.combat;
 
-import de.lellson.roughmobs2.features.ZombieFeatures;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.util.math.MathHelper;
 
 public class RoughAILeapAtTargetChanced extends EntityAILeapAtTarget {
 

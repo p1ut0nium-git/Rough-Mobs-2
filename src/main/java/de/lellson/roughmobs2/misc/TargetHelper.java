@@ -3,14 +3,10 @@ package de.lellson.roughmobs2.misc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Multimap;
-
 import de.lellson.roughmobs2.RoughMobs;
 import de.lellson.roughmobs2.config.RoughConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class TargetHelper {

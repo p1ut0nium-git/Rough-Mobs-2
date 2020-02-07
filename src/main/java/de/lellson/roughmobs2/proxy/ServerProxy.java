@@ -1,17 +1,23 @@
 package de.lellson.roughmobs2.proxy;
 
 import de.lellson.roughmobs2.RoughApplier;
-import de.lellson.roughmobs2.gamestages.GameStages;
-import de.lellson.roughmobs2.misc.PlayerHelper;
+import de.lellson.roughmobs2.compat.GameStages;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class ServerProxy {
+/*
+ * Server side only event handling
+ */
+
+public class ServerProxy extends CommonProxy {
 	
 	private RoughApplier applier;
 	private GameStages gameStage;
 	
 	public void preInit(FMLPreInitializationEvent event) {
+		
+		super.preInit(event);
 		
 		gameStage = new GameStages();
 		gameStage.preInit();
@@ -20,9 +26,12 @@ public class ServerProxy {
 		applier.preInit();
 	}
 	
+	public void init(FMLInitializationEvent e) {
+	}
+	
 	public void postInit(FMLPostInitializationEvent event) {
-		
-		applier.postInit();
+
 		gameStage.postInit();
+		applier.postInit();
 	}
 }

@@ -3,24 +3,14 @@ package de.lellson.roughmobs2.ai.combat;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-
-import javax.jws.soap.SOAPBinding.ParameterStyle;
 
 import de.lellson.roughmobs2.misc.FeatureHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
-import scala.actors.threadpool.Arrays;
 
 public class RoughAIMobBuff extends EntityAIBase {
 	

@@ -1,11 +1,9 @@
 package de.lellson.roughmobs2;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.util.ValidationEventCollector;
-
+import de.lellson.roughmobs2.compat.GameStages;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.features.BlazeFeatures;
 import de.lellson.roughmobs2.features.CreeperFeatures;
@@ -24,7 +22,6 @@ import de.lellson.roughmobs2.features.WitchFeatures;
 import de.lellson.roughmobs2.features.WitherFeatures;
 import de.lellson.roughmobs2.features.ZombieFeatures;
 import de.lellson.roughmobs2.features.ZombiePigmanFeatures;
-import de.lellson.roughmobs2.gamestages.GameStages;
 import de.lellson.roughmobs2.misc.AttributeHelper;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.SpawnHelper;
@@ -32,9 +29,7 @@ import de.lellson.roughmobs2.misc.TargetHelper;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -60,7 +55,6 @@ public class RoughApplier {
 	private static Boolean playerHasEquipStage;
 	private static Boolean playerHasBossStage;
 	private static Boolean bossesCanSpawn;
-	private static Boolean allStagesEnabled;
 	
 	public RoughApplier() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -124,21 +118,18 @@ public class RoughApplier {
 		
 		// Get all Game Stage related info
 		gameStagesEnabled = GameStages.isStagesEnabled();
-		allStagesEnabled = GameStages.enableAllStages;
-	
-		if (allStagesEnabled) {
-			abilsStageEnabled = true;
-			equipStageEnabled = true;
-			bossStageEnabled = true;
+		abilsStageEnabled = GameStages.useAbilitiesStage();
+		equipStageEnabled = GameStages.useEquipmentStage();
+		bossStageEnabled = GameStages.useBossStage();	
+		
+		// Test to see if player has these stages unlocked.
+		if (gameStagesEnabled) {
+			playerHasEquipStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP);
+			playerHasAbilsStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS);
+			playerHasBossStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS);
 		} else {
-			abilsStageEnabled = GameStages.enableAbilitiesStage;
-			equipStageEnabled = GameStages.enableEquipmentStage;
-			bossStageEnabled = GameStages.enableBossStage;			
+			playerHasEquipStage = playerHasAbilsStage = playerHasBossStage = false;
 		}
-	
-		playerHasEquipStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP);
-		playerHasAbilsStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS);
-		playerHasBossStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS);
 		
 		// Test to see if player has boss stage
 		if (gameStagesEnabled == false || bossStageEnabled == false || bossStageEnabled && playerHasBossStage) {
@@ -147,7 +138,8 @@ public class RoughApplier {
 			bossesCanSpawn = false;
 		}
 		
-		// Test to see if player has abilities game stage
+		// Test to see if player has abilities game stage and if stages are enabled
+		
 		if (gameStagesEnabled == false || abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 			
 			if (entity instanceof EntityLiving)
@@ -188,19 +180,19 @@ public class RoughApplier {
 		if (trueSource == null || target == null || target instanceof FakePlayer || trueSource instanceof FakePlayer || immediateSource instanceof FakePlayer || target.world.isRemote)
 			return;
 		
-		boolean finish = false;
+		// boolean finish = false;
 		for (EntityFeatures features : FEATURES) 
 		{
 			if (trueSource instanceof EntityLiving && features.isEntity((EntityLiving)trueSource) && !(target instanceof EntityPlayer && ((EntityPlayer)target).isCreative())) 
 			{
 				features.onAttack((EntityLiving)trueSource, immediateSource, target, event);
-				finish = true;
+				// finish = true;
 			}
 			
 			if (target instanceof EntityLiving && features.isEntity((EntityLiving)target) && !(trueSource instanceof EntityPlayer && ((EntityPlayer)trueSource).isCreative())) 
 			{
 				features.onDefend((EntityLiving)target, trueSource, immediateSource, event);
-				finish = true;
+				// finish = true;
 			}
 		}
 	}
