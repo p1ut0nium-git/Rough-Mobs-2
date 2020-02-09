@@ -1,8 +1,7 @@
 # Rough-Mobs-Revamped
-This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Thanks to Lellson for open sourcing the mod.
+This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.14.4, originally by Lellson. Thanks to Lellson for open sourcing the mod.
 
-* Version 2.0.17 compiled against Forge version: 1.12.2-14.23.5.2847
-* Version 2.1.1+ compiled against Forge version: 1.12.2-14.23.5.2768 (snapshop_20171003)
+* Version 2.1.1+ compiled against Forge version: 1.14.4-28.1.0 (snapshot_20200119-1.14.4)
 
 ## Features
 
@@ -20,6 +19,9 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 * Boss monster spawn chance increases based upon number of regular Rough Mobs have been killed.
 * Add levels to rough mobs (higher levels = more hp/more dps)
 * Add shield blocking
+* In game commands to determine current rough mob spawn conditions (op only)
+* Version checking chat output with config option to disable
+* Zombie Pigmen always aggressive (configurable)
 
 #### _In Development_
 
