@@ -20,6 +20,9 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 * Boss monster spawn chance increases based upon number of regular Rough Mobs have been killed.
 * Add levels to rough mobs (higher levels = more hp/more dps)
 * Add shield blocking
+* In game commands to determine current rough mob spawn conditions (op only)
+* Version checking chat output with config option to disable
+* Zombie Pigmen always aggressive (configurable)
 
 #### _In Development_
 
@@ -33,7 +36,7 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 ## FAQ
 
 **Can you update to Minecraft version 1.14, 1.15, etc.?**  
-I might, but I am new to modding so it will take some time for me to figure it out.  
+I'm working on it.
 
 **Can you add a feature?**  
 Again I might. Feel free to make a request.  
@@ -41,9 +44,8 @@ Again I might. Feel free to make a request.
 **Can you fix this bug?**  
 Please report all issues on my GitHub Issue Tracker.  
 
-**What version of Forge is this compiled against?**  
-2.0.17 is compiled against Forge version: 14.23.5.2847  
-2.1.1+ had to be reverted to Forge version 14.23.5.2768  
+**What version of Forge is this compiled against?**   
+Forge version 14.23.5.2768  
 
 **How do I use Game Stages?**  
 Required: GameStages mod. First, you must enable the GameStages_FeaturesEnabled option in the config, if you don't, rough mobs will spawn regardless of game stages. After that, you can enable each stage you want to use in the config, or simply enable the GameStages_AllStages option to enable all of them at the same time. Now, you must give the player the stages at runtime(via quests, achievements, etc.) in order for rough mobs to spawn near them. The names of each stage to be used in game are found in the config file's gamestages comment section. Adding a game stage can be tested with: /gamestage add @p roughmobsequip  
