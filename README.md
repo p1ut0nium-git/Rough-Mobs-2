@@ -11,6 +11,7 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 * Only spawn if underground (toggleable)
 * Only spawn if below max spawn height (configurable)
 * Only spawn if at least X distance from world spawn (configurable)
+* Zombie Pigmen always aggressive (configurable)
 
 #### _Planned_
 
@@ -21,7 +22,6 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 * Add shield blocking
 * In game commands to determine current rough mob spawn conditions (op only)
 * Version checking chat output with config option to disable
-* Zombie Pigmen always aggressive (configurable)
 
 #### _In Development_
 
