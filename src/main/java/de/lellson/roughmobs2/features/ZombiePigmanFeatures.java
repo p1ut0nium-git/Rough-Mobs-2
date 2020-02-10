@@ -1,7 +1,6 @@
 package de.lellson.roughmobs2.features;
 
 import java.util.List;
-
 import de.lellson.roughmobs2.ai.combat.RoughAIAggressiveTouch;
 import de.lellson.roughmobs2.ai.combat.RoughAIAlwaysAggressive;
 import de.lellson.roughmobs2.config.RoughConfig;
@@ -30,10 +29,9 @@ public class ZombiePigmanFeatures extends EntityFeatures {
 	@Override
 	public void initConfig() {
 		
-		System.out.println("Zombie Pigman initConfig");
 		super.initConfig();
 		
-		aggressiveTouch = RoughConfig.getBoolean(name, "AggressiveTouch", true, "Set to false to prevent zombie pigman from getting aggressive if the player touches its hitbox");
+		aggressiveTouch = RoughConfig.getBoolean(name, "AggressiveTouch", false, "Set to false to prevent zombie pigman from getting aggressive if the player touches its hitbox");
 		alwaysAggressive = RoughConfig.getBoolean(name, "AlwaysAggressive", true, "Set to true for zombie pigmen to always be aggressive");
 		aggressiveRange = RoughConfig.getInteger(name, "AggressionRange", 10, 0, 100, "The range at which zombie pigmen will be aggressive to the player.");
 		aggressiveBlockRange = RoughConfig.getFloat(name, "AggressiveBlockRange", 20, 1, MAX, "Block radius in which zombie pigman get aggressive if the player breaks blocks");
@@ -42,15 +40,12 @@ public class ZombiePigmanFeatures extends EntityFeatures {
 	
 	@Override
 	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
-		
+
 		if (entity instanceof EntityLiving && aggressiveTouch)
 			tasks.addTask(1, new RoughAIAggressiveTouch((EntityLiving) entity));
-		if (entity instanceof EntityLiving && alwaysAggressive)
-			tasks.addTask(2, new RoughAIAlwaysAggressive((EntityLiving) entity, alwaysAggressive, aggressiveRange));
-	}
 	
-	@Override
-	public void onEntitySpawn(EntityJoinWorldEvent event) {
+		if (entity instanceof EntityLiving && alwaysAggressive)
+			tasks.addTask(3, new RoughAIAlwaysAggressive((EntityLiving) entity, aggressiveRange));
 	}
 	
 	@Override

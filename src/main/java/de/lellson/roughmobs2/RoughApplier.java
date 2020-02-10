@@ -108,6 +108,9 @@ public class RoughApplier {
 		
 		Entity entity = event.getEntity();
 		
+		if (entity instanceof EntityPlayer)
+			return;
+		
 		// Get nearest player to the spawned mob
 		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 		
