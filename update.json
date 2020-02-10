@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+  	"2.2.4": "Fixed a crash related to new Zombie Pigmen aggression AI; rewrote the entire class using reflection",
   	"2.2.3": "Added config to make zombie pigmen always aggressive, as well as set the range from player before attacking",
     "2.2.2": "Fixed a bug that caused crash on world load when Game Stages mod was not installed and a mob spawns.",
     "2.2.1": "GameStages support completed. Plus other spawn conditions such as dist from world, max height, player level, etc.",
@@ -9,7 +10,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.2.3",
-    "1.12.2-recommended": "2.2.3"
+    "1.12.2-latest": "2.2.4",
+    "1.12.2-recommended": "2.2.4"
   }
 }
