@@ -147,6 +147,7 @@ public class SpawnHelper {
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		private Class<? extends EntityLiving> getEntityClass(String entityName) {
 			
 			Class<? extends Entity> clazz = EntityList.getClass(new ResourceLocation(entityName));

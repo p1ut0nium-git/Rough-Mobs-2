@@ -29,6 +29,7 @@ public class TargetHelper {
 		fillList(options);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static void fillList(String[] options) {
 		
 		for (String option : options) 

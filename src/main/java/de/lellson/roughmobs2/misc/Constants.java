@@ -23,6 +23,7 @@ public class Constants {
 		return MODID + ":" + id;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<String> getRegNames(List<Class<? extends Entity>> entityClasses) {
 		
 		List<String> regNames = new ArrayList<String>();

@@ -30,6 +30,7 @@ public class RoughAIMobBuff extends EntityAIBase {
 		return !getEntitiesInRange().isEmpty() && !effects.isEmpty() && range != 0;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateTask() {
 		

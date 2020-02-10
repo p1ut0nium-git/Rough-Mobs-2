@@ -1,53 +1,28 @@
 package de.lellson.roughmobs2.features;
 
-import java.util.Arrays;
 import java.util.List;
-
-import de.lellson.roughmobs2.RoughMobs;
 import de.lellson.roughmobs2.ai.combat.RoughAILeapAtTargetChanced;
 import de.lellson.roughmobs2.ai.misc.RoughAIBreakBlocks;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
-import de.lellson.roughmobs2.compat.GameStages;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.Constants;
-import de.lellson.roughmobs2.misc.EquipHelper;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
-import de.lellson.roughmobs2.misc.EquipHelper.EquipmentPool;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import de.lellson.roughmobs2.misc.MountHelper;
 import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
 import de.lellson.roughmobs2.misc.MountHelper.HorseType;
-import de.lellson.roughmobs2.misc.PlayerHelper;
-import de.lellson.roughmobs2.misc.SpawnHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneDiode;
-import net.minecraft.block.BlockRedstoneLight;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityAIZombieAttack;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class ZombieFeatures extends EntityFeatures {
 	
@@ -72,9 +47,10 @@ public class ZombieFeatures extends EntityFeatures {
 	private String[] breakBlocks;
 	private List<Block> allowedBreakBlocks;
 	
+	@SuppressWarnings("unchecked")
 	public ZombieFeatures() {
 		// Sends name and list of classes back to EntityFeatures
-		super("zombie", EntityZombie.class, EntityZombieVillager.class, EntityHusk.class);
+		super("zombie", EntityZombie.class, EntityZombieVillager.class, EntityHusk.class, EntityPigZombie.class);
 	}
 	
 	@Override

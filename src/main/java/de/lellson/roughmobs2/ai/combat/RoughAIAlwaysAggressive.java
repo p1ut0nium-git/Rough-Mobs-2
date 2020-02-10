@@ -12,9 +12,8 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class RoughAIAlwaysAggressive extends EntityAIBase {
 	
-	protected EntityLiving entity;   
+	private EntityLiving entity;   
 	private EntityLivingBase targetEntity;
-	protected EntityPigZombie pigZombie;
 
 	private int aggressiveRange;
 	private boolean isAngry;
@@ -28,13 +27,11 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
 		this.aggressiveRange = aggressiveRange;
 		this.isAngry = true;
 		this.setMutexBits(4);
-		
-		pigZombie = (EntityPigZombie)entity;
-		
+
 		becomeAngryMethod = ReflectionHelper.findMethod(EntityPigZombie.class, "becomeAngryAt", "func_70835_c", Entity.class);
 		becomeAngryMethod.setAccessible(true);
-		
-		angerLevelField = ReflectionHelper.findField(EntityPigZombie.class, "angerLevel");
+
+		angerLevelField = ReflectionHelper.findField(EntityPigZombie.class, "field_70837_d");
 		angerLevelField.setAccessible(true);
 	}
 
@@ -66,7 +63,8 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
      */
 	public void startExecuting() {
 		entity.getNavigator().tryMoveToEntityLiving(this.targetEntity, 1);
-		setAngry(true);
+
+    	setAngry(true);
 	}
 	
     /**
@@ -91,6 +89,7 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
      */
     public void resetTask() {
     	this.targetEntity = null;
+    	
     	setAngry(false);
     }
     
