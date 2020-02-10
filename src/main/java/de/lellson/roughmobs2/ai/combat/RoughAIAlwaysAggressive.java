@@ -8,12 +8,6 @@ import net.minecraft.init.SoundEvents;
 
 public class RoughAIAlwaysAggressive extends EntityAIBase {
 	
-	protected EntityLiving entity;
-	
-	private boolean alwaysAggressive;
-	private int aggressiveRange;
-	private EntityPlayer player;
-	
 	public RoughAIAlwaysAggressive(EntityLiving entity, boolean alwaysAggressive, int aggressiveRange) {
 		this.entity = entity;
 		this.alwaysAggressive = alwaysAggressive;
@@ -21,13 +15,18 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
 		this.setMutexBits(4);
 	}
 
+	protected EntityLiving entity;
+	
+	private boolean alwaysAggressive;
+	private int aggressiveRange;
+	private EntityPlayer closestPlayer;
+	
+
+
 	@Override
 	public boolean shouldExecute() {
-		if (alwaysAggressive) {
-			FeatureHelper.playSound(entity, SoundEvents.ENTITY_ZOMBIE_PIG_ANGRY);
-			player = entity.world.getClosestPlayerToEntity(entity, aggressiveRange);
-			entity.setRevengeTarget(player);
-			entity.setAttackTarget(player);
+		closestPlayer = entity.world.getClosestPlayerToEntity(entity, aggressiveRange);
+		if (alwaysAggressive && closestPlayer != null) {
 			return true;
 		}
 		return false;
@@ -35,5 +34,25 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
 	
 	@Override
 	public void updateTask() {
+		closestPlayer = entity.world.getClosestPlayerToEntity(entity, aggressiveRange);
+		if (closestPlayer == null) {
+			entity.setRevengeTarget(null);
+			entity.setAttackTarget(null);
+		}
+		if (entity.getAttackTarget() != closestPlayer) {
+			entity.setRevengeTarget(closestPlayer);
+			entity.setAttackTarget(closestPlayer);
+		}
+
+	}
+	
+	@Override
+	public void startExecuting() {
+		if (closestPlayer == null || closestPlayer.getDistanceSq(entity) <= aggressiveRange) {
+			return;
+		}
+		FeatureHelper.playSound(entity, SoundEvents.ENTITY_ZOMBIE_PIG_ANGRY);
+		entity.setRevengeTarget(closestPlayer);
+		entity.setAttackTarget(closestPlayer);
 	}
 }
