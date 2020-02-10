@@ -139,13 +139,13 @@ public class RoughApplier {
 		}
 		
 		// Test to see if player has abilities game stage and if stages are enabled
-		
 		if (gameStagesEnabled == false || abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 			
 			if (entity instanceof EntityLiving)
 				AttributeHelper.addAttributes((EntityLiving)entity);
 		}
 		
+		// Loop through each spawned entity and add features and AI
 		for (EntityFeatures features : FEATURES) 
 		{
 			if (features.isEntity(entity))

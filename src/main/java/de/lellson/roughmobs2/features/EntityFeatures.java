@@ -54,6 +54,9 @@ public abstract class EntityFeatures {
 		return true;
 	}
 	
+	public void onEntitySpawn(EntityJoinWorldEvent event) {
+	}
+	
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
 	}
 	

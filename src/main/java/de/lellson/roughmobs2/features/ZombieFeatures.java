@@ -74,7 +74,7 @@ public class ZombieFeatures extends EntityFeatures {
 	
 	public ZombieFeatures() {
 		// Sends name and list of classes back to EntityFeatures
-		super("zombie", EntityZombie.class, EntityZombieVillager.class, EntityHusk.class, EntityPigZombie.class);
+		super("zombie", EntityZombie.class, EntityZombieVillager.class, EntityHusk.class);
 	}
 	
 	@Override
