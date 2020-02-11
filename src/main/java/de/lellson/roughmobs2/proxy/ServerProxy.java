@@ -1,7 +1,7 @@
 package de.lellson.roughmobs2.proxy;
 
 import de.lellson.roughmobs2.RoughApplier;
-import de.lellson.roughmobs2.compat.GameStages;
+import de.lellson.roughmobs2.compat.CompatHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -13,14 +13,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class ServerProxy extends CommonProxy {
 	
 	private RoughApplier applier;
-	private GameStages gameStage;
 	
 	public void preInit(FMLPreInitializationEvent event) {
 		
 		super.preInit(event);
 		
-		gameStage = new GameStages();
-		gameStage.preInit();
+		// Initialize 3rd party mod support
+		CompatHandler.registerGameStages();
+		CompatHandler.registerSereneSeasons();
 		
 		applier = new RoughApplier();
 		applier.preInit();
@@ -31,7 +31,6 @@ public class ServerProxy extends CommonProxy {
 	
 	public void postInit(FMLPostInitializationEvent event) {
 
-		gameStage.postInit();
 		applier.postInit();
 	}
 }

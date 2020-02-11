@@ -33,6 +33,13 @@ public class Constants {
 		
 		return regNames;
 	}
+	
+	public static final String[] SEASONS = {
+			"SUMMER",
+			"AUTUMN",
+			"WINTER",
+			"SPRING"
+	};
 
 	public static final String[] ATTRIBUTE_DEFAULT = {
 			"zombie;generic.maxHealth;1;0.5;/;1",

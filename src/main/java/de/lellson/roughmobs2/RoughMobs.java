@@ -1,7 +1,7 @@
 package de.lellson.roughmobs2;
 
+import javax.annotation.Nonnull;
 import org.apache.logging.log4j.Logger;
-
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.proxy.ServerProxy;
@@ -30,8 +30,13 @@ public class RoughMobs {
 	@SidedProxy(clientSide = "de.lellson.roughmobs2.proxy.ClientProxy", serverSide = "de.lellson.roughmobs2.proxy.ServerProxy")
 	public static ServerProxy proxy;
 	
-	@Instance
+	@Instance(Constants.MODID)
 	public static RoughMobs instance;
+	
+	@Nonnull
+	public static RoughMobs instance() {
+		return instance;
+	}
 	
 	public static Logger logger;
 	

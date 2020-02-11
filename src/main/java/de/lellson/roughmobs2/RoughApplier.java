@@ -2,8 +2,8 @@ package de.lellson.roughmobs2;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.lellson.roughmobs2.compat.GameStages;
+import de.lellson.roughmobs2.compat.CompatHandler;
+import de.lellson.roughmobs2.compat.GameStagesCompat;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.features.BlazeFeatures;
 import de.lellson.roughmobs2.features.CreeperFeatures;
@@ -103,27 +103,21 @@ public class RoughApplier {
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
 		
-		if (event.getWorld().isRemote)
+		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)
 			return;
 		
 		Entity entity = event.getEntity();
-		
-		if (entity instanceof EntityPlayer)
-			return;
-		
-		// Get nearest player to the spawned mob
 		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 		
 		// Test spawn conditions (from config file)
-		SpawnHelper spawnHelper = new SpawnHelper();
-		if (!spawnHelper.canMobSpawn(entity, entity.world, playerClosest))
+		if (!SpawnHelper.checkSpawnConditions(entity))
 			return;
 		
 		// Get all Game Stage related info
-		gameStagesEnabled = GameStages.isStagesEnabled();
-		abilsStageEnabled = GameStages.useAbilitiesStage();
-		equipStageEnabled = GameStages.useEquipmentStage();
-		bossStageEnabled = GameStages.useBossStage();	
+		gameStagesEnabled = CompatHandler.isGameStagesLoaded();
+		abilsStageEnabled = GameStagesCompat.useAbilitiesStage();
+		equipStageEnabled = GameStagesCompat.useEquipmentStage();
+		bossStageEnabled = GameStagesCompat.useBossStage();	
 		
 		// Test to see if player has these stages unlocked.
 		if (gameStagesEnabled) {

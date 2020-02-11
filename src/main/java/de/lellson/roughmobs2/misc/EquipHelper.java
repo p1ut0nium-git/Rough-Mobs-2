@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import de.lellson.roughmobs2.RoughMobs;
-import de.lellson.roughmobs2.compat.GameStages;
+import de.lellson.roughmobs2.compat.GameStagesCompat;
 import de.lellson.roughmobs2.config.RoughConfig;
 
 import net.darkhax.gamestages.GameStageHelper;
@@ -132,8 +132,8 @@ public class EquipHelper {
 			EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 			
 			// Get all Game Stage related info
-			gameStagesEnabled = GameStages.isStagesEnabled();
-			enchantStageEnabled = GameStages.useEnchantStage();			
+			gameStagesEnabled = GameStagesCompat.isStagesEnabled();
+			enchantStageEnabled = GameStagesCompat.useEnchantStage();			
 			
 			// Test to see if player has enchantment stage unlocked
 			if (gameStagesEnabled) {

@@ -1,10 +1,11 @@
 package de.lellson.roughmobs2.misc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
 import de.lellson.roughmobs2.RoughMobs;
+import de.lellson.roughmobs2.compat.SereneSeasonsCompat;
 import de.lellson.roughmobs2.config.RoughConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -263,21 +264,30 @@ public class SpawnHelper {
 		}
 	}
 	
-	public boolean canMobSpawn(Entity entity, World world, EntityPlayer playerClosest) {
+	public static boolean checkSpawnConditions(Entity entity) {
+		
+		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+		World world = entity.getEntityWorld();
 
-		// Check to see if mob spawn is far enough away from world spawn.
-		Double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
-		if (distanceToSpawn >= minDistFromSpawn) {
-	
-			// Test to see if player is high enough level to spawn rough mobs
-			if (playerClosest != null && playerClosest.experienceLevel >= playerSpawnLevel) {
-										
-				// Test to see if mob is underground
-				if(!isUndergroundEnabled || !world.canBlockSeeSky(entity.getPosition()) && isUndergroundEnabled) {
-						
-					// Test to see if mob is below maximum spawn height
-					if (entity.getPosition().getY() <= maxSpawnHeight) {
-						return true;
+		// Test to see if it is the appropriate season to spawn rough mobs
+		String currentSeason = SereneSeasonsCompat.getSeason(world);
+		List<String> seasonWhiteList = Arrays.asList(SereneSeasonsCompat.getSeasonWhitelist());
+		if (currentSeason != null && seasonWhiteList != null && seasonWhiteList.contains(currentSeason)) {
+				
+			// Test to see if mob spawn is far enough away from world spawn to be a rough mob.
+			Double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
+			if (distanceToSpawn >= minDistFromSpawn) {
+		
+				// Test to see if closest player is high enough level to spawn as a rough mob
+				if (playerClosest != null && playerClosest.experienceLevel >= playerSpawnLevel) {
+											
+					// Test to see if  mob is underground
+					if(!isUndergroundEnabled || !world.canBlockSeeSky(entity.getPosition()) && isUndergroundEnabled) {
+							
+						// Test to see if mob is below maximum spawn height
+						if (entity.getPosition().getY() <= maxSpawnHeight) {
+							return true;
+						}
 					}
 				}
 			}
