@@ -5,7 +5,7 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 
 ## Features
 
-* All the features of Rough Mobs 2 version 2.0.15
+* All the features of Rough Mobs 2 +
 * GameStages support - 5 stages (enable each individually, or use roughmobsall to enable them all) (configurable)
 * Serene Seasons support - only spawn rough mobs in specified season (toggleable) ("Winter is coming!")
 * Only spawn if player's Minecraft Exp Level is high enough (configurable)
