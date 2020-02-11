@@ -7,20 +7,21 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 
 * All the features of Rough Mobs 2 version 2.0.15
 * GameStages support - 5 stages (enable each individually, or use roughmobsall to enable them all) (configurable)
+* Serene Seasons support - only spawn rough mobs in specified season (toggleable) ("Winter is coming!")
 * Only spawn if player's Minecraft Exp Level is high enough (configurable)
 * Only spawn if underground (toggleable)
 * Only spawn if below max spawn height (configurable)
 * Only spawn if at least X distance from world spawn (configurable)
 * Zombie Pigmen always aggressive (configurable)
+*Display boss mob spawn warning in chat (toggleable)
 
 #### _Planned_
 
-* Serene Seasons support - only spawn with equipment in specified season (toggleable)
 * Player level affects equipment spawn chance (toggleable)
 * Boss monster spawn chance increases based upon number of regular Rough Mobs have been killed.
 * Add levels to rough mobs (higher levels = more hp/more dps)
 * Add shield blocking
-* In game commands to determine current rough mob spawn conditions (op only)
+* In game commands
 * Version checking chat output with config option to disable
 
 #### _In Development_
