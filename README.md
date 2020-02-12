@@ -1,6 +1,7 @@
 # Rough-Mobs-Revamped
 [![Generic badge](https://img.shields.io/badge/version-1.12.2-orange.svg)](https://shields.io/) 
-[![GitHub issues](https://img.shields.io/github/issues/p1ut0nium-git/Rough-Mobs-Revamped)](https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/issues/)
+[![GitHub issues](https://img.shields.io/github/issues/p1ut0nium-git/Rough-Mobs-Revamped)](https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/issues/) 
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)  
 
 This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Thanks to Lellson for open sourcing the mod.
 
