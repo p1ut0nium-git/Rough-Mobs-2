@@ -43,7 +43,7 @@ This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, origina
 I'm working on it.
 
 **Can you add a feature?**  
-Again I might. Feel free to make a request.  
+I might. Feel free to make a request.  
 
 **Can you fix this bug?**  
 Please report all issues on my GitHub Issue Tracker.  
