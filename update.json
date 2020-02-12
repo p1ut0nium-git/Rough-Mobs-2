@@ -12,7 +12,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.2.5",
-    "1.12.2-recommended": "2.2.5"
+    "1.12.2-latest": "2.2.6",
+    "1.12.2-recommended": "2.2.6"
   }
 }
