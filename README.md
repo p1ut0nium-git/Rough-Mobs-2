@@ -1,5 +1,5 @@
 # Rough-Mobs-Revamped
-https://img.shields.io/badge/version-2.2.6-orange
+https://img.shields.io/badge/version-2.2.6-orange  
 This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Thanks to Lellson for open sourcing the mod.
 
 * Compiled against Forge version: 1.12.2-14.23.5.2768 (snapshop_20171003)
