@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import de.lellson.roughmobs2.RoughMobs;
+import de.lellson.roughmobs2.compat.CompatHandler;
 import de.lellson.roughmobs2.compat.SereneSeasonsCompat;
 import de.lellson.roughmobs2.config.RoughConfig;
 import net.minecraft.entity.Entity;
@@ -270,9 +274,11 @@ public class SpawnHelper {
 		World world = entity.getEntityWorld();
 
 		// Test to see if it is the appropriate season to spawn rough mobs
+		boolean sereneSeasonsEnabled = CompatHandler.isSereneSeasonsLoaded();
 		String currentSeason = SereneSeasonsCompat.getSeason(world);
 		List<String> seasonWhiteList = Arrays.asList(SereneSeasonsCompat.getSeasonWhitelist());
-		if (currentSeason != null && seasonWhiteList != null && seasonWhiteList.contains(currentSeason)) {
+		
+		if (!sereneSeasonsEnabled || seasonWhiteList.contains(currentSeason)) {
 				
 			// Test to see if mob spawn is far enough away from world spawn to be a rough mob.
 			Double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());

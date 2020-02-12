@@ -12,15 +12,12 @@ public class SereneSeasonsCompat {
 	private SereneSeasonsCompat() {}
 	
 	private static boolean registered;
-	
-	private static Boolean useSereneSeasonsMod;
 	private static String[] seasonWhiteList;
 	
 	public static void register() {
 		if (registered)
 			return;
 		registered = true;
-		preInit();
 	}
 	
 	public static void preInit() {
@@ -31,16 +28,15 @@ public class SereneSeasonsCompat {
 				+ "The mod Serene Seasons must be installed for these features to work.\n");
 
 				seasonWhiteList = RoughConfig.getStringArray("SereneSeasons", "_WhiteList", Constants.SEASONS, "Whitelist of all seasons that Rough Mobs can spawn in.");
-				useSereneSeasonsMod = RoughConfig.getBoolean("SereneSeasons", "_Enabled", true, "Set to true to enable using Serene Seasons.", true);
 	}
 	
 	public static boolean hasDefaultConfig() {
 		return true;
 	}
-	
-	public static boolean isSereneSeasonsEnabled() {
-		return useSereneSeasonsMod;
-	}
+
+	/*
+	 * Getters
+	 */
 	
 	public static String getSeason(World world) {
 		if (registered)
@@ -49,8 +45,6 @@ public class SereneSeasonsCompat {
 	}
 	
 	public static String[] getSeasonWhitelist() {
-		if (registered)
-			return seasonWhiteList;
-		return null;
+		return seasonWhiteList;
 	}
 }

@@ -10,12 +10,11 @@ public class GameStagesCompat {
 	
 	private static boolean registered;
 
-	private static Boolean useEquipmentStage;
-	private static Boolean useAllStages;
-	private static Boolean useBossStage;
-	private static Boolean useEnchantStage;
-	private static Boolean useAbilitiesStage;
-	private static Boolean useGameStagesMod;
+	private static Boolean useEquipmentStage = false;
+	private static Boolean useAllStages = false;
+	private static Boolean useBossStage = false;
+	private static Boolean useEnchantStage = false;
+	private static Boolean useAbilitiesStage = false;
 
 	public static void register() {
 		if (registered)
@@ -45,7 +44,6 @@ public class GameStagesCompat {
 		useBossStage = RoughConfig.getBoolean("GameStages", "_Bosses", false, "Enable this Game Stage needed for Rough Mob Bosses to spawn. Must also enable Equipment stage for this to work.");
 		useAbilitiesStage = RoughConfig.getBoolean("GameStages", "_Abilities", false, "Enable this Game Stage for Rough Mobs to have special combat AI and attributes.");
 		useEnchantStage = RoughConfig.getBoolean("GameStages", "_Enchantments", false, "Enable this Game Stage for Rough Mob equipment to be enchanted.");		
-		useGameStagesMod = RoughConfig.getBoolean("GameStages", "_Enabled", false, "Set to true to enable using Game Stages.", true);
 		
 		// If useAllStages is true, then all other stages should also be set to true
 		if (useAllStages) {
@@ -64,30 +62,41 @@ public class GameStagesCompat {
 	}
 
 	/*
-	 * Getters & Setters
+	 * Getters
 	 */
 	
-	public static boolean isStagesEnabled() {
-		return useGameStagesMod;
-	}
-	
 	public static Boolean useEquipmentStage() {
-		return useEquipmentStage;
+		if (registered) {
+			return useEquipmentStage;
+		}
+		return false;
 	}
 
 	public static Boolean useAllStages() {
-		return useAllStages;
+		if (registered) {
+			return useAllStages;
+		}
+		return false;
 	}
 
 	public static Boolean useBossStage() {
-		return useBossStage;
+		if (registered) {
+			return useBossStage;
+		} 
+		return false;
 	}
 
 	public static Boolean useEnchantStage() {
-		return useEnchantStage;
+		if (registered) {
+			return useEnchantStage;
+		}
+		return false;
 	}
 
 	public static Boolean useAbilitiesStage() {
-		return useAbilitiesStage;
+		if (registered) {
+			return useAbilitiesStage;
+		}
+		return false;
 	}
 }

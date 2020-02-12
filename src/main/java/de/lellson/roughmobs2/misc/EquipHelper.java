@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import de.lellson.roughmobs2.RoughMobs;
+import de.lellson.roughmobs2.compat.CompatHandler;
 import de.lellson.roughmobs2.compat.GameStagesCompat;
 import de.lellson.roughmobs2.config.RoughConfig;
 
@@ -27,8 +28,8 @@ public class EquipHelper {
 	
 	private static final String KEY_APPLIED = Constants.unique("equipApplied");
 	private static final Random RND = new Random();
-	
-	private static Boolean gameStagesEnabled;
+
+	private static Boolean gameStagesLoaded;
 	private static Boolean playerHasEnchantStage;
 	private static Boolean enchantStageEnabled;
 	
@@ -132,11 +133,11 @@ public class EquipHelper {
 			EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 			
 			// Get all Game Stage related info
-			gameStagesEnabled = GameStagesCompat.isStagesEnabled();
+			gameStagesLoaded = CompatHandler.isGameStagesLoaded();
 			enchantStageEnabled = GameStagesCompat.useEnchantStage();			
 			
 			// Test to see if player has enchantment stage unlocked
-			if (gameStagesEnabled) {
+			if (gameStagesLoaded && enchantStageEnabled) {
 				playerHasEnchantStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT);
 			} else {
 				playerHasEnchantStage = false;
@@ -338,7 +339,7 @@ public class EquipHelper {
 			ItemStack randomStack = ITEM_POOL.getRandom(entity);
 			
 			// Test to see if player has Enchantment stage
-			if (gameStagesEnabled == false || enchantStageEnabled == false || enchantStageEnabled && playerHasEnchantStage) {
+			if (gameStagesLoaded == false || enchantStageEnabled == false || enchantStageEnabled && playerHasEnchantStage) {
 				
 				if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) 
 				{

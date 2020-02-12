@@ -11,21 +11,27 @@ public class CompatHandler {
 		if (Loader.isModLoaded("gamestages")) {
 			isGameStagesLoaded = true;
 			GameStagesCompat.register();
+		} else {
+			isGameStagesLoaded = false;
 		}
+		GameStagesCompat.preInit();
 	}
 	
 	public static void registerSereneSeasons() {
 		if (Loader.isModLoaded("sereneseasons")) {
 			isSereneSeasonsLoaded = true;
 			SereneSeasonsCompat.register();
+		} else {
+			isSereneSeasonsLoaded = false;
 		}
+		SereneSeasonsCompat.preInit();
 	}
 
 	public static Boolean isGameStagesLoaded() {
-		return isGameStagesLoaded && GameStagesCompat.isStagesEnabled();
+		return isGameStagesLoaded;
 	}
 
 	public static Boolean isSereneSeasonsLoaded() {
-		return isSereneSeasonsLoaded && SereneSeasonsCompat.isSereneSeasonsEnabled();
+		return isSereneSeasonsLoaded;
 	}
 }
