@@ -52,7 +52,7 @@ Please report all issues on my GitHub Issue Tracker.
 Forge version 14.23.5.2768  
 
 **How do I use Game Stages?**  
-Required: GameStages mod. First, you must enable the GameStages_FeaturesEnabled option in the config, if you don't, rough mobs will spawn regardless of game stages. After that, you can enable each stage you want to use in the config, or simply enable the GameStages_AllStages option to enable all of them at the same time. Now, you must give the player the stages at runtime(via quests, achievements, etc.) in order for rough mobs to spawn near them. The names of each stage to be used in game are found in the config file's gamestages comment section. Adding a game stage can be tested with: /gamestage add @p roughmobsequip  
+Required: GameStages mod. You can enable each stage you want to use in the config, or simply enable the GameStages_AllStages option to enable all of them at the same time. Now, you must give the player the enabled stages at runtime(via quests, achievements, etc.) in order for rough mobs to spawn near them. The names of each stage to be used in game are found in the config file's gamestages comment section. Adding a game stage can be tested with: /gamestage add @p roughmobsequip  
 
 **Do I keep the old Rough Mobs 2 mod?**  
 No. Delete that mod, and use this one instead. It has all the same functionality, and will conflict with the old version.  
