@@ -327,7 +327,6 @@ public class EquipHelper {
 
 		public void addItem(ItemStack stack, int probability, int dimension, String nbt) {
 
-			System.out.println("Dimension on addItem: " + dimension);
 			ITEM_POOL.addEntry(stack, probability, dimension == Integer.MIN_VALUE ? "ALL" : dimension, nbt);
 		}
 		
@@ -345,25 +344,42 @@ public class EquipHelper {
 			// Test to see if player has Enchantment stage
 			if (gameStagesLoaded == false || enchantStageEnabled == false || enchantStageEnabled && playerHasEnchantStage) {
 				
-				if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) 
-				{
-					Enchantment ench = ENCHANTMENT_POOL.getRandom(entity);
+				// Test to see if there are no items to be enchanted
+				if(randomStack != null) {
 					
-					int i = 10;
-					while (!ench.canApply(randomStack) && i > 0) 
+					if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) 
 					{
-						ench = ENCHANTMENT_POOL.getRandom(entity);
-						i--;
+						Enchantment ench = ENCHANTMENT_POOL.getRandom(entity);
+
+						// TODO - Clean this up some
+						// If there is no enchantment, skip this
+						if (ench != null) {
+							
+							// Not sure why this while loop exists
+							// What is the magic number 10 for?
+							int i = 10;
+							boolean canApply = !ench.canApply(randomStack);
+						
+							while (canApply && i > 0) 
+							{
+								ench = ENCHANTMENT_POOL.getRandom(entity);
+								i--;
+							}
+
+							if (!canApply) {
+								return randomStack;
+							}
+						
+							// If there is no enchantment, skip this
+							if (ench != null) {
+								double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
+								int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
+								
+								if (!randomStack.isItemEnchanted())
+									randomStack.addEnchantment(ench, level);
+							}
+						}
 					}
-					
-					if (!ench.canApply(randomStack))
-						return randomStack;
-					
-					double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
-					int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
-					
-					if (!randomStack.isItemEnchanted())
-						randomStack.addEnchantment(ench, level);
 				}
 			}
 			
@@ -423,6 +439,8 @@ public class EquipHelper {
 			
 			/* TODO: I don't understand why Lellson was looping through this 100 times
 			But it doesn't seem to be needed?
+			Why does the magic number 100 represent?
+			
 			int i = 100;
 			while (!isDimension(entity, dimension) && i > 0) {
 				rnd = RND.nextInt(entries.size());
@@ -432,13 +450,13 @@ public class EquipHelper {
 			}
 			*/
 			
-			// If entity is in wrong dimension, then don't return items
+			// If entity is in wrong dimension, then don't return entries
 			if (!isDimension(entity, dimension)) {
 				entry = null;
 				return entry;
 			}
 			
-			// Otherwise, return items
+			// Otherwise, return entries
 			return entry;
 		}
 		
