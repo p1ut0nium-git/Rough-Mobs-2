@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+  	"2.2.8": "Zombie pigmen no longer target creative mode players; zombie pigmen should always target closest player.",
     "2.2.7": "Hopefully fixed an issue where dimension specific equipment was being given in the wrong dimensions",
   	"2.2.6": "Fixed a crash on game load when Serene Seasons or Game Stages wasn't installed",
     "2.2.5": "Added Serene Seasons support; Added boss mob spawn chat warning (toggleable)",
@@ -13,7 +14,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.2.7",
-    "1.12.2-recommended": "2.2.7"
+    "1.12.2-latest": "2.2.8",
+    "1.12.2-recommended": "2.2.8"
   }
 }
