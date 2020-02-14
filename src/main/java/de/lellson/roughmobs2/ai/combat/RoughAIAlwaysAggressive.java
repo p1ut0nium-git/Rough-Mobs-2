@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityPigZombie;
 
@@ -39,17 +40,21 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
 	@Override
 	public boolean shouldExecute() {
 		
-		if (entity.getAttackTarget() == null) {
+		// Set target to the closest player
+		if (entity.getAttackTarget() == null || entity.getAttackTarget() != entity.world.getClosestPlayerToEntity(entity, aggressiveRange)) {
 	        this.targetEntity = entity.world.getClosestPlayerToEntity(entity, aggressiveRange);
 		} else {
 			this.targetEntity = entity.getAttackTarget();
 		}
 
+		// Test to see if target is null, too far away, can't be seen, or is a player in creative mode.
         if (this.targetEntity == null) {
             return false; 
         } else if (this.targetEntity.getDistanceSq(this.entity) > (double)(this.aggressiveRange * this.aggressiveRange)) {
         	return false; 
         } else if (!entity.canEntityBeSeen(targetEntity)) {
+        	return false;
+        } else if (((EntityPlayer)this.targetEntity).isCreative()) {
         	return false;
         } else {
         	return true;
@@ -95,9 +100,9 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
      * Determine if this AI Task is interruptible by a higher (= lower value) priority task. All vanilla AITask have
      * this value set to true.
      */
-    //public boolean isInterruptible() {
-    //    return true;
-    //}
+    public boolean isInterruptible() {
+        return true;
+    }
 	
 	private void setAngry(boolean isAngry) {
 		
