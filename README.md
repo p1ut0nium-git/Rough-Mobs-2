@@ -44,4 +44,4 @@ I might. Feel free to make a request.
 Please report all issues on my GitHub Issue Tracker.  
 
 **What version of Forge is this compiled against?**  
-1.14.4 version are compiled using Forge 28.1.0 using snapshop 20200119-1.14.4
+1.14.4 version is compiled using Forge 28.1.0 using snapshop 20200119-1.14.4
