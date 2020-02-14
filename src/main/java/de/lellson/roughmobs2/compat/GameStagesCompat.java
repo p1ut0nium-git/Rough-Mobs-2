@@ -2,19 +2,19 @@ package de.lellson.roughmobs2.compat;
 
 import de.lellson.roughmobs2.config.RoughConfig;
 
-public class GameStagesCompat {
+public abstract class GameStagesCompat {
 	
-	public static final GameStagesCompat INSTANCE = new GameStagesCompat();
+	//public static final GameStagesCompat INSTANCE = new GameStagesCompat();
 	
 	private GameStagesCompat() {}
 	
 	private static boolean registered;
 
-	private static Boolean useEquipmentStage = false;
-	private static Boolean useAllStages = false;
-	private static Boolean useBossStage = false;
-	private static Boolean useEnchantStage = false;
-	private static Boolean useAbilitiesStage = false;
+	private static Boolean useEquipmentStage;
+	private static Boolean useAllStages;
+	private static Boolean useBossStage;
+	private static Boolean useEnchantStage;
+	private static Boolean useAbilitiesStage;
 
 	public static void register() {
 		if (registered)
@@ -49,15 +49,16 @@ public class GameStagesCompat {
 		if (useAllStages) {
 			useEquipmentStage = useBossStage = useAbilitiesStage = useEnchantStage = true;
 		}
+
 	}
 	
-	public void initConfig() {	
+	public static void initConfig() {	
 	}
 	
-	public void postInit() {
+	public static void postInit() {
 	}
 	
-	public static boolean hasDefaultConfig() {
+	private static boolean hasDefaultConfig() {
 		return true;
 	}
 

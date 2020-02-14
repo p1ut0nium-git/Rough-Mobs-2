@@ -2,16 +2,13 @@ package de.lellson.roughmobs2.features;
 
 import java.util.List;
 import java.util.Map;
-
 import de.lellson.roughmobs2.ai.combat.RoughAIMobBuff;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.Constants;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.projectile.EntityPotion;
@@ -33,6 +30,7 @@ public class WitchFeatures extends EntityFeatures {
 	
 	private Map<Potion, Integer> effects;
 	
+	@SuppressWarnings("unchecked")
 	public WitchFeatures() {
 		super("witch", EntityWitch.class);
 	}
@@ -83,6 +81,7 @@ public class WitchFeatures extends EntityFeatures {
 		
 		private WitchFeatures features;
 		
+		@SuppressWarnings("unchecked")
 		public WitchPotionFeatures(WitchFeatures features) {
 			super("potion", EntityPotion.class);
 			this.features = features;

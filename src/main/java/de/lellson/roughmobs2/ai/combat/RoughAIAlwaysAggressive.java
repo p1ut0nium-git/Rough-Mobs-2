@@ -1,6 +1,5 @@
 package de.lellson.roughmobs2.ai.combat;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import net.minecraft.entity.Entity;
@@ -8,7 +7,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class RoughAIAlwaysAggressive extends EntityAIBase {
 	
@@ -18,8 +16,8 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
 	private int aggressiveRange;
 	private boolean isAngry;
 	
-	private Method becomeAngryMethod;
-	private Field angerLevelField;
+	//private Method becomeAngryMethod;
+	//private Field angerLevelField;
 	
 	public RoughAIAlwaysAggressive(EntityLiving entity, int aggressiveRange) {
 
@@ -28,11 +26,11 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
 		this.isAngry = true;
 		this.setMutexBits(4);
 
-		becomeAngryMethod = ReflectionHelper.findMethod(EntityPigZombie.class, "becomeAngryAt", "func_70835_c", Entity.class);
-		becomeAngryMethod.setAccessible(true);
+		//becomeAngryMethod = ReflectionHelper.findMethod(EntityPigZombie.class, "becomeAngryAt", "func_70835_c", Entity.class);
+		//becomeAngryMethod.setAccessible(true);
 
-		angerLevelField = ReflectionHelper.findField(EntityPigZombie.class, "field_70837_d");
-		angerLevelField.setAccessible(true);
+		//angerLevelField = ReflectionHelper.findField(EntityPigZombie.class, "field_70837_d");
+		//angerLevelField.setAccessible(true);
 	}
 
     /**
@@ -105,26 +103,34 @@ public class RoughAIAlwaysAggressive extends EntityAIBase {
 		
 		if (isAngry) {	
 			try {
-				becomeAngryMethod.invoke(entity, entity.world.getClosestPlayerToEntity(entity, aggressiveRange));
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Method becomeAngryAt = EntityPigZombie.class.getDeclaredMethod("becomeAngryAt", Entity.class);
+				becomeAngryAt.setAccessible(true);		
+				becomeAngryAt.invoke(entity, entity.world.getClosestPlayerToEntity(entity, aggressiveRange));
+			}
+			catch (Exception e) {
+				try {
+					Method becomeAngryAt = EntityPigZombie.class.getDeclaredMethod("func_70835_c", Entity.class);
+					becomeAngryAt.setAccessible(true);
+					becomeAngryAt.invoke(entity, entity.world.getClosestPlayerToEntity(entity, aggressiveRange));
+				} 
+				catch (Exception e2) {
+					e2.printStackTrace();
+				} 
 			}	
 		} else {
 			try {
-				angerLevelField.setInt(entity, 0);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Field angerLevel = EntityPigZombie.class.getDeclaredField("angerLevel");
+				angerLevel.setAccessible(true);
+				angerLevel.setInt(entity, 0);
+			} catch (Exception e) {
+				try {
+					Field angerLevel = EntityPigZombie.class.getDeclaredField("field_70837_d");
+					angerLevel.setAccessible(true);;
+					angerLevel.setInt(entity, 0);
+				}
+				catch (Exception e2) {
+					e2.printStackTrace();
+				}
 			}
 		}
 		

@@ -1,14 +1,10 @@
 package de.lellson.roughmobs2.features;
 
-import java.lang.reflect.InvocationTargetException;
-
 import de.lellson.roughmobs2.RoughMobs;
 import de.lellson.roughmobs2.config.RoughConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySilverfish;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
@@ -16,6 +12,7 @@ public class SilverfishFeatures extends EntityFeatures {
 	
 	private int splitChance;
 	
+	@SuppressWarnings("unchecked")
 	public SilverfishFeatures() {
 		super("silverfish", EntitySilverfish.class);
 	}

@@ -2,27 +2,21 @@ package de.lellson.roughmobs2.features;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import de.lellson.roughmobs2.ai.misc.RoughAIDespawn;
 import de.lellson.roughmobs2.ai.misc.RoughAISearchForRider;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.Constants;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.entity.monster.EntityHusk;
-import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
 import net.minecraft.entity.passive.EntityZombieHorse;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import scala.actors.threadpool.Arrays;
 
 public class HostileHorseFeatures extends EntityFeatures {
 
@@ -32,6 +26,7 @@ public class HostileHorseFeatures extends EntityFeatures {
 	private int randomRiderChance; 
 	private boolean canDespawn;
 	
+	@SuppressWarnings("unchecked")
 	public HostileHorseFeatures() {
 		super("hostileHorse", EntityZombieHorse.class, EntitySkeletonHorse.class);
 	}

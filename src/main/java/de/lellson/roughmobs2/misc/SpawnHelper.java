@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import de.lellson.roughmobs2.RoughMobs;
 import de.lellson.roughmobs2.compat.CompatHandler;
 import de.lellson.roughmobs2.compat.SereneSeasonsCompat;

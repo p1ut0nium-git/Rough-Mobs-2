@@ -5,9 +5,9 @@ import de.lellson.roughmobs2.misc.Constants;
 import net.minecraft.world.World;
 import sereneseasons.api.season.SeasonHelper;
 
-public class SereneSeasonsCompat {
+public abstract class SereneSeasonsCompat {
 	
-	public static final SereneSeasonsCompat INSTANCE = new SereneSeasonsCompat();
+	//public static final SereneSeasonsCompat INSTANCE = new SereneSeasonsCompat();
 	
 	private SereneSeasonsCompat() {}
 	
@@ -30,7 +30,7 @@ public class SereneSeasonsCompat {
 				seasonWhiteList = RoughConfig.getStringArray("SereneSeasons", "_WhiteList", Constants.SEASONS, "Whitelist of all seasons that Rough Mobs can spawn in.");
 	}
 	
-	public static boolean hasDefaultConfig() {
+	private static boolean hasDefaultConfig() {
 		return true;
 	}
 

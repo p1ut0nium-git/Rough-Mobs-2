@@ -2,11 +2,9 @@ package de.lellson.roughmobs2.features;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +17,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -39,6 +36,7 @@ public class EndermanFeatures extends EntityFeatures {
 	
 	private Item immunityItemItem;
 	
+	@SuppressWarnings("unchecked")
 	public EndermanFeatures() {
 		super("enderman", EntityEnderman.class);
 	}

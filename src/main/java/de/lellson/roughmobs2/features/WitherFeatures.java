@@ -6,7 +6,6 @@ import de.lellson.roughmobs2.misc.FeatureHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.SoundEvents;
@@ -19,6 +18,7 @@ public class WitherFeatures extends EntityFeatures {
 	private boolean pushAttackersAway;
 	private int summonSkeletonTimer;
 	
+	@SuppressWarnings("unchecked")
 	public WitherFeatures() {
 		super("wither", EntityWither.class);
 	}

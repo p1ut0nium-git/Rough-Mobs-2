@@ -1,21 +1,14 @@
 package de.lellson.roughmobs2.features;
 
-import java.lang.reflect.Field;
-
 import de.lellson.roughmobs2.ai.combat.RoughAIWeaponSwitch;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
-import de.lellson.roughmobs2.compat.GameStagesCompat;
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.Constants;
-import de.lellson.roughmobs2.misc.FeatureHelper;
 import de.lellson.roughmobs2.misc.MountHelper;
-import de.lellson.roughmobs2.misc.PlayerHelper;
-import de.lellson.roughmobs2.misc.SpawnHelper;
 import de.lellson.roughmobs2.misc.BossHelper.BossApplier;
 import de.lellson.roughmobs2.misc.EquipHelper.EquipmentApplier;
 import de.lellson.roughmobs2.misc.MountHelper.HorseType;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -23,8 +16,6 @@ import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityStray;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -45,6 +36,7 @@ public class SkeletonFeatures extends EntityFeatures {
 	
 	//private GameStages gameStageApplier;
 
+	@SuppressWarnings("unchecked")
 	public SkeletonFeatures() {
 		super("skeleton", EntitySkeleton.class, EntityStray.class, EntityWitherSkeleton.class);
 	}

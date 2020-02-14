@@ -6,11 +6,8 @@ import de.lellson.roughmobs2.misc.FeatureHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -23,6 +20,7 @@ public class GhastFeatures extends EntityFeatures {
 	private boolean dropTnt;
 	private int explosionRadius;
 	
+	@SuppressWarnings("unchecked")
 	public GhastFeatures() {
 		super("ghast", EntityGhast.class);
 	}

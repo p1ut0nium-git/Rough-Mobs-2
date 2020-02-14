@@ -142,6 +142,7 @@ public class EquipHelper {
 			} else {
 				playerHasEnchantStage = false;
 			}
+			
 			EquipmentPool[] pools = new EquipmentPool[] {
 					poolMainhand, poolOffhand, poolBoots, poolLeggings, poolChestplate, poolHelmet
 			};
@@ -155,6 +156,7 @@ public class EquipHelper {
 				if (rnd > 0 && RND.nextInt(rnd) == 0) 
 				{
 					ItemStack stack = pool.getRandom(entity, enchChance, enchMultiplier);
+					
 					if (stack != null) 
 					{
 						entity.setItemStackToSlot(slot, stack);
@@ -324,6 +326,8 @@ public class EquipHelper {
 		}
 
 		public void addItem(ItemStack stack, int probability, int dimension, String nbt) {
+
+			System.out.println("Dimension on addItem: " + dimension);
 			ITEM_POOL.addEntry(stack, probability, dimension == Integer.MIN_VALUE ? "ALL" : dimension, nbt);
 		}
 		
@@ -402,6 +406,7 @@ public class EquipHelper {
 						}
 					}
 					
+					// Store all items and associated dimensions
 					for (int i = 0; i < (int)data[0]; i++)
 					{
 						entries.add(key);
@@ -415,16 +420,25 @@ public class EquipHelper {
 			int rnd = RND.nextInt(entries.size());
 			T entry = entries.get(rnd);
 			String dimension = dimensions.get(rnd);
-			int i = 100;
 			
-			while (!isDimension(entity, dimension) && i > 0) 
-			{
+			/* TODO: I don't understand why Lellson was looping through this 100 times
+			But it doesn't seem to be needed?
+			int i = 100;
+			while (!isDimension(entity, dimension) && i > 0) {
 				rnd = RND.nextInt(entries.size());
 				entry = entries.get(rnd);
 				dimension = dimensions.get(rnd);
 				i--;
 			}
+			*/
 			
+			// If entity is in wrong dimension, then don't return items
+			if (!isDimension(entity, dimension)) {
+				entry = null;
+				return entry;
+			}
+			
+			// Otherwise, return items
 			return entry;
 		}
 		

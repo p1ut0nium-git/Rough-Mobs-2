@@ -5,12 +5,9 @@ import de.lellson.roughmobs2.ai.misc.RoughAIBurnExplosion;
 import de.lellson.roughmobs2.ai.misc.RoughAISunlightBurn;
 import de.lellson.roughmobs2.config.RoughConfig;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.init.MobEffects;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -24,6 +21,7 @@ public class CreeperFeatures extends EntityFeatures {
 	private boolean creeperBurn;
 	private boolean creeperBurnExplosion;
 	
+	@SuppressWarnings("unchecked")
 	public CreeperFeatures() {
 		super("creeper", EntityCreeper.class);
 	}

@@ -29,6 +29,7 @@ public abstract class EntityFeatures {
 	protected boolean featuresEnabled;
 	protected List<String> entityNames;
 	
+	@SuppressWarnings("unchecked")
 	public EntityFeatures(String name, Class<? extends Entity>... entityClasses) {
 		this.name = name;
 		this.entityClasses = Arrays.asList(entityClasses);

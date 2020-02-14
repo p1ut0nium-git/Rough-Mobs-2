@@ -20,6 +20,7 @@ public class BlazeFeatures extends EntityFeatures {
 	private boolean flameTouch;
 	private float deathExplosionStrength;
 	
+	@SuppressWarnings("unchecked")
 	public BlazeFeatures() {
 		super("blaze", EntityBlaze.class);
 	}

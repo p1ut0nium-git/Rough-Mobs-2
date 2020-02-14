@@ -1,14 +1,10 @@
 package de.lellson.roughmobs2.features;
 
 import de.lellson.roughmobs2.config.RoughConfig;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.monster.EntityGuardian;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 
@@ -16,6 +12,7 @@ public class GuardianFeatures extends EntityFeatures {
 
 	private boolean dropWater;
 	
+	@SuppressWarnings("unchecked")
 	public GuardianFeatures() {
 		super("guardian", EntityGuardian.class, EntityElderGuardian.class);
 	}

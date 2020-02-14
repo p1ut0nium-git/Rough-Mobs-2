@@ -27,6 +27,7 @@ public class SpiderFeatures extends EntityFeatures {
 	
 	private Rider rider;
 	
+	@SuppressWarnings("unchecked")
 	public SpiderFeatures() {
 		super("spider", EntitySpider.class, EntityCaveSpider.class);
 	}

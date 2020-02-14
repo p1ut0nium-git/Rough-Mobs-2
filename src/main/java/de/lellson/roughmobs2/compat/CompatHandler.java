@@ -2,7 +2,7 @@ package de.lellson.roughmobs2.compat;
 
 import net.minecraftforge.fml.common.Loader;
 
-public class CompatHandler {
+public abstract class CompatHandler {
 	
 	private static Boolean isGameStagesLoaded;
 	private static Boolean isSereneSeasonsLoaded;

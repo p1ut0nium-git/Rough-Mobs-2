@@ -10,8 +10,6 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 public class MagmaCubeFeatures extends EntityFeatures {
@@ -19,6 +17,7 @@ public class MagmaCubeFeatures extends EntityFeatures {
 	private boolean regenInLava;
 	private boolean dropLava;
 	
+	@SuppressWarnings("unchecked")
 	public MagmaCubeFeatures() {
 		super("magma cube", EntityMagmaCube.class);
 	}

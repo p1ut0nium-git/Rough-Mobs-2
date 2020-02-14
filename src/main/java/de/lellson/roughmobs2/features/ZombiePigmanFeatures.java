@@ -22,6 +22,7 @@ public class ZombiePigmanFeatures extends EntityFeatures {
 	private float aggressiveBlockRange;
 	private int aggressiveBlockChance;
 	
+	@SuppressWarnings("unchecked")
 	public ZombiePigmanFeatures() {
 		super("zombie pigman", EntityPigZombie.class);
 	}

@@ -1,19 +1,12 @@
 package de.lellson.roughmobs2.features;
 
 import java.lang.reflect.Method;
-
 import de.lellson.roughmobs2.config.RoughConfig;
 import de.lellson.roughmobs2.misc.FeatureHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -22,6 +15,7 @@ public class SlimeFeatures extends EntityFeatures {
 	private int splitChance;
 	private float knockBackMultiplier;
 	
+	@SuppressWarnings("unchecked")
 	public SlimeFeatures() {
 		super("slime", EntitySlime.class, EntityMagmaCube.class);
 	}

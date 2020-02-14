@@ -25,6 +25,7 @@ public class EndermiteFeatures extends EntityFeatures {
 	
 	private Item immunityItemItem;
 	
+	@SuppressWarnings("unchecked")
 	public EndermiteFeatures() {
 		super("endermite", EntityEndermite.class);
 	}
