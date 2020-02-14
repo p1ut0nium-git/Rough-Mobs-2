@@ -3,7 +3,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/p1ut0nium-git/Rough-Mobs-Revamped)](https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/issues/) 
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)  
 
-This is a revamp/bug fixed version of Rough Mobs 2 for Minecraft 1.14.4, originally by Lellson. Thanks to Lellson for open sourcing the mod.
+This is a revamp of Rough Mobs 2 for Minecraft 1.14.4, originally by Lellson. Thanks to Lellson for open sourcing the mod.
 
 * Compiled against Forge version: 1.14.4-28.1.0 (snapshot_20200119-1.14.4)
 
