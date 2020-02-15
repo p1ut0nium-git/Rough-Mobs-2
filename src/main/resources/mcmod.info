@@ -6,7 +6,7 @@
   "version": "${version}",
   "mcversion": "1.12.2",
   "url": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped",
-  "updateUrl": "",
+  "updateUrl": "https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/blob/1.12.2/update.json",
   "authorList": ["p1ut0nium_94", "Lellson"],
   "credits": "Thanks to Lellson8 for open sourcing his original mod.",
   "logoFile": "",
