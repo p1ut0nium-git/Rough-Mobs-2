@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+  	"2.2.9": "Added chance for mob to spawn with full set of armor (based on equipment chance)",
   	"2.2.8": "Zombie pigmen no longer target creative mode players; zombie pigmen should always target closest player.",
     "2.2.7": "Hopefully fixed an issue where dimension specific equipment was being given in the wrong dimensions",
   	"2.2.6": "Fixed a crash on game load when Serene Seasons or Game Stages wasn't installed",
