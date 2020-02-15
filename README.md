@@ -62,13 +62,14 @@ No. Delete that mod, and use this one instead. It has all the same functionality
 
 **Can I use the old Rough Mobs 2 config file?**  
 This mod creates its own config file (roughmobsrevamped.cfg). You can simply copy the contents of the old config into the new one. But new version of Rough Mobs Revamped have new config options that need to generate in a new file.  
+NOTE: When new config options are added in new versions, you must backup/copy your old config, then delete it in the config folder. Let Rough Mobs generate a new config file, then copy your old config options into the new file, being careful not to delete the new config options.
 
 **How do I add modded items to the config?**  
 By using: modid:itemname;weight - Here's an example config for More Swords Legacy swords:  
 
 S:zombiebossEquipmentMainhand <  
-    msmlegacy:draconic_blade;10  
-    msmlegacy:vampiric_blade;10  
-    msmlegacy:relic_molten;10  
-    msmlegacy:wither_bane;10  
+    msmlegacy:draconic_blade;3  
+    msmlegacy:vampiric_blade;2   
+    msmlegacy:relic_molten;1   
+    msmlegacy:wither_bane;2   
 >
