@@ -27,8 +27,9 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Th
 * Add shield blocking
 * In game commands
 * Version checking chat output with config option to disable
-* In-game config (possibly)
-* Spawn replacement (convert mob type into another mob type on spawn) (possibly)
+* In-game config
+* Spawn replacement (convert mob type into another mob type on spawn)
+* Configure mob to always attack list of other mobs (zombies attack pigs, etc.)
 
 #### _In Development_
 
