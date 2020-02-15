@@ -63,7 +63,7 @@ No. Delete that mod, and use this one instead. It has all the same functionality
 **Can I use the old Rough Mobs 2 config file?**  
 This mod creates its own config file (roughmobsrevamped.cfg). You can simply copy the contents of the old config into the new one. But new version of Rough Mobs Revamped have new config options that need to generate in a new file.  
 
-![#f03c15](https://placehold.it/150/f03c15/000000?text=NOTE:) When new config options are added in new versions, you must backup/copy your old config, then delete it in the config folder. Let Rough Mobs generate a new config file, then copy your old config options into the new file, being careful not to delete the new config options.
+![#f03c15](https://placehold.it/100x25/f03c15/000000?text=NOTE:) When new config options are added in new versions, you must backup/copy your old config, then delete it in the config folder. Let Rough Mobs generate a new config file, then copy your old config options into the new file, being careful not to delete the new config options.
 
 **How do I add modded items to the config?**  
 By using: modid:itemname;weight - Here's an example config for More Swords Legacy swords:  
