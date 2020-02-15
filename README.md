@@ -17,7 +17,7 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Th
 * Only spawn if below max spawn height (configurable)
 * Only spawn if at least X distance from world spawn (configurable)
 * Zombie Pigmen always aggressive (configurable)
-*Display boss mob spawn warning in chat (toggleable)
+* Display boss mob spawn warning in chat (toggleable)
 
 #### _Planned_
 
