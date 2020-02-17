@@ -79,14 +79,18 @@ minecraft {
 
 repositories {
 	maven { url 'https://maven.mcmoddev.com' }
+	maven {
+		name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:" + minecraft_version + "-" + forge_version
-	
-	// Game-Stages support
-	// compile "net.darkhax.gamestages:GameStages-${minecraft_version}:${gameStages_version}"
-	// compile "net.darkhax.bookshelf:Bookshelf-${minecraft_version}:${bookshelf_version}"
+
+	compile "net.darkhax.gamestages:GameStages-${minecraft_version}:${gameStages_version}"
+	compile "net.darkhax.bookshelf:Bookshelf-${minecraft_version}:${bookshelf_version}"
+	compile "serene-seasons:SereneSeasons-${minecraft_version}:${sereneSeasons_version}:universal"
 }
 
 // Store properties into Manifest file.
