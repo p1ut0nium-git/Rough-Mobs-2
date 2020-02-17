@@ -12,8 +12,8 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 version = "${minecraft_version}-${mod_version}"
-group = modGroup
-archivesBaseName = modId
+group = mod_group
+archivesBaseName = mod_id
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -50,7 +50,7 @@ jar {
     manifest {
         attributes([
             'Timestamp': System.currentTimeMillis(),
-            "Specification-Title"     : "${modId}",
+            "Specification-Title"     : "${mod_id}",
 			"Specification-Vendor"    : "${modVendor}",
 			"Specification-Version"   : "${mod_version}",
 			"Implementation-Title"    : project.archivesBaseName,
@@ -91,7 +91,7 @@ task deobfJar(type: Jar) {
     manifest {
         attributes([
             'Timestamp': System.currentTimeMillis(),
-            "Specification-Title"     : "${modId}",
+            "Specification-Title"     : "${mod_id}",
 			"Specification-Vendor"    : "${modVendor}",
 			"Specification-Version"   : "${mod_version}",
 			"Implementation-Title"    : project.archivesBaseName,
