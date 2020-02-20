@@ -36,15 +36,13 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Th
 ***In Development***
 
 * 1.14.4 version
-<br/>  
-<br/>  
+<br/>   
 
 ## Links
 
 * Mod on CurseForge: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
 * Original mod: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-2  
 <br/>  
-<br/> 
  
 ## FAQ
 
