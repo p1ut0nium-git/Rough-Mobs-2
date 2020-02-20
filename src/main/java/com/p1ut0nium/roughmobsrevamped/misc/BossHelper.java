@@ -30,6 +30,7 @@ public class BossHelper {
 		
 		private int bossChance;
 		private boolean bossWarning;
+		private int bossWarningDist;
 		private String[] bossNames;
 		
 		public BossApplier(String name, int defaultBossChance, float defaultEnchMultiplier, float defaultDropChance, String[] defaultBossNames) {
@@ -56,6 +57,7 @@ public class BossHelper {
 									true);
 			
 			bossWarning = RoughConfig.getBoolean(name, "BossWarning", true, "Enable this to have a chat message warning of a boss spawn.");
+			bossWarningDist = RoughConfig.getInteger(name, "BossWarningDistance", 50, 0, 1000, "Max distance from a player that a Boss mob spawn will trigger a warning message.");
 			bossChance = RoughConfig.getInteger(name, "BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
 			bossNames = RoughConfig.getStringArray(name, "BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");
 		}
@@ -69,6 +71,7 @@ public class BossHelper {
 			if (bossChance <= 0 || RND.nextInt(bossChance) != 0 || (entity instanceof EntityZombie && ((EntityZombie)entity).isChild()))
 				return false;
 			
+			// Add custom attributes
 			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, entity.getMaxHealth()*2);
 			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
 			
@@ -85,10 +88,11 @@ public class BossHelper {
 				bossWarningMsg.getStyle().setColor(TextFormatting.RED);
 				bossWarningMsg.getStyle().setBold(true);
 				
-				EntityPlayer closestPlayer = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+				EntityPlayer closestPlayer = entity.world.getClosestPlayerToEntity(entity, bossWarningDist);
 				closestPlayer.sendMessage(bossWarningMsg);
 			}
 			
+			// Add Boss features
 			entity.getEntityData().setBoolean(BOSS, true);
 			addBossFeatures(entity);
 			
