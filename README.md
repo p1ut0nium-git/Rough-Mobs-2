@@ -72,7 +72,7 @@ This mod creates its own config file (roughmobsrevamped.cfg). You can simply cop
 ![#f03c15](https://placehold.it/50x25/f03c15/000000?text=NOTE:) _When new config options are added in new versions, you must backup/copy your old config, then delete it in the config folder. Let Rough Mobs generate a new config file, then copy your old config options into the new file, being careful not to delete the new config options._
 
 **How do I add modded items to the config?**  
-By using: modid:itemname;weight;<optional: dimension> - Here's an example config for More Swords Legacy swords:  
+By using: modid:itemname;weight;<optional: dimension> - Here's an example config for More Swords Legacy swords:   
 
 ```
 # These equipped in any dimension (dim specifier left blank)  
