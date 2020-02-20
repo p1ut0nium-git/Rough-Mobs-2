@@ -83,9 +83,9 @@ S:zombieEquipmentMainhand <
 
 # These only equipped in the Nether (dim -1)  
 S:zombieEquipmentOffhand <  
-	spartanshields:shield_basic_stone;3;-1  
-	spartanshields:shield_basic_gold;1;-1  
-	spartanshields:shield_basic_iron;2;-1  
-	spartanshields:shield_basic_constantan;1;-1  
+    spartanshields:shield_basic_stone;3;-1  
+    spartanshields:shield_basic_gold;1;-1  
+    spartanshields:shield_basic_iron;2;-1  
+    spartanshields:shield_basic_constantan;1;-1  
 >
  ```
