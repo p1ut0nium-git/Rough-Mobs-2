@@ -21,15 +21,17 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Th
 
 #### _Planned_
 
-* Player level affects equipment spawn chance (toggleable)
 * Boss monster spawn chance increases based upon number of regular Rough Mobs have been killed.
 * Add levels to rough mobs (higher levels = more hp/more dps)
-* Add shield blocking
-* In game commands
+* Add shield blocking (possibly)
+* In-game commands
 * Version checking chat output with config option to disable
 * In-game config
 * Spawn replacement (convert mob type into another mob type on spawn)
 * Configure mob to always attack list of other mobs (zombies attack pigs, etc.)
+* Zombies use bows
+* Giants?
+* Additional mob abilities & AI
 
 #### _In Development_
 
@@ -66,11 +68,20 @@ This mod creates its own config file (roughmobsrevamped.cfg). You can simply cop
 ![#f03c15](https://placehold.it/50x25/f03c15/000000?text=NOTE:) _When new config options are added in new versions, you must backup/copy your old config, then delete it in the config folder. Let Rough Mobs generate a new config file, then copy your old config options into the new file, being careful not to delete the new config options._
 
 **How do I add modded items to the config?**  
-By using: modid:itemname;weight - Here's an example config for More Swords Legacy swords:  
+By using: modid:itemname;weight;<optional: dimension> - Here's an example config for More Swords Legacy swords:  
 
-S:zombiebossEquipmentMainhand <  
+\# These equipped in any dimension (dim specifier left blank)  
+S:zombieEquipmentMainhand <  
     msmlegacy:draconic_blade;3  
     msmlegacy:vampiric_blade;2   
     msmlegacy:relic_molten;1   
     msmlegacy:wither_bane;2   
->
+ >
+
+\# These only equipped in the Nether (dim -1)  
+S:zombieEquipmentOffhand <  
+spartanshields:shield_basic_stone;3;-1  
+spartanshields:shield_basic_gold;1;-1  
+spartanshields:shield_basic_iron;2;-1  
+spartanshields:shield_basic_constantan;1;-1  
+ >
