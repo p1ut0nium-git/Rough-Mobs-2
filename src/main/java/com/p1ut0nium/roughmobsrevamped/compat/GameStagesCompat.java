@@ -31,7 +31,7 @@ public abstract class GameStagesCompat {
 		RoughConfig.getConfig().addCustomCategoryComment("GameStages", "Configuration options for enabling/disabling Game Stages.\n"
 																		+ "The mod Game Stages must be installed for these features to work.\n"
 																		+ "\n"
-																		+ "Stages: \n"
+																		+ "Stages to give player in-game: \n"
 																		+ "\n"
 																		+ "roughmobsall - gives all stages at once.\n"
 																		+ "roughmobsequip - allows mobs to spawn with equipment.\n"
@@ -39,7 +39,7 @@ public abstract class GameStagesCompat {
 																		+ "roughmobsboss - allows some mobs to be bosses.\n"
 																		+ "roughmobsabils - allows mobs to have special abilities.");
 		
-		useAllStages = RoughConfig.getBoolean("GameStages", "_AllStages", false, "Enable this Game Stage to allow all Rough Mobs stages at once. Or turn them on individually");		
+		useAllStages = RoughConfig.getBoolean("GameStages", "_All", false, "Enable this Game Stage to allow all Rough Mobs stages at once. Or turn them on individually");		
 		useEquipmentStage = RoughConfig.getBoolean("GameStages", "_Equipment", false, "Enable this Game stage for Rough Mobs to have equipment.");
 		useBossStage = RoughConfig.getBoolean("GameStages", "_Bosses", false, "Enable this Game Stage needed for Rough Mob Bosses to spawn. Must also enable Equipment stage for this to work.");
 		useAbilitiesStage = RoughConfig.getBoolean("GameStages", "_Abilities", false, "Enable this Game Stage for Rough Mobs to have special combat AI and attributes.");
