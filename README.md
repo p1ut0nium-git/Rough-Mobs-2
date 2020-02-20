@@ -19,7 +19,7 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Th
 * Zombie Pigmen always aggressive (configurable)
 * Display boss mob spawn warning in chat (toggleable)
 
-#### _Planned_
+***Planned***
 
 * Boss monster spawn chance increases based upon number of regular Rough Mobs have been killed.
 * Add levels to rough mobs (higher levels = more hp/more dps)
@@ -33,14 +33,22 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Th
 * Giants?
 * Additional mob abilities & AI
 
-#### _In Development_
+***In Development***
 
 * 1.14.4 version
+<br/>
+<br/>
+<br/>
+
 
 ## Links
 
 * Mod on CurseForge: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
 * Original mod: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-2
+<br/>
+<br/>
+<br/>
+
 
 ## FAQ
 
@@ -70,18 +78,20 @@ This mod creates its own config file (roughmobsrevamped.cfg). You can simply cop
 **How do I add modded items to the config?**  
 By using: modid:itemname;weight;<optional: dimension> - Here's an example config for More Swords Legacy swords:  
 
-\# These equipped in any dimension (dim specifier left blank)  
+```
+# These equipped in any dimension (dim specifier left blank)  
 S:zombieEquipmentMainhand <  
     msmlegacy:draconic_blade;3  
     msmlegacy:vampiric_blade;2   
     msmlegacy:relic_molten;1   
     msmlegacy:wither_bane;2   
- >
+>
 
-\# These only equipped in the Nether (dim -1)  
+# These only equipped in the Nether (dim -1)  
 S:zombieEquipmentOffhand <  
 spartanshields:shield_basic_stone;3;-1  
 spartanshields:shield_basic_gold;1;-1  
 spartanshields:shield_basic_iron;2;-1  
 spartanshields:shield_basic_constantan;1;-1  
- >
+>
+ ```
