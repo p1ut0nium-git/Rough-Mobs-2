@@ -36,16 +36,16 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.12.2, originally by Lellson. Th
 ***In Development***
 
 * 1.14.4 version
-<br/>
-<br/>
-<br/>
+<br/>  
+<br/>  
+
 ## Links
 
 * Mod on CurseForge: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
-* Original mod: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-2
-<br/>
-<br/>
-<br/>
+* Original mod: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-2  
+<br/>  
+<br/> 
+ 
 ## FAQ
 
 **Can you update to Minecraft version 1.14, 1.15, etc.?**  
@@ -72,7 +72,7 @@ This mod creates its own config file (roughmobsrevamped.cfg). You can simply cop
 ![#f03c15](https://placehold.it/50x25/f03c15/000000?text=NOTE:) _When new config options are added in new versions, you must backup/copy your old config, then delete it in the config folder. Let Rough Mobs generate a new config file, then copy your old config options into the new file, being careful not to delete the new config options._
 
 **How do I add modded items to the config?**  
-By using: modid:itemname;weight;<optional: dimension> - Here's an example config for More Swords Legacy swords:   
+By using: modid:itemname;weight;<optional: dimension> - Here's an example config for More Swords Legacy swords:  
 
 ```
 # These equipped in any dimension (dim specifier left blank)  
