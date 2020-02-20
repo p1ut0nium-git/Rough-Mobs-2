@@ -10,9 +10,9 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 ## Features
 
 * All the features of Rough Mobs 2 +
-* GameStages support - 5 stages (enable each individually, or use roughmobsall to enable them all) (configurable)
-* Serene Seasons support - only spawn rough mobs in specified season (toggleable) ("Winter is coming!")
-* Only spawn if player's Minecraft Exp Level is high enough (configurable)
+* GameStages support - 5 stages (enable each individually, or use GameStages_All to enable them all) (configurable)
+* Serene Seasons support - only spawn rough mobs in specified season(s) (configurable) ("Winter is coming!")
+* Only spawn if player's Minecraft XP Level is high enough (configurable)
 * Only spawn if underground (toggleable)
 * Only spawn if below max spawn height (configurable)
 * Only spawn if at least X distance from world spawn (configurable)
