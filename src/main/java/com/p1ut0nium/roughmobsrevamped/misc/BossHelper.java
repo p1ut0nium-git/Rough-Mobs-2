@@ -81,7 +81,7 @@ public class BossHelper {
 			
 			// Add chat message warning of new boss
 			if (bossWarning) {
-				TextComponentString bossWarningMsg = new TextComponentString(bossName + ", a powreful " + entityType + " leader has joined the battlefield.");
+				TextComponentString bossWarningMsg = new TextComponentString(bossName + ", a powerful " + entityType + " leader, has joined the battlefield.");
 				bossWarningMsg.getStyle().setColor(TextFormatting.RED);
 				bossWarningMsg.getStyle().setBold(true);
 				
