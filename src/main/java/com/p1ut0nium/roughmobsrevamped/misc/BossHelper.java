@@ -32,6 +32,7 @@ public class BossHelper {
 		private boolean bossWarning;
 		private int bossWarningDist;
 		private String[] bossNames;
+		private boolean bossHasFullSet;
 		
 		public BossApplier(String name, int defaultBossChance, float defaultEnchMultiplier, float defaultDropChance, String[] defaultBossNames) {
 			
@@ -40,8 +41,8 @@ public class BossHelper {
 			this.defaultEnchMultiplier = defaultEnchMultiplier;
 			this.defaultDropChance = defaultDropChance;
 			this.defaultBossNames = defaultBossNames;
-			
-			equipApplier = new EquipmentApplier(name + " boss", 1, 1, 1, this.defaultEnchMultiplier, this.defaultDropChance);
+
+			equipApplier = new EquipmentApplier(name + " boss", 1, 1, 1, 1, this.defaultEnchMultiplier, this.defaultDropChance);
 		}	
 		
 		public void initConfig() {
@@ -75,6 +76,7 @@ public class BossHelper {
 			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, entity.getMaxHealth()*2);
 			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
 			
+			// Add equipment
 			equipApplier.equipEntity(entity);
 			
 			// Set Bosses name
@@ -89,7 +91,9 @@ public class BossHelper {
 				bossWarningMsg.getStyle().setBold(true);
 				
 				EntityPlayer closestPlayer = entity.world.getClosestPlayerToEntity(entity, bossWarningDist);
-				closestPlayer.sendMessage(bossWarningMsg);
+				if (closestPlayer != null) {
+					closestPlayer.sendMessage(bossWarningMsg);
+				}
 			}
 			
 			// Add Boss features

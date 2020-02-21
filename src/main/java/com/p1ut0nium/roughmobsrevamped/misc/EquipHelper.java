@@ -39,6 +39,7 @@ public class EquipHelper {
 		private final String name;
 		private final int chancePerWeaponDefault;
 		private final int chancePerPieceDefault;
+		private final int chanceForSetDefault;
 		private final int enchChanceDefault;
 		private final float enchMultiplierDefault;
 		private final float dropChanceDefault;
@@ -53,6 +54,7 @@ public class EquipHelper {
 		
 		private int chancePerWeapon;
 		private int chancePerPiece;
+		private int chanceForSet;
 		private int enchChance;
 		private float enchMultiplier;
 		private float dropChance;
@@ -68,10 +70,11 @@ public class EquipHelper {
 		private String[] equipWeaponEnchants;
 		private String[] equipArmorEnchants;
 		
-		public EquipmentApplier(String name, int chancePerWeaponDefault, int chancePerPieceDefault, int enchChanceDefault, float enchMultiplierDefault, float dropChanceDefault) {
+		public EquipmentApplier(String name, int chancePerWeaponDefault, int chancePerPieceDefault, int chanceForSetDefault, int enchChanceDefault, float enchMultiplierDefault, float dropChanceDefault) {
 			this.name = name;
 			this.chancePerWeaponDefault = chancePerWeaponDefault;
 			this.chancePerPieceDefault = chancePerPieceDefault;
+			this.chanceForSetDefault = chanceForSetDefault;
 			this.enchChanceDefault = enchChanceDefault;
 			this.enchMultiplierDefault = enchMultiplierDefault;
 			this.dropChanceDefault = dropChanceDefault;
@@ -133,6 +136,10 @@ public class EquipHelper {
 		}
 		
 		public void equipEntity(EntityLiving entity) {
+			equipEntity(entity, false);
+		}
+		
+		public void equipEntity(EntityLiving entity, boolean isBoss) {
 			
 			if (entity == null || entity.getEntityData().getBoolean(KEY_APPLIED))
 				return;
@@ -157,7 +164,14 @@ public class EquipHelper {
 			
 			// If getChance succeeds, then equip entity with complete set of armor
 			// Code/idea thanks to 0xebjc
-			boolean completeArmorSet = getChance(chancePerPiece);
+			// Complete set is 4 times less likely than a single piece
+			boolean completeArmorSet;
+			
+			if (isBoss) {
+				completeArmorSet = true;
+			} else {
+				completeArmorSet = getChance(chanceForSet);
+			}
 			
 			// Attempt to add weapons and armor)
 			for (int i = 0; i < pools.length; i++) {
@@ -194,12 +208,14 @@ public class EquipHelper {
 			{
 				chancePerWeapon = chancePerWeaponDefault;
 				chancePerPiece = chancePerPieceDefault;
+				chanceForSet = chanceForSetDefault;
 				enchChance = enchChanceDefault;
 			}
 			else
 			{
 				chancePerWeapon = RoughConfig.getInteger(formatName, "WeaponChance", chancePerWeaponDefault, 0, Short.MAX_VALUE, "Chance (1 in X per hand) to give a " + name + " new weapons on spawn\nSet to 0 to disable new weapons", true);
 				chancePerPiece = RoughConfig.getInteger(formatName, "ArmorChance", chancePerPieceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per piece) to give a " + name + " new armor on spawn\nSet to 0 to disable new armor", true);
+				chanceForSet = RoughConfig.getInteger(formatName, "ArmorSetChance", chanceForSetDefault, 0, Short.MAX_VALUE, "Chance (1 in X) to give a " + name + " a complete set of armor on spawn.\nSet to 0 to disable full armor sets", true);
 				enchChance = RoughConfig.getInteger(formatName, "EnchantChance", enchChanceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per item) to enchant newly given items\nSet to 0 to disable item enchanting", true);
 			}
 			
@@ -362,34 +378,15 @@ public class EquipHelper {
 					
 					if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) 
 					{
-						Enchantment ench = ENCHANTMENT_POOL.getRandom(entity);
+						Enchantment ench = ENCHANTMENT_POOL.getRandom(entity, randomStack);
 
-						// TODO - Clean this up some
 						// If there is no enchantment, skip this
 						if (ench != null) {
+							double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
+							int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
 							
-							// Not sure why this while loop exists
-							// What is the magic number 10 for?
-							int i = 10;
-							boolean canApply = !ench.canApply(randomStack);
-						
-							while (canApply && i > 0) 
-							{
-								ench = ENCHANTMENT_POOL.getRandom(entity);
-								i--;
-							}
-
-							if (!canApply) {
-								return randomStack;
-							}
-						
-							// If there is no enchantment, skip this
-							if (ench != null) {
-								double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
-								int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
-								
-								if (!randomStack.isItemEnchanted())
-									randomStack.addEnchantment(ench, level);
+							if (!randomStack.isItemEnchanted()) {
+								randomStack.addEnchantment(ench, level);
 							}
 						}
 					}
@@ -404,73 +401,65 @@ public class EquipHelper {
 
 		public final Map<T, Object[]> POOL = new HashMap<T, Object[]>();
 		private List<T> entries = null;
-		private List<String> dimensions = new ArrayList<String>();
-		private boolean needsReload;
 		
 		public void addEntry(T t, Object... data) {
 			POOL.put(t, data);
-			needsReload = true;
 		}
 		
 		public T getRandom(Entity entity) {
+			return getRandom(entity, null);
+		}
+		
+		public T getRandom(Entity entity, ItemStack item) {
 			
-			if (entries == null || needsReload) 
-			{
-				entries = new ArrayList<T>();
-				for (Entry<T, Object[]> entry : POOL.entrySet()) 
-				{
-					Object[] data = entry.getValue();
-					
-					T key = entry.getKey();
-					if (key instanceof ItemStack && data.length > 2 && ((String)data[2]).length() != 0) 
-					{
-						try 
-						{
-							((ItemStack)key).setTagCompound(JsonToNBT.getTagFromJson((String) data[2]));
-						} 
-						catch (NBTException e) 
-						{
-							RoughMobs.logError("NBT Tag invalid: %s", e.toString());
-							e.printStackTrace();
-						}
-					}
-					
-					// Store all items and associated dimensions
-					for (int i = 0; i < (int)data[0]; i++)
-					{
-						entries.add(key);
-						dimensions.add(String.valueOf(data[1]));
+			// Create a new valid entry pool for every entity spawn
+			entries = new ArrayList<T>();
+			
+			// Loop through each entity in the POOL
+			for (Entry<T, Object[]> entry : POOL.entrySet()) {
+				Object[] data = entry.getValue();
+				
+				T key = entry.getKey();
+				if (key instanceof ItemStack && data.length > 2 && ((String)data[2]).length() != 0) {
+					try {
+						((ItemStack)key).setTagCompound(JsonToNBT.getTagFromJson((String) data[2]));
+					} 
+					catch (NBTException e) {
+						RoughMobs.logError("NBT Tag invalid: %s", e.toString());
+						e.printStackTrace();
 					}
 				}
 				
-				needsReload = false;
+				// Exclude non-matching dimensions for entry's associated entity
+				if (isDimension(entity, String.valueOf(data[1]))) {
+					boolean validEntry = true;
+					
+					// Additionally check if getRandom is getting a random
+					// enchantment for a valid item passed into the method
+					// if so then build a list of enchantments only valid
+					// for the item passed in.
+					if (item != null && key instanceof Enchantment) {
+						validEntry = ((Enchantment)key).canApply(item);
+					}
+				
+					// Store entry n times where n = weight value
+					if (validEntry) {
+						for (int i = 0; i < (int)data[0]; i++) {
+							entries.add(key);
+						}
+					}
+				}
 			}
 			
-			int rnd = RND.nextInt(entries.size());
-			T entry = entries.get(rnd);
-			String dimension = dimensions.get(rnd);
+			int entrySize = entries.size();
 			
-			/* TODO: I don't understand why Lellson was looping through this 100 times
-			But it doesn't seem to be needed?
-			Why does the magic number 100 represent?
-			
-			int i = 100;
-			while (!isDimension(entity, dimension) && i > 0) {
-				rnd = RND.nextInt(entries.size());
-				entry = entries.get(rnd);
-				dimension = dimensions.get(rnd);
-				i--;
+			// If there are valid entries, return one randomly, else return null
+			if (entrySize != 0) {
+				int rnd = RND.nextInt(entrySize);
+				return entries.get(rnd);
 			}
-			*/
-			
-			// If entity is in wrong dimension, then don't return entries
-			if (!isDimension(entity, dimension)) {
-				entry = null;
-				return entry;
-			}
-			
-			// Otherwise, return entries
-			return entry;
+	
+			return null;
 		}
 		
 		private static boolean isDimension(Entity entity, String dimension) {

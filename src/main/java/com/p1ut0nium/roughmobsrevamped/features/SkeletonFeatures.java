@@ -44,7 +44,7 @@ public class SkeletonFeatures extends EntityFeatures {
 	
 	@Override
 	public void preInit() {
-		equipApplier = new EquipmentApplier(name, 1, 4, 8, 0.5f, 0.085F);
+		equipApplier = new EquipmentApplier(name, 1, 4, 16, 8, 0.5f, 0.085F);
 		bossApplier = new BossApplier(name, 200, 1F, 0.2F, new String[]{"Lich King", "Skeleton Lord", "Stallord", "Skeletron", "Skeletron Prime", "Krosis", "Wolnir", "Stalmaster"}) {
 			@Override
 			public void addBossFeatures(EntityLiving entity) {}
