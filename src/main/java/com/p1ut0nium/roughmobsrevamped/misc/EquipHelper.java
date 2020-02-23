@@ -138,8 +138,8 @@ public class EquipHelper {
 			
 			// Increase chance the closer it is to midnight.
 			if (chanceTimeMultiplier) {
-				long currentTime = entity.getEntityWorld().getWorldTime();
-				int currentHour = (int) Math.floor(currentTime / 1000);
+				short currentTime = entity.getEntityWorld().getWorldTime();
+				short currentHour = (int) Math.floor(currentTime / 1000);
 				
 				if (currentHour >= 13 && currentHour <= 18)
 					timeChanceIncrease = (currentHour - 12) * 0.16;
@@ -184,12 +184,10 @@ public class EquipHelper {
 			}
 			
 			EquipmentPool[] pools = new EquipmentPool[] {
-					poolMainhand, poolOffhand, poolBoots, poolLeggings, poolChestplate, poolHelmet
+				poolMainhand, poolOffhand, poolBoots, poolLeggings, poolChestplate, poolHelmet
 			};
 			
 			// If getChance succeeds, then equip entity with complete set of armor
-			// Code/idea thanks to 0xebjc
-			// Complete set is 4 times less likely than a single piece
 			boolean completeArmorSet;
 			
 			if (isBoss)
