@@ -93,6 +93,7 @@ public class BossHelper {
 				bossWarningMsg.getStyle().setColor(TextFormatting.RED);
 				bossWarningMsg.getStyle().setBold(true);
 				
+				// TODO Change to all players within boosWarningDist
 				EntityPlayer closestPlayer = entity.world.getClosestPlayerToEntity(entity, bossWarningDist);
 				if (closestPlayer != null) {
 					closestPlayer.sendMessage(bossWarningMsg);
@@ -111,7 +112,7 @@ public class BossHelper {
 			return true;
 		}
 		
-		public abstract void addBossFeatures(EntityLiving entity); {} // TODO
+		public abstract void addBossFeatures(EntityLiving entity); {} // TODO Add special boss features
 	}
 
 	public static boolean isBoss(Entity entity) {
