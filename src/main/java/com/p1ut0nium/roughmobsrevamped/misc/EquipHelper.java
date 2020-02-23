@@ -22,6 +22,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import scala.Int;
 
 public class EquipHelper {
 	
@@ -205,7 +206,7 @@ public class EquipHelper {
 			
 			chanceTimeMultiplier = RoughConfig.getBoolean(formatName, "TimeMultiplier", true, "Should rough mobs get more abilities and gear as it gets closer to midnight?", true);
 			chanceDistanceMultiplier = RoughConfig.getBoolean(formatName, "DistanceMultiplier", true, "Should rough mobs get more and stronger abilities and gear based upon distance from world spawn?", true);
-			distThreshold = RoughConfig.getInteger(formatName, "DistanceThreshold", 1000, 0, 10000, "The distance threshold used to calculate the DistanceMultiplier.\nShorter distances here means mobs will be tougher closer to the World Spawn.", true);
+			distThreshold = RoughConfig.getInteger(formatName, "DistanceThreshold", 1000, 0, Integer.MAX_VALUE, "The distance threshold used to calculate the DistanceMultiplier.\nShorter distances here means mobs will be tougher closer to the World Spawn.", true);
 			
 			enchMultiplier = RoughConfig.getFloat(formatName, "EnchantMultiplier", enchMultiplierDefault, 0F, 1F, "Multiplier for the applied enchantment level with the max. level. The level can still be a bit lower\ne.g. 0.5 would make sharpness to be at most level 3 (5 x 0.5 = 2.5 and [2.5] = 3) and fire aspect would always be level 1 (2 x 0.5 = 1)", true);
 			dropChance = RoughConfig.getFloat(formatName, "DropChance", dropChanceDefault, 0F, 1F, "Chance (per slot) that the " + name + " drops the equipped item (1 = 100%, 0 = 0%)", true);
@@ -453,7 +454,7 @@ public class EquipHelper {
 	 * This function is used to determine if a piece of equipment or an enchantment should be given to a spawned mob.
 	 * It checks for two bonuses to the chance: proximity to midnight, distance from world spawn
 	 */
-	public static boolean getChance(Entity entity, int chance) {
+	private static boolean getChance(Entity entity, int chance) {
 		
 		if (chance <= 0) {
 			return false;

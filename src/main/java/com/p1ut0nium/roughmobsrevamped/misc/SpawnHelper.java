@@ -192,11 +192,11 @@ public class SpawnHelper {
 		
 		RoughConfig.getConfig().addCustomCategoryComment("SpawnConditions", "Configuration options which affect when Rough Mobs can spawn");
 		
-		playerSpawnLevel = RoughConfig.getInteger("SpawnConditions", "_MinPlayerLevel", 0, 0, 1000, "Player's Minecraft Experience Level required before a Rough Mob will spawn.");
+		playerSpawnLevel = RoughConfig.getInteger("SpawnConditions", "_MinPlayerLevel", 0, 0, Short.MAX_VALUE, "Player's Minecraft Experience Level required before a Rough Mob will spawn.");
 		//TODO mobKillsNeeded = RoughConfig.getInteger("SpawnConditions", "_MobsToKillForBoss", 0, 0, 1000, "Number of Rough Mobs to kill before a Rough Mob Boss has a chance to spawn.");
 		isUndergroundEnabled = RoughConfig.getBoolean("SpawnConditions", "_MustBeUnderground", false, "Enable this to require Rough Mobs be underground in order to spawn.");
 		maxSpawnHeight = RoughConfig.getInteger("SpawnConditions", "_MaxSpawnHeight", 256, 0, 256, "Set maximum height for Rough Mobs to spawn. Works in conjunction with MustBeUnderground.");
-		minDistFromSpawn = RoughConfig.getInteger("SpawnConditions", "_MinDistanceFromSpawn", 0, 0, 100000, "Set the minimum distance from the world spawn before a Rough Mob can spawn.");
+		minDistFromSpawn = RoughConfig.getInteger("SpawnConditions", "_MinDistanceFromSpawn", 0, 0, Integer.MAX_VALUE, "Set the minimum distance from the world spawn before a Rough Mob can spawn.");
 		
 		RoughConfig.getConfig().addCustomCategoryComment("spawnEntries", "Add custom entity spawn entries or override old ones. Takes 5+ values seperated by a semicolon:\n" +
 														"Format: entity;chance;min;max;type;biome1;biome2;...\n" +
@@ -274,8 +274,13 @@ public class SpawnHelper {
 
 		// Test to see if it is the appropriate season to spawn rough mobs
 		boolean sereneSeasonsEnabled = CompatHandler.isSereneSeasonsLoaded();
-		String currentSeason = SereneSeasonsCompat.getSeason(world);
-		List<String> seasonWhiteList = Arrays.asList(SereneSeasonsCompat.getSeasonWhitelist());
+		String currentSeason = null;
+		List<String> seasonWhiteList = null;
+		
+		if (sereneSeasonsEnabled) {
+			currentSeason = SereneSeasonsCompat.getSeason(world);
+			seasonWhiteList = Arrays.asList(SereneSeasonsCompat.getSeasonWhitelist());
+		}
 		
 		if (!sereneSeasonsEnabled || seasonWhiteList.contains(currentSeason)) {
 				

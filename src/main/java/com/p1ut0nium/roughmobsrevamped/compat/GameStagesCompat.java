@@ -23,7 +23,7 @@ public abstract class GameStagesCompat {
 		preInit();
 	}
 	
-	public static void preInit() {
+	private static void preInit() {
 		if (!hasDefaultConfig())
 			return;
 	
@@ -50,12 +50,6 @@ public abstract class GameStagesCompat {
 			useEquipmentStage = useBossStage = useAbilitiesStage = useEnchantStage = true;
 		}
 
-	}
-	
-	public static void initConfig() {	
-	}
-	
-	public static void postInit() {
 	}
 	
 	private static boolean hasDefaultConfig() {

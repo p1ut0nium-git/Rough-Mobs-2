@@ -59,7 +59,7 @@ public class BossHelper {
 									true);
 			
 			bossWarning = RoughConfig.getBoolean(name, "BossWarning", true, "Enable this to have a chat message warning of a boss spawn.");
-			bossWarningDist = RoughConfig.getInteger(name, "BossWarningDistance", 50, 0, 1000, "Max distance from a player that a Boss mob spawn will trigger a warning message.");
+			bossWarningDist = RoughConfig.getInteger(name, "BossWarningDistance", 50, 0, Short.MAX_VALUE, "Max distance from a player that a Boss mob spawn will trigger a warning message.");
 			bossWarningSound = RoughConfig.getBoolean(name, "BossWarningSound", true, "Play a warning sound when a boss spawns.");
 			bossChance = RoughConfig.getInteger(name, "BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
 			bossNames = RoughConfig.getStringArray(name, "BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");

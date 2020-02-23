@@ -19,9 +19,10 @@ public abstract class SereneSeasonsCompat {
 		if (registered)
 			return;
 		registered = true;
+		preInit();
 	}
 	
-	public static void preInit() {
+	private static void preInit() {
 		if (!hasDefaultConfig())
 			return;
 		
@@ -46,6 +47,8 @@ public abstract class SereneSeasonsCompat {
 	}
 	
 	public static String[] getSeasonWhitelist() {
-		return seasonWhiteList;
+		if (registered)
+			return seasonWhiteList;
+		return null;
 	}
 }

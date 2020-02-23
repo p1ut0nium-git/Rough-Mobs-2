@@ -36,7 +36,7 @@ public class ZombiePigmanFeatures extends EntityFeatures {
 		
 		aggressiveTouch = RoughConfig.getBoolean(name, "AggressiveTouch", false, "Set to false to prevent zombie pigman from getting aggressive if the player touches its hitbox");
 		alwaysAggressive = RoughConfig.getBoolean(name, "AlwaysAggressive", true, "Set to true for zombie pigmen to always be aggressive");
-		aggressiveRange = RoughConfig.getInteger(name, "AggressionRange", 10, 0, 100, "The range at which zombie pigmen will be aggressive to the player.");
+		aggressiveRange = RoughConfig.getInteger(name, "AggressionRange", 10, 0, MAX, "The range at which zombie pigmen will be aggressive to the player.");
 		aggressiveBlockRange = RoughConfig.getFloat(name, "AggressiveBlockRange", 20, 1, MAX, "Block radius in which zombie pigman get aggressive if the player breaks blocks");
 		aggressiveBlockChance = RoughConfig.getInteger(name, "AggressiveBlockChance", 10, 0, MAX, "Chance (1 in X) that a zombie pigman gets aggressive if the player breaks nearby blocks");
 	}

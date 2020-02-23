@@ -14,7 +14,6 @@ public abstract class CompatHandler {
 		} else {
 			isGameStagesLoaded = false;
 		}
-		GameStagesCompat.preInit();
 	}
 	
 	public static void registerSereneSeasons() {
@@ -24,7 +23,6 @@ public abstract class CompatHandler {
 		} else {
 			isSereneSeasonsLoaded = false;
 		}
-		SereneSeasonsCompat.preInit();
 	}
 
 	public static Boolean isGameStagesLoaded() {
