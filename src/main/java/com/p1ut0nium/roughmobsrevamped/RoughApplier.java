@@ -131,14 +131,14 @@ public class RoughApplier {
 		}
 		
 		// Test to see if player has boss stage
-		if (gameStagesEnabled == false || bossStageEnabled == false || bossStageEnabled && playerHasBossStage) {
+		if (bossStageEnabled == false || bossStageEnabled && playerHasBossStage) {
 			bossesCanSpawn = true;
 		} else {
 			bossesCanSpawn = false;
 		}
 		
 		// Test to see if player has abilities game stage and if stages are enabled
-		if (gameStagesEnabled == false || abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
+		if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 			
 			if (entity instanceof EntityLiving)
 				AttributeHelper.addAttributes((EntityLiving)entity);
@@ -151,14 +151,14 @@ public class RoughApplier {
 			{
 
 				// Test to see if player has equipment game stage
-				if (gameStagesEnabled == false || equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
+				if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
 
 					if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
 						features.addFeatures(event, entity, bossesCanSpawn);
 				}
 				
 				// Test to see if player has abilities game stage
-				if (gameStagesEnabled == false || abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
+				if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 					
 					if (entity instanceof EntityLiving)
 						features.addAI(event, entity, ((EntityLiving)entity).tasks, ((EntityLiving)entity).targetTasks);

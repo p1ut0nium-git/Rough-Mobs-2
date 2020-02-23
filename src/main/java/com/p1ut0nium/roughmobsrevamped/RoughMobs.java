@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.proxy.ServerProxy;
+import com.p1ut0nium.roughmobsrevamped.util.handlers.RegistryHandler;
 
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
@@ -57,6 +58,7 @@ public class RoughMobs {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		RegistryHandler.initRegistries();
 		//proxy.init(event);
 	}
 	

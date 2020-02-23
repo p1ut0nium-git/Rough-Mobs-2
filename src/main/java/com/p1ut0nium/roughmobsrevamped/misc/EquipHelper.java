@@ -5,14 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
-import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-
 import java.util.Random;
-
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -24,13 +20,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class EquipHelper {
 	
 	private static final String KEY_APPLIED = Constants.unique("equipApplied");
 	private static final Random RND = new Random();
 
-	private static Boolean gameStagesLoaded;
 	private static Boolean playerHasEnchantStage;
 	private static Boolean enchantStageEnabled;
 	
@@ -56,6 +52,9 @@ public class EquipHelper {
 		private int chancePerPiece;
 		private int chanceForSet;
 		private int enchChance;
+		private boolean chanceTimeMultiplier;
+		private boolean chanceDistanceMultiplier;
+		private int distThreshold;
 		private float enchMultiplier;
 		private float dropChance;
 		
@@ -128,11 +127,74 @@ public class EquipHelper {
 			this.poolBoots = poolBoots;
 		}
 		
-		public boolean getChance(int chance) {
+		public boolean getChance(EntityLiving entity, int chance) {
+			
 			if (chance <= 0) {
 				return false;
 			}
-			return Math.random() <= (float)1/(float)chance; 
+			
+			float distanceChanceIncrease = 0;
+			float timeChanceIncrease = 0;
+			
+			// Increase chance the closer it is to midnight.
+			if (chanceTimeMultiplier) {
+				long currentTime = entity.getEntityWorld().getWorldTime();
+				int currentHour = (int) Math.floor(currentTime / 1000);
+				
+				// Check if it is night time
+				if (currentHour >= 13 && currentHour <= 23) {
+					
+					// TODO: Figure out a more elegant solution
+					switch (currentHour) {
+						case 13:
+							timeChanceIncrease = 0F;
+							break;
+						case 14:
+							timeChanceIncrease = 0.16F;
+							break;
+						case 15:
+							timeChanceIncrease = 0.32F;
+							break;
+						case 16:
+							timeChanceIncrease = 0.48F;
+							break;
+						case 17:
+							timeChanceIncrease = 0.64F;
+							break;
+						case 18:
+							timeChanceIncrease = 0.80F;
+							break;
+						case 19:
+							timeChanceIncrease = 0.64F;
+							break;
+						case 20:
+							timeChanceIncrease = 0.48F;
+							break;
+						case 21:
+							timeChanceIncrease = 0.32F;
+							break;
+						case 22:
+							timeChanceIncrease = 0.16F;
+							break;
+						case 23:
+							timeChanceIncrease = 0F;
+							break;
+					}
+				}
+			}
+		
+			// Increase chance the farther from world spawn the mob is.
+			if (chanceDistanceMultiplier) {
+				World world = entity.getEntityWorld();
+				double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
+
+				distanceChanceIncrease = Math.min(1, (float)distanceToSpawn / distThreshold);
+			}
+			
+			// Add time and distance bonuses to chance
+			float adjustedChance = Math.min(1, 1/chance + Math.min(1, ((1/chance * distanceChanceIncrease) + (1/chance * timeChanceIncrease))));
+			
+			return Math.random() <= 1/adjustedChance;
 		}
 		
 		public void equipEntity(EntityLiving entity) {
@@ -141,6 +203,8 @@ public class EquipHelper {
 		
 		public void equipEntity(EntityLiving entity, boolean isBoss) {
 			
+
+			
 			if (entity == null || entity.getEntityData().getBoolean(KEY_APPLIED))
 				return;
 			
@@ -148,11 +212,10 @@ public class EquipHelper {
 			EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 			
 			// Get all Game Stage related info
-			gameStagesLoaded = CompatHandler.isGameStagesLoaded();
 			enchantStageEnabled = GameStagesCompat.useEnchantStage();			
 			
 			// Test to see if player has enchantment stage unlocked
-			if (gameStagesLoaded && enchantStageEnabled) {
+			if (enchantStageEnabled) {
 				playerHasEnchantStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT);
 			} else {
 				playerHasEnchantStage = false;
@@ -167,11 +230,10 @@ public class EquipHelper {
 			// Complete set is 4 times less likely than a single piece
 			boolean completeArmorSet;
 			
-			if (isBoss) {
+			if (isBoss)
 				completeArmorSet = true;
-			} else {
-				completeArmorSet = getChance(chanceForSet);
-			}
+			else
+				completeArmorSet = getChance(entity, chanceForSet);
 			
 			// Attempt to add weapons and armor)
 			for (int i = 0; i < pools.length; i++) {
@@ -182,7 +244,7 @@ public class EquipHelper {
 				int rnd = i <= 1 ? chancePerWeapon : chancePerPiece;
 				
 				// Test for each weapon and each piece of armor, or if entity should have complete armor set
-				if (getChance(rnd) || (completeArmorSet && i > 1)) {
+				if (getChance(entity, rnd) || (completeArmorSet && i > 1)) {
 					ItemStack stack = pool.getRandom(entity, enchChance, enchMultiplier);
 					
 					if (stack != null) {
@@ -213,11 +275,15 @@ public class EquipHelper {
 			}
 			else
 			{
-				chancePerWeapon = RoughConfig.getInteger(formatName, "WeaponChance", chancePerWeaponDefault, 0, Short.MAX_VALUE, "Chance (1 in X per hand) to give a " + name + " new weapons on spawn\nSet to 0 to disable new weapons", true);
-				chancePerPiece = RoughConfig.getInteger(formatName, "ArmorChance", chancePerPieceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per piece) to give a " + name + " new armor on spawn\nSet to 0 to disable new armor", true);
-				chanceForSet = RoughConfig.getInteger(formatName, "ArmorSetChance", chanceForSetDefault, 0, Short.MAX_VALUE, "Chance (1 in X) to give a " + name + " a complete set of armor on spawn.\nSet to 0 to disable full armor sets", true);
+				chancePerWeapon = RoughConfig.getInteger(formatName, "WeaponChance", chancePerWeaponDefault, 0, Short.MAX_VALUE, "Chance (1 in X per hand) to give a " + name + " new weapons on spawn.\nNOTE: Bosses always spawn with weapons.\nSet to 0 to disable new weapons", true);
+				chancePerPiece = RoughConfig.getInteger(formatName, "ArmorChance", chancePerPieceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per piece) to give a " + name + " new armor on spawn.\nSet to 0 to disable new armor.", true);
+				chanceForSet = RoughConfig.getInteger(formatName, "ArmorSetChance", chanceForSetDefault, 0, Short.MAX_VALUE, "Chance (1 in X) to give a " + name + " a complete set of armor on spawn.\nNOTE: Bosses always spawn with a full set.\nSet to 0 to disable full armor sets.", true);
 				enchChance = RoughConfig.getInteger(formatName, "EnchantChance", enchChanceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per item) to enchant newly given items\nSet to 0 to disable item enchanting", true);
 			}
+			
+			chanceTimeMultiplier = RoughConfig.getBoolean(formatName, "TimeMultiplier", true, "Should rough mobs get more abilities and gear as it gets closer to midnight?");
+			chanceDistanceMultiplier = RoughConfig.getBoolean(formatName, "DistanceMultiplier", true, "Should rough mobs get more and stronger abilities and gear based upon distance from world spawn?");
+			distThreshold = RoughConfig.getInteger(formatName, "DistanceThreshold", 1000, 0, 10000, "The distance threshold used to calculate the DistanceMultiplier.\nShorter distances here means mobs will be tougher closer to the World Spawn.");
 			
 			enchMultiplier = RoughConfig.getFloat(formatName, "EnchantMultiplier", enchMultiplierDefault, 0F, 1F, "Multiplier for the applied enchantment level with the max. level. The level can still be a bit lower\ne.g. 0.5 would make sharpness to be at most level 3 (5 x 0.5 = 2.5 and [2.5] = 3) and fire aspect would always be level 1 (2 x 0.5 = 1)", true);
 			dropChance = RoughConfig.getFloat(formatName, "DropChance", dropChanceDefault, 0F, 1F, "Chance (per slot) that the " + name + " drops the equipped item (1 = 100%, 0 = 0%)", true);
@@ -269,8 +335,7 @@ public class EquipHelper {
 		public List<String> addEnchantmentsFromNames(String[] array) {
 			
 			List<String> errors = new ArrayList<String>();
-			for (String s : array)
-			{
+			for (String s : array) {
 				String error = addEnchantmentFromName(s);
 				if (error != null)
 					errors.add(error);
@@ -283,10 +348,8 @@ public class EquipHelper {
 			
 			String[] parts = s.split(";");
 			
-			if (parts.length >= 2) 
-			{
-				try 
-				{
+			if (parts.length >= 2) {
+				try {
 					Enchantment ench = Enchantment.getEnchantmentByLocation(parts[0]);
 					int probability = Integer.parseInt(parts[1]);
 					int dimension = parts.length > 2 ? Integer.parseInt(parts[2]) : Integer.MIN_VALUE;
@@ -296,13 +359,11 @@ public class EquipHelper {
 					else	
 						addEnchantment(ench, probability, dimension);
 				}
-				catch(NumberFormatException e) 
-				{
+				catch(NumberFormatException e) {
 					return "Invalid numbers in line: " + s;
 				}
 			}
-			else
-			{
+			else {
 				return "Invalid format for line: \"" + s + "\" Please change to enchantment;probability;dimensionID";
 			}
 			
@@ -312,8 +373,7 @@ public class EquipHelper {
 		public List<String> addItemsFromNames(String[] array) {
 			
 			List<String> errors = new ArrayList<String>();
-			for (String s : array)
-			{
+			for (String s : array) {
 				String error = addItemFromName(s);
 				if (error != null)
 					errors.add(error);
@@ -326,10 +386,8 @@ public class EquipHelper {
 			
 			String[] parts = s.split(";");
 			
-			if (parts.length >= 2) 
-			{
-				try 
-				{
+			if (parts.length >= 2) {
+				try {
 					Item item = Item.REGISTRY.getObject(new ResourceLocation(parts[0]));
 					int probability = Integer.parseInt(parts[1]);
 					int dimension = parts.length >= 3 ? Integer.parseInt(parts[2]) : Integer.MIN_VALUE;
@@ -341,13 +399,11 @@ public class EquipHelper {
 					else
 						addItem(new ItemStack(item, 1, meta), probability, dimension, nbt);
 				}
-				catch(NumberFormatException e) 
-				{
+				catch(NumberFormatException e) {
 					return "Invalid numbers in line: " + s;
 				}
 			}
-			else
-			{
+			else {
 				return "Invalid format for line: \"" + s + "\" Please change to item;probability;meta";
 			}
 			
@@ -371,13 +427,13 @@ public class EquipHelper {
 			ItemStack randomStack = ITEM_POOL.getRandom(entity);
 			
 			// Test to see if player has Enchantment stage
-			if (gameStagesLoaded == false || enchantStageEnabled == false || enchantStageEnabled && playerHasEnchantStage) {
+			if (enchantStageEnabled == false || enchantStageEnabled && playerHasEnchantStage) {
 				
 				// Test to see if there are no items to be enchanted
 				if(randomStack != null) {
 					
-					if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) 
-					{
+					// TODO: Base enchantment chance & power off of proximity to midnight and distance from spawn
+					if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) {
 						Enchantment ench = ENCHANTMENT_POOL.getRandom(entity, randomStack);
 
 						// If there is no enchantment, skip this

@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+  	"2.3.1": "Mob spawning improvements; see change notes",
   	"2.3.0": "Improved Equipment Spawning & Boss Warning Message Distance Config",
     "2.2.10": "Fixed boss spawn message typo",
   	"2.2.9": "Added chance for mob to spawn with full set of armor (based on equipment chance)",
@@ -17,7 +18,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.2.10",
-    "1.12.2-recommended": "2.2.10"
+    "1.12.2-latest": "2.3.1",
+    "1.12.2-recommended": "2.3.0"
   }
 }
