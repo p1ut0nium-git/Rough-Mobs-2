@@ -9,11 +9,9 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class SoundHandler {
 
 	public static SoundEvent ENTITY_BOSS_SPAWN;
-	public static SoundEvent EVENT_MIDNIGHT;
 	
 	public static void registerSounds() {
 		ENTITY_BOSS_SPAWN = registerSound("entity.boss.boss_spawn");
-		EVENT_MIDNIGHT = registerSound("event.midnight");
 	}
 	
 	private static SoundEvent registerSound(String name) {

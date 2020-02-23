@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.lang.Math;
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
@@ -138,13 +139,20 @@ public class EquipHelper {
 			
 			// Increase chance the closer it is to midnight.
 			if (chanceTimeMultiplier) {
-				short currentTime = entity.getEntityWorld().getWorldTime();
-				byte currentHour = (int) Math.floor(currentTime / 1000);
+				long currentTime = entity.getEntityWorld().getWorldTime();
 				
+				// Ensure the current time is in the range of 0 to 24000
+				currentTime = currentTime % 24000;
+				
+				// Convert time in ticks to hours
+				byte currentHour = (byte) Math.floor(currentTime / 1000);
+
+				// Add additional 16% bonus every hour from 8 PM to midnight
 				if (currentHour >= 13 && currentHour <= 18)
-					timeChanceIncrease = (currentHour - 12) * 0.16;
-				else if (currentHour > 18 && currentHour <= 24)
-					timeChanceIncrease = abs(currentHour - 25) * 0.16;
+					timeChanceIncrease = (float)((currentHour - 12) * 0.16);
+				// Remove 25% bonus every hour from 1 AM to 6 AM
+				else if (currentHour > 18 && currentHour <= 22)
+					timeChanceIncrease = (float)(Math.abs(currentHour - 23) * 0.25);
 			}
 		
 			// Increase chance the farther from world spawn the mob is.

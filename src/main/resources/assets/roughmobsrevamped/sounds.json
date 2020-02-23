@@ -3,10 +3,5 @@
     "category": "entity",
     "subtitle": "entity.boss.boss_spawn",
     "sounds": [{ "name": "roughmobsrevamped:entity/boss/boss_spawn", "stream": true}]
-  },
-  "event.midnight": {
-    "category": "event",
-    "subtitle": "event.midnight",
-    "sounds": [{ "name": "roughmobsrevamped:event/midnight", "stream": true}]
   }
 }
