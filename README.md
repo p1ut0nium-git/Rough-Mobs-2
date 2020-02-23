@@ -18,6 +18,9 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Only spawn if at least X distance from world spawn (configurable)
 * Zombie Pigmen always aggressive (configurable)
 * Display boss mob spawn warning in chat (toggleable)
+* Boss mob spawn warning sound effect (toggleable)
+* Mobs spawn with more equipment as you get further from world spawn
+* Mobs spawn with more equipment as it gets closer to midnight
 
 ***Planned***
 
@@ -32,6 +35,8 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Zombies use bows
 * Giants?
 * Additional mob abilities & AI
+* Tougher Bosses
+* Boss visual effects
 
 ***In Development***
 
