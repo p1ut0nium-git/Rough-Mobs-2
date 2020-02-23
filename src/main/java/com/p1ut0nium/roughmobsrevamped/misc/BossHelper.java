@@ -101,7 +101,7 @@ public class BossHelper {
 			
 			// Play warning sound of boss spawn
 			if (bossWarningSound) {
-				entity.playSound(SoundHandler.ENTITY_BOSS_SPAWN, 10.0F, 0.5F);
+				entity.playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
 			}
 			
 			// Add Boss features
