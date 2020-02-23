@@ -139,7 +139,7 @@ public class EquipHelper {
 			// Increase chance the closer it is to midnight.
 			if (chanceTimeMultiplier) {
 				short currentTime = entity.getEntityWorld().getWorldTime();
-				short currentHour = (int) Math.floor(currentTime / 1000);
+				byte currentHour = (int) Math.floor(currentTime / 1000);
 				
 				if (currentHour >= 13 && currentHour <= 18)
 					timeChanceIncrease = (currentHour - 12) * 0.16;
