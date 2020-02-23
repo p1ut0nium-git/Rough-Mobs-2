@@ -192,9 +192,9 @@ public class EquipHelper {
 			}
 			
 			// Add time and distance bonuses to chance
-			float adjustedChance = Math.min(1, 1/chance + Math.min(1, ((1/chance * distanceChanceIncrease) + (1/chance * timeChanceIncrease))));
+			float adjustedChance = Math.min(1, (float)1/(float)chance + Math.min(1, (((float)1/(float)chance * distanceChanceIncrease) + ((float)1/(float)chance * timeChanceIncrease))));
 			
-			return Math.random() <= 1/adjustedChance;
+			return Math.random() <= adjustedChance;
 		}
 		
 		public void equipEntity(EntityLiving entity) {
@@ -234,6 +234,8 @@ public class EquipHelper {
 				completeArmorSet = true;
 			else
 				completeArmorSet = getChance(entity, chanceForSet);
+			
+			System.out.println("isBoss? " + isBoss);
 			
 			// Attempt to add weapons and armor)
 			for (int i = 0; i < pools.length; i++) {
