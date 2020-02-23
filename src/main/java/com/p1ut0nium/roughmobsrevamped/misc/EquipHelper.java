@@ -203,8 +203,6 @@ public class EquipHelper {
 		
 		public void equipEntity(EntityLiving entity, boolean isBoss) {
 			
-
-			
 			if (entity == null || entity.getEntityData().getBoolean(KEY_APPLIED))
 				return;
 			
@@ -234,8 +232,6 @@ public class EquipHelper {
 				completeArmorSet = true;
 			else
 				completeArmorSet = getChance(entity, chanceForSet);
-			
-			System.out.println("isBoss? " + isBoss);
 			
 			// Attempt to add weapons and armor)
 			for (int i = 0; i < pools.length; i++) {
