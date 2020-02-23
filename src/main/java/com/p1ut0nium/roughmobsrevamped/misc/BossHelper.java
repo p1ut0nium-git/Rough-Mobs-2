@@ -43,7 +43,7 @@ public class BossHelper {
 			this.defaultDropChance = defaultDropChance;
 			this.defaultBossNames = defaultBossNames;
 
-			equipApplier = new EquipmentApplier(name + " boss", 1, 1, 1, 1, this.defaultEnchMultiplier, this.defaultDropChance);
+			equipApplier = new EquipmentApplier(name + " boss", 1, 1, 1, this.defaultEnchMultiplier, this.defaultDropChance);
 		}	
 		
 		public void initConfig() {

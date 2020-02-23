@@ -37,7 +37,7 @@ public class SpawnHelper {
 	private static boolean isUndergroundEnabled;
 	private static int maxSpawnHeight;
 	private static int minDistFromSpawn;
-	
+
 	public static class SpawnEntry {
 		
 		public static final Map<String, Type> TYPE_MAP = ReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, 0);
@@ -302,5 +302,9 @@ public class SpawnHelper {
 
 	public static boolean hasDefaultConfig() {
 		return true;
+	}
+	
+	public static int getMinDistFromSpawn() {
+		return minDistFromSpawn;
 	}
 }

@@ -9,6 +9,7 @@ import java.lang.Math;
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.util.MiscHelpers;
 import java.util.Random;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -21,22 +22,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 public class EquipHelper {
 	
 	private static final String KEY_APPLIED = Constants.unique("equipApplied");
 	private static final Random RND = new Random();
 
-	private static Boolean playerHasEnchantStage;
-	private static Boolean enchantStageEnabled;
+	private static boolean playerHasEnchantStage;
+	private static boolean enchantStageEnabled;
+	private static boolean chanceTimeMultiplier;
+	private static boolean chanceDistanceMultiplier;
+	private static int distThreshold;
 	
 	public static class EquipmentApplier {
 		
 		private final String name;
 		private final int chancePerWeaponDefault;
 		private final int chancePerPieceDefault;
-		private final int chanceForSetDefault;
 		private final int enchChanceDefault;
 		private final float enchMultiplierDefault;
 		private final float dropChanceDefault;
@@ -51,11 +53,7 @@ public class EquipHelper {
 		
 		private int chancePerWeapon;
 		private int chancePerPiece;
-		private int chanceForSet;
 		private int enchChance;
-		private boolean chanceTimeMultiplier;
-		private boolean chanceDistanceMultiplier;
-		private int distThreshold;
 		private float enchMultiplier;
 		private float dropChance;
 		
@@ -70,11 +68,10 @@ public class EquipHelper {
 		private String[] equipWeaponEnchants;
 		private String[] equipArmorEnchants;
 		
-		public EquipmentApplier(String name, int chancePerWeaponDefault, int chancePerPieceDefault, int chanceForSetDefault, int enchChanceDefault, float enchMultiplierDefault, float dropChanceDefault) {
+		public EquipmentApplier(String name, int chancePerWeaponDefault, int chancePerPieceDefault, int enchChanceDefault, float enchMultiplierDefault, float dropChanceDefault) {
 			this.name = name;
 			this.chancePerWeaponDefault = chancePerWeaponDefault;
 			this.chancePerPieceDefault = chancePerPieceDefault;
-			this.chanceForSetDefault = chanceForSetDefault;
 			this.enchChanceDefault = enchChanceDefault;
 			this.enchMultiplierDefault = enchMultiplierDefault;
 			this.dropChanceDefault = dropChanceDefault;
@@ -128,47 +125,6 @@ public class EquipHelper {
 			this.poolBoots = poolBoots;
 		}
 		
-		public boolean getChance(EntityLiving entity, int chance) {
-			
-			if (chance <= 0) {
-				return false;
-			}
-			
-			float distanceChanceIncrease = 0;
-			float timeChanceIncrease = 0;
-			
-			// Increase chance the closer it is to midnight.
-			if (chanceTimeMultiplier) {
-				long currentTime = entity.getEntityWorld().getWorldTime();
-				
-				// Ensure the current time is in the range of 0 to 24000
-				currentTime = currentTime % 24000;
-				
-				// Convert time in ticks to hours
-				byte currentHour = (byte) Math.floor(currentTime / 1000);
-
-				// Add additional 16% bonus every hour from 8 PM to midnight
-				if (currentHour >= 13 && currentHour <= 18)
-					timeChanceIncrease = (float)((currentHour - 12) * 0.16);
-				// Remove 25% bonus every hour from 1 AM to 6 AM
-				else if (currentHour > 18 && currentHour <= 22)
-					timeChanceIncrease = (float)(Math.abs(currentHour - 23) * 0.25);
-			}
-		
-			// Increase chance the farther from world spawn the mob is.
-			if (chanceDistanceMultiplier) {
-				World world = entity.getEntityWorld();
-				double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
-
-				distanceChanceIncrease = Math.min(1, (float)distanceToSpawn / distThreshold);
-			}
-			
-			// Add time and distance bonuses to chance
-			float adjustedChance = Math.min(1, (float)1/(float)chance + Math.min(1, (((float)1/(float)chance * distanceChanceIncrease) + ((float)1/(float)chance * timeChanceIncrease))));
-			
-			return Math.random() <= adjustedChance;
-		}
-		
 		public void equipEntity(EntityLiving entity) {
 			equipEntity(entity, false);
 		}
@@ -201,7 +157,7 @@ public class EquipHelper {
 			if (isBoss)
 				completeArmorSet = true;
 			else
-				completeArmorSet = getChance(entity, chanceForSet);
+				completeArmorSet = false;
 			
 			// Attempt to add weapons and armor)
 			for (int i = 0; i < pools.length; i++) {
@@ -209,10 +165,10 @@ public class EquipHelper {
 				EntityEquipmentSlot slot = EntityEquipmentSlot.values()[i];
 				
 				// For slots 0 and 1, use chancePerWeapon, for all others, use chancePerPiece
-				int rnd = i <= 1 ? chancePerWeapon : chancePerPiece;
+				int chance = i <= 1 ? chancePerWeapon : chancePerPiece;
 				
 				// Test for each weapon and each piece of armor, or if entity should have complete armor set
-				if (getChance(entity, rnd) || (completeArmorSet && i > 1)) {
+				if (MiscHelpers.getChance(entity, chance, chanceTimeMultiplier, chanceDistanceMultiplier, distThreshold) || (completeArmorSet && i > 1)) {
 					ItemStack stack = pool.getRandom(entity, enchChance, enchMultiplier);
 					
 					if (stack != null) {
@@ -238,14 +194,12 @@ public class EquipHelper {
 			{
 				chancePerWeapon = chancePerWeaponDefault;
 				chancePerPiece = chancePerPieceDefault;
-				chanceForSet = chanceForSetDefault;
 				enchChance = enchChanceDefault;
 			}
 			else
 			{
 				chancePerWeapon = RoughConfig.getInteger(formatName, "WeaponChance", chancePerWeaponDefault, 0, Short.MAX_VALUE, "Chance (1 in X per hand) to give a " + name + " new weapons on spawn.\nNOTE: Bosses always spawn with weapons.\nSet to 0 to disable new weapons", true);
 				chancePerPiece = RoughConfig.getInteger(formatName, "ArmorChance", chancePerPieceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per piece) to give a " + name + " new armor on spawn.\nSet to 0 to disable new armor.", true);
-				chanceForSet = RoughConfig.getInteger(formatName, "ArmorSetChance", chanceForSetDefault, 0, Short.MAX_VALUE, "Chance (1 in X) to give a " + name + " a complete set of armor on spawn.\nNOTE: Bosses always spawn with a full set.\nSet to 0 to disable full armor sets.", true);
 				enchChance = RoughConfig.getInteger(formatName, "EnchantChance", enchChanceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per item) to enchant newly given items\nSet to 0 to disable item enchanting", true);
 			}
 			
@@ -400,17 +354,21 @@ public class EquipHelper {
 				// Test to see if there are no items to be enchanted
 				if(randomStack != null) {
 					
-					// TODO: Base enchantment chance & power off of proximity to midnight and distance from spawn
 					if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) {
-						Enchantment ench = ENCHANTMENT_POOL.getRandom(entity, randomStack);
-
-						// If there is no enchantment, skip this
-						if (ench != null) {
-							double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
-							int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
+						
+						// Test for enchantment based on time and distance from world spawn
+						if (MiscHelpers.getChance(entity, enchChance, chanceTimeMultiplier, chanceDistanceMultiplier, distThreshold)) {
 							
-							if (!randomStack.isItemEnchanted()) {
-								randomStack.addEnchantment(ench, level);
+							Enchantment ench = ENCHANTMENT_POOL.getRandom(entity, randomStack);
+	
+							// If a valid enchantment, then set the level and apply it to the item
+							if (ench != null) {
+								double maxLevel = Math.max(ench.getMinLevel(), Math.min(ench.getMaxLevel(), Math.round(ench.getMaxLevel() * levelMultiplier)));
+								int level = (int)Math.round(maxLevel * (0.5 + Math.random()/2));
+								
+								if (!randomStack.isItemEnchanted()) {
+									randomStack.addEnchantment(ench, level);
+								}
 							}
 						}
 					}

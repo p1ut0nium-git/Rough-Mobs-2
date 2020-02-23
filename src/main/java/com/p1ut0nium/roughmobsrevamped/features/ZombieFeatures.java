@@ -57,7 +57,7 @@ public class ZombieFeatures extends EntityFeatures {
 	
 	@Override
 	public void preInit() {
-		equipApplier = new EquipmentApplier(name, 3, 4, 16, 8, 0.5f, 0.085F);
+		equipApplier = new EquipmentApplier(name, 3, 4, 8, 0.5f, 0.085F);
 		bossApplier = new BossApplier(name, 200, 1F, 0.2F, new String[]{"Zombie King", "Flesh King", "Dr. Zomboss", "Azog", "Zon-Goku", "Amy", "Z0mb3y"}) {
 			@Override
 			public void addBossFeatures(EntityLiving entity) {

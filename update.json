@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+  	"2.3.3": "Improved equipment and enchantment spawning; removed redundant full armor set chance",
   	"2.3.2": "Fixed time bonus chance so time past the first day is calculated correctly; tweaked boss spawn sound",
   	"2.3.1": "Mob spawning improvements; see change notes",
   	"2.3.0": "Improved Equipment Spawning & Boss Warning Message Distance Config",
