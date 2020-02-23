@@ -9,7 +9,6 @@ import java.lang.Math;
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.util.MiscHelpers;
 import java.util.Random;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -22,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class EquipHelper {
 	
@@ -168,7 +168,7 @@ public class EquipHelper {
 				int chance = i <= 1 ? chancePerWeapon : chancePerPiece;
 				
 				// Test for each weapon and each piece of armor, or if entity should have complete armor set
-				if (MiscHelpers.getChance(entity, chance, chanceTimeMultiplier, chanceDistanceMultiplier, distThreshold) || (completeArmorSet && i > 1)) {
+				if (getChance(entity, chance) || (completeArmorSet && i > 1)) {
 					ItemStack stack = pool.getRandom(entity, enchChance, enchMultiplier);
 					
 					if (stack != null) {
@@ -357,7 +357,7 @@ public class EquipHelper {
 					if (!ENCHANTMENT_POOL.POOL.isEmpty() && enchChance > 0 && RND.nextInt(enchChance) == 0) {
 						
 						// Test for enchantment based on time and distance from world spawn
-						if (MiscHelpers.getChance(entity, enchChance, chanceTimeMultiplier, chanceDistanceMultiplier, distThreshold)) {
+						if (getChance(entity, enchChance)) {
 							
 							Enchantment ench = ENCHANTMENT_POOL.getRandom(entity, randomStack);
 	
@@ -447,5 +447,53 @@ public class EquipHelper {
 		private static boolean isDimension(Entity entity, String dimension) {
 			return dimension.trim().toUpperCase().equals("ALL") || String.valueOf(entity.dimension).equals(dimension);
 		}
+	}
+	
+	/*
+	 * This function is used to determine if a piece of equipment or an enchantment should be given to a spawned mob.
+	 * It checks for two bonuses to the chance: proximity to midnight, distance from world spawn
+	 */
+	public static boolean getChance(Entity entity, int chance) {
+		
+		if (chance <= 0) {
+			return false;
+		}
+		
+		float distanceChanceIncrease = 0;
+		float timeChanceIncrease = 0;
+		
+		// Increase chance the closer it is to midnight.
+		if (chanceTimeMultiplier) {
+			long currentTime = entity.getEntityWorld().getWorldTime();
+			
+			// Ensure the current time is in the range of 0 to 24000
+			currentTime = currentTime % 24000;
+			
+			// Convert time in ticks to hours
+			byte currentHour = (byte) Math.floor(currentTime / 1000);
+
+			// Add additional 16% bonus every hour from 8 PM to midnight
+			if (currentHour >= 13 && currentHour <= 18)
+				timeChanceIncrease = (float)((currentHour - 12) * 0.16);
+			// Remove 25% bonus every hour from 1 AM to 6 AM
+			else if (currentHour > 18 && currentHour <= 22)
+				timeChanceIncrease = (float)(Math.abs(currentHour - 23) * 0.25);
+		}
+	
+		// Increase chance the farther from world spawn the mob is.
+		if (chanceDistanceMultiplier) {
+			World world = entity.getEntityWorld();
+			double distanceToSpawn = entity.getDistance(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
+
+			if (distanceToSpawn >= SpawnHelper.getMinDistFromSpawn()) {
+				distanceToSpawn = distanceToSpawn - SpawnHelper.getMinDistFromSpawn();
+				distanceChanceIncrease = Math.min(1, (float)distanceToSpawn / distThreshold);
+			}
+		}
+		
+		// Add time and distance bonuses to chance
+		float adjustedChance = Math.min(1, (float)1/(float)chance + Math.min(1, (((float)1/(float)chance * distanceChanceIncrease) + ((float)1/(float)chance * timeChanceIncrease))));
+		
+		return Math.random() <= adjustedChance;
 	}
 }
