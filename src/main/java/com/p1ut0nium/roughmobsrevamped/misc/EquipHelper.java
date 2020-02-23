@@ -141,46 +141,10 @@ public class EquipHelper {
 				long currentTime = entity.getEntityWorld().getWorldTime();
 				int currentHour = (int) Math.floor(currentTime / 1000);
 				
-				// Check if it is night time
-				if (currentHour >= 13 && currentHour <= 23) {
-					
-					// TODO: Figure out a more elegant solution
-					switch (currentHour) {
-						case 13:
-							timeChanceIncrease = 0F;
-							break;
-						case 14:
-							timeChanceIncrease = 0.16F;
-							break;
-						case 15:
-							timeChanceIncrease = 0.32F;
-							break;
-						case 16:
-							timeChanceIncrease = 0.48F;
-							break;
-						case 17:
-							timeChanceIncrease = 0.64F;
-							break;
-						case 18:
-							timeChanceIncrease = 0.80F;
-							break;
-						case 19:
-							timeChanceIncrease = 0.64F;
-							break;
-						case 20:
-							timeChanceIncrease = 0.48F;
-							break;
-						case 21:
-							timeChanceIncrease = 0.32F;
-							break;
-						case 22:
-							timeChanceIncrease = 0.16F;
-							break;
-						case 23:
-							timeChanceIncrease = 0F;
-							break;
-					}
-				}
+				if (currentHour >= 13 && currentHour <= 18)
+					timeChanceIncrease = (currentHour - 12) * 0.16;
+				else if (currentHour > 18 && currentHour <= 24)
+					timeChanceIncrease = abs(currentHour - 25) * 0.16;
 			}
 		
 			// Increase chance the farther from world spawn the mob is.
