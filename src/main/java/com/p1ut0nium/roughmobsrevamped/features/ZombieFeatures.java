@@ -48,22 +48,12 @@ public class ZombieFeatures extends EntityFeatures {
 
 	private String[] breakBlocks;
 	private List<Block> allowedBreakBlocks;
-	
-	// TODO private static Class<? extends Entity>[] validClasses;
-	
+
 	@SuppressWarnings("unchecked")
 	public ZombieFeatures() {
 		// Sends name and list of classes back to EntityFeatures
 		super("zombie", EntityZombie.class, EntityZombieVillager.class, EntityHusk.class, EntityPigZombie.class);
-		//TODO super("zombie", getValidClasses());
 	}
-	
-	/* TODO
-	public static Class<? extends Entity>[] getValidClasses() {
-		validClasses = new Class[] {EntityZombie.class, EntityZombieVillager.class, EntityHusk.class, EntityPigZombie.class};
-		return validClasses;
-	}
-	*/
 	
 	@Override
 	public void preInit() {

@@ -6,8 +6,6 @@ import org.apache.logging.log4j.Logger;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.proxy.CommonProxy;
-import com.p1ut0nium.roughmobsrevamped.proxy.IProxy;
-import com.p1ut0nium.roughmobsrevamped.proxy.ServerProxy;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.RegistryHandler;
 
 import net.minecraftforge.fml.common.FMLLog;

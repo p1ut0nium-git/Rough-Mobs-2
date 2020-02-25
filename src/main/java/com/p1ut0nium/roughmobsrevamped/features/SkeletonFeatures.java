@@ -35,21 +35,11 @@ public class SkeletonFeatures extends EntityFeatures {
 	private EquipmentApplier equipApplier;
 	
 	private BossApplier bossApplier;
-	
-	// TODO private static Class<? extends Entity>[] validClasses;
 
 	@SuppressWarnings("unchecked")
 	public SkeletonFeatures() {
 		super("skeleton", EntitySkeleton.class, EntityStray.class, EntityWitherSkeleton.class);
-		// TODO super("skeleton", getValidClasses());
 	}
-	
-	/* TODO
-	public static Class<? extends Entity>[] getValidClasses() {
-		validClasses = new Class[] {EntitySkeleton.class, EntityStray.class, EntityWitherSkeleton.class};
-		return validClasses;
-	}
-	*/
 	
 	@Override
 	public void preInit() {

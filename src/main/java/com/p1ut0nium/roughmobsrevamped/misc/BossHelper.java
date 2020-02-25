@@ -80,27 +80,6 @@ public class BossHelper {
 			// Despawn normal skeletons and zombies and replace with BossSkeleton or BossZombie respectively
 			IBoss boss = null;
 			
-			/* TODO Find a better way to test for valid mob classes
-			if (Arrays.asList(ZombieFeatures.getValidClasses()).contains(entity.getClass())) {
-				boss = new BossZombie(entity.world);
-				((BossZombie) boss).setPosition(entity.posX, entity.posY, entity.posZ);
-				entity.world.spawnEntity((BossZombie) boss);
-				
-			} else if (Arrays.asList(SkeletonFeatures.getValidClasses()).contains(entity.getClass())) {
-				boss = new BossSkeleton(entity.world);
-				((BossSkeleton) boss).setPosition(entity.posX, entity.posY, entity.posZ);
-				entity.world.spawnEntity((BossSkeleton) boss);
-			}
-
-			Class<?> classType = null;
-			try {
-				classType = Class.forName("com.p1ut0nium.roughmobsrevamped.entities.Boss" + entity.getName());
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
-			
 			String entityTypeName = entity.getName();
 			
 			switch (entityTypeName) {
@@ -135,7 +114,6 @@ public class BossHelper {
 				// Play special effects on spawn
 				if (((EntityLiving)boss).getEntityWorld().canBlockSeeSky(((EntityLiving)boss).getPosition())) {
 					SpecialEffects.lightningStrikeOn((EntityLiving)boss);
-					// SpecialEffects.particlesOn((EntityLiving)boss);
 				}
 				
 				// Add chat message warning of new boss

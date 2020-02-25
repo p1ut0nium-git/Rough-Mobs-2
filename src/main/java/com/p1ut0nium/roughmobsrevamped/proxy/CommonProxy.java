@@ -2,7 +2,6 @@ package com.p1ut0nium.roughmobsrevamped.proxy;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;

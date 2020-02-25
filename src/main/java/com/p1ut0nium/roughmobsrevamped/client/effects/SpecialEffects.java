@@ -8,10 +8,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-//@SideOnly(Side.CLIENT)
 public class SpecialEffects {
 	
 	public static void lightningStrikeOn(Entity entity) {
