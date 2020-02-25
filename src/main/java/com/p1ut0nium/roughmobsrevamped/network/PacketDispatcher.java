@@ -21,6 +21,7 @@ public class PacketDispatcher {
 	public static void registerPackets(String channelName) {
 		DISPATCHER = NetworkRegistry.INSTANCE.newSimpleChannel(channelName);
 		DISPATCHER.registerMessage(PacketParticles.Handler.class, PacketParticles.class, nextID(), Side.CLIENT);
+		DISPATCHER.registerMessage(PacketLightning.Handler.class, PacketLightning.class, nextID(), Side.CLIENT);
 	}
 	
 	public static void sendTo(IMessage message, EntityPlayerMP player) {
@@ -32,7 +33,6 @@ public class PacketDispatcher {
 	}
 
 	public static void sendToAllAround(IMessage message, TargetPoint targetPoint) {
-		System.out.println("DISPATCHER sendToAllAround");
 		DISPATCHER.sendToAllAround(message, targetPoint);
 	}
 

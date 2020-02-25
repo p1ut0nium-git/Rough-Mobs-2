@@ -17,9 +17,6 @@ import net.minecraftforge.fml.relauncher.Side;
 public class PacketParticles implements IMessage {
 	
 	private boolean isMessageValid;
-	//private static Entity entity;
-	//private Integer entityID;
-	//private World world;
 	private int particleType;
 	private double x, y, z;
 	private double red, green, blue;
@@ -32,8 +29,6 @@ public class PacketParticles implements IMessage {
 	// Overriden constructor for sending integers
 	public PacketParticles(int particleType, double x, double y, double z, double red, double green, double blue) {
 		
-		//this.entity = entity;
-		//this.world = world;
 		this.particleType = particleType;
 		this.x = x;
 		this.y = y;
@@ -102,8 +97,6 @@ public class PacketParticles implements IMessage {
 
 		void processMessage(PacketParticles message, MessageContext ctx) {
 			EntityPlayer player = RoughMobs.proxy.getPlayerEntityFromContext(ctx);
-
-			System.out.println("Spawning Particles");
 			player.world.spawnParticle(EnumParticleTypes.getParticleFromId(message.particleType), message.x + 1.0D, message.y + 1.0D, message.z + 1.0D, message.red, message.blue, message.green);
 		}
 	}
