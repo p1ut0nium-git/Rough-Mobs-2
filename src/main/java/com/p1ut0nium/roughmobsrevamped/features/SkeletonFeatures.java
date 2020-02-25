@@ -109,8 +109,10 @@ public class SkeletonFeatures extends EntityFeatures {
 			
 			if (bossesEnabled) {
 				Entity boss = bossApplier.trySetBoss((EntityLiving) entity);
-				if (boss != null) 
+				if (boss != null) {
 					entity = boss;
+					event.setCanceled(true);
+				}
 				else
 					equipApplier.equipEntity((EntityLiving) entity);
 			}

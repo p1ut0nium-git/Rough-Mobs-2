@@ -28,6 +28,7 @@ import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
+import com.p1ut0nium.roughmobsrevamped.util.handlers.SpamFilter;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
@@ -110,16 +111,18 @@ public class RoughApplier {
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
 		
-		// Ignore spawn if on the client, or if entity is the player or a boss mob.
-		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer || event.getEntity() instanceof IBoss)
+		// Ignore spawn if on the client, or if entity is the player.
+		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)
 			return;
 		
 		Entity entity = event.getEntity();
 		
+		boolean isBoss = entity instanceof IBoss;
+		
 		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 		
 		// Test spawn conditions (from config file)
-		if (!SpawnHelper.checkSpawnConditions(entity))
+		if (!isBoss && !SpawnHelper.checkSpawnConditions(entity))
 			return;
 		
 		// Get all Game Stage related info
@@ -157,16 +160,18 @@ public class RoughApplier {
 			if (features.isEntity(entity))
 			{
 
+				if (!isBoss) {
 				// Test to see if player has equipment game stage
-				if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
-
-					if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
-						features.addFeatures(event, entity, bossesCanSpawn);
+					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
+	
+						if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
+							features.addFeatures(event, entity, bossesCanSpawn);
+					}
 				}
 				
 				// Test to see if player has abilities game stage
 				if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
-					
+
 					if (entity instanceof EntityLiving)
 						features.addAI(event, entity, ((EntityLiving)entity).tasks, ((EntityLiving)entity).targetTasks);
 				}
