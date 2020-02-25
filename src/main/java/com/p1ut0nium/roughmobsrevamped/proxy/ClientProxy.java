@@ -37,8 +37,6 @@ public class ClientProxy extends CommonProxy {
 	public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule) {
 		return Minecraft.getMinecraft().addScheduledTask(runnableToSchedule);
 	}
-	
-	// public EntityPlayer getClientPlayer() { return Minecraft.getMinecraft().player; }
 
 	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) {
 		return (ctx.side.isClient() ? Minecraft.getMinecraft().player : ctx.getServerHandler().player);

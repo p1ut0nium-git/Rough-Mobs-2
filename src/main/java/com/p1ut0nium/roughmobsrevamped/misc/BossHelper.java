@@ -1,12 +1,13 @@
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.Random;
-import com.p1ut0nium.roughmobsrevamped.client.effects.SpecialEffects;
+
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
 import com.p1ut0nium.roughmobsrevamped.entities.IBoss;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
+import com.p1ut0nium.roughmobsrevamped.util.handlers.EffectsHandler;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -113,7 +114,7 @@ public class BossHelper {
 				
 				// Play special effects on spawn
 				if (((EntityLiving)boss).getEntityWorld().canBlockSeeSky(((EntityLiving)boss).getPosition())) {
-					SpecialEffects.lightningStrikeOn((EntityLiving)boss);
+					EffectsHandler.lightningStrikeOn((EntityLiving)boss);
 				}
 				
 				// Add chat message warning of new boss

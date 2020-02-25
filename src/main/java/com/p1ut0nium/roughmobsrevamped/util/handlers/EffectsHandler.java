@@ -1,4 +1,4 @@
-package com.p1ut0nium.roughmobsrevamped.client.effects;
+package com.p1ut0nium.roughmobsrevamped.util.handlers;
 
 import com.p1ut0nium.roughmobsrevamped.network.PacketDispatcher;
 import com.p1ut0nium.roughmobsrevamped.network.PacketLightning;
@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
-public class SpecialEffects {
+public class EffectsHandler {
 	
 	public static void lightningStrikeOn(Entity entity) {
 		PacketLightning lightningPacket = new PacketLightning(entity.posX, entity.posY, entity.posZ);
