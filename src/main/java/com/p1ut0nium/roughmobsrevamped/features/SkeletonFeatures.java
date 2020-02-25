@@ -8,6 +8,7 @@ import com.p1ut0nium.roughmobsrevamped.misc.MountHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper.HorseType;
+import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -35,12 +36,20 @@ public class SkeletonFeatures extends EntityFeatures {
 	
 	private BossApplier bossApplier;
 	
-	//private GameStages gameStageApplier;
+	// TODO private static Class<? extends Entity>[] validClasses;
 
 	@SuppressWarnings("unchecked")
 	public SkeletonFeatures() {
 		super("skeleton", EntitySkeleton.class, EntityStray.class, EntityWitherSkeleton.class);
+		// TODO super("skeleton", getValidClasses());
 	}
+	
+	/* TODO
+	public static Class<? extends Entity>[] getValidClasses() {
+		validClasses = new Class[] {EntitySkeleton.class, EntityStray.class, EntityWitherSkeleton.class};
+		return validClasses;
+	}
+	*/
 	
 	@Override
 	public void preInit() {
@@ -49,14 +58,12 @@ public class SkeletonFeatures extends EntityFeatures {
 			@Override
 			public void addBossFeatures(EntityLiving entity) {}
 		};
-		//gameStageApplier = new GameStages();
 	}
 	
 	@Override
 	public void postInit() {
 		equipApplier.createPools();
 		bossApplier.postInit();
-		//gameStageApplier.postInit();
 	}
 	
 	@Override
@@ -85,7 +92,6 @@ public class SkeletonFeatures extends EntityFeatures {
 		);
 
 		bossApplier.initConfig();
-		//gameStageApplier.initConfig();
 	}
 	
 	@Override
@@ -111,19 +117,15 @@ public class SkeletonFeatures extends EntityFeatures {
 			changeToWither(event, (EntitySkeleton)entity);
 		else if (entity instanceof EntityLiving) {
 			
-			// Test to see if mob is a boss
-			boolean isBoss = false;
-
 			if (bossesEnabled) {
-				isBoss = bossApplier.trySetBoss((EntityLiving) entity);
+				Entity boss = bossApplier.trySetBoss((EntityLiving) entity);
+				if (boss != null) 
+					entity = boss;
+				else
+					equipApplier.equipEntity((EntityLiving) entity);
 			}
 			
-			// If mob is not a boss, use normal equipment
-			if (!isBoss) {
-				equipApplier.equipEntity((EntityLiving) entity);
-			}
-			
-			// Attempt to spawn zombie on a horse
+			// Attempt to spawn skeleton on a horse
 			MountHelper.tryMountHorse(entity, HorseType.SKELETON, horseChance, horseMinY);
 		}
 	}

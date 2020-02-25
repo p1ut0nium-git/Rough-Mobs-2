@@ -26,6 +26,7 @@ public abstract class EntityFeatures {
 	//Default
 	public String name;
 	protected List<Class<? extends Entity>> entityClasses;
+
 	//Config
 	protected boolean featuresEnabled;
 	protected List<String> entityNames;

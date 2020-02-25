@@ -6,6 +6,7 @@ import java.util.List;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.entities.IBoss;
 import com.p1ut0nium.roughmobsrevamped.features.BlazeFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.CreeperFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.EndermanFeatures;
@@ -31,8 +32,12 @@ import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.client.CPacketPlayer.Position;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -105,10 +110,12 @@ public class RoughApplier {
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
 		
-		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)
+		// Ignore spawn if on the client, or if entity is the player or a boss mob.
+		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer || event.getEntity() instanceof IBoss)
 			return;
 		
 		Entity entity = event.getEntity();
+		
 		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 		
 		// Test spawn conditions (from config file)

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
-import com.p1ut0nium.roughmobsrevamped.proxy.ServerProxy;
+import com.p1ut0nium.roughmobsrevamped.proxy.IProxy;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.RegistryHandler;
 
 import net.minecraftforge.fml.common.FMLLog;
@@ -31,8 +31,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.MODVERSION, updateJSON = Constants.MODUPDATE, acceptableRemoteVersions="*")
 public class RoughMobs {
 	
+	private RoughApplier applier;
+	
 	@SidedProxy(clientSide = "com.p1ut0nium.roughmobsrevamped.proxy.ClientProxy", serverSide = "com.p1ut0nium.roughmobsrevamped.proxy.ServerProxy")
-	public static ServerProxy proxy;
+	public static IProxy proxy;
 	
 	@Instance(Constants.MODID)
 	public static RoughMobs instance;
@@ -47,23 +49,26 @@ public class RoughMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		
-		// Check for newer version
-		// ForgeVersion.getResult(Loader.instance().activeModContainer());
-		
 		logger = event.getModLog();
 		
 		new RoughConfig(event);
+		
+		RegistryHandler.preInitRegistries();
+		
+		applier = new RoughApplier();
+		applier.preInit();
+		
 		proxy.preInit(event);
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		RegistryHandler.initRegistries();
-		//proxy.init(event);
+		proxy.init(event);
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		applier.postInit();
 		proxy.postInit(event);
 	}
 	

@@ -1,11 +1,13 @@
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.Random;
-
+import com.p1ut0nium.roughmobsrevamped.client.effects.SpecialEffects;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
+import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
+import com.p1ut0nium.roughmobsrevamped.entities.IBoss;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -32,6 +34,7 @@ public class BossHelper {
 		private int bossChance;
 		private boolean bossWarning;
 		private int bossWarningDist;
+
 		private boolean bossWarningSound;
 		private String[] bossNames;
 		
@@ -69,50 +72,102 @@ public class BossHelper {
 			equipApplier.createPools();
 		}
 		
-		public boolean trySetBoss(EntityLiving entity) {
+		public EntityLiving trySetBoss(EntityLiving entity) {
 			
 			if (bossChance <= 0 || RND.nextInt(bossChance) != 0 || (entity instanceof EntityZombie && ((EntityZombie)entity).isChild()))
-				return false;
+				return null;
 			
-			// Add custom attributes
-			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, entity.getMaxHealth()*2);
-			AttributeHelper.applyAttributeModifier(entity, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
+			// Despawn normal skeletons and zombies and replace with BossSkeleton or BossZombie respectively
+			IBoss boss = null;
 			
-			// Add equipment
-			boolean isBoss = true;
-			equipApplier.equipEntity(entity, isBoss);
-			
-			// Set Bosses name
-			String entityType = entity.getName();
-			String bossName = bossNames[RND.nextInt(bossNames.length)];
-			entity.setCustomNameTag(bossName);
-			
-			// Add chat message warning of new boss
-			if (bossWarning) {
-				TextComponentString bossWarningMsg = new TextComponentString(bossName + ", a powerful " + entityType + " warlord, has joined the battlefield.");
-				bossWarningMsg.getStyle().setColor(TextFormatting.RED);
-				bossWarningMsg.getStyle().setBold(true);
+			/* TODO Find a better way to test for valid mob classes
+			if (Arrays.asList(ZombieFeatures.getValidClasses()).contains(entity.getClass())) {
+				boss = new BossZombie(entity.world);
+				((BossZombie) boss).setPosition(entity.posX, entity.posY, entity.posZ);
+				entity.world.spawnEntity((BossZombie) boss);
 				
-				// TODO Change to all players within boosWarningDist
-				EntityPlayer closestPlayer = entity.world.getClosestPlayerToEntity(entity, bossWarningDist);
-				if (closestPlayer != null) {
-					closestPlayer.sendMessage(bossWarningMsg);
+			} else if (Arrays.asList(SkeletonFeatures.getValidClasses()).contains(entity.getClass())) {
+				boss = new BossSkeleton(entity.world);
+				((BossSkeleton) boss).setPosition(entity.posX, entity.posY, entity.posZ);
+				entity.world.spawnEntity((BossSkeleton) boss);
+			}
+
+			Class<?> classType = null;
+			try {
+				classType = Class.forName("com.p1ut0nium.roughmobsrevamped.entities.Boss" + entity.getName());
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
+			
+			String entityTypeName = entity.getName();
+			
+			switch (entityTypeName) {
+				case "Zombie":
+					boss = new BossZombie(entity.world);
+					((BossZombie) boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					entity.world.spawnEntity((BossZombie) boss);
+					entity.setDead();
+					break;
+				case "Skeleton":
+					boss = new BossSkeleton(entity.world);
+					((BossSkeleton) boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					entity.world.spawnEntity((BossSkeleton) boss);
+					entity.setDead();
+					break;					
+			}
+			
+			if(boss != null) {
+			
+				// Add custom attributes
+				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, ((EntityLiving)boss).getMaxHealth()*2);
+				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
+				
+				// Add equipment
+				boolean isBoss = true;
+				equipApplier.equipEntity((EntityLiving)boss, isBoss);
+				
+				// Set Bosses name
+				String bossName = bossNames[RND.nextInt(bossNames.length)];
+				((EntityLiving)boss).setCustomNameTag(bossName);
+				
+				// Play special effects on spawn
+				if (((EntityLiving)boss).getEntityWorld().canBlockSeeSky(((EntityLiving)boss).getPosition())) {
+					SpecialEffects.lightningStrikeOn((EntityLiving)boss);
+					// SpecialEffects.particlesOn((EntityLiving)boss);
 				}
+				
+				// Add chat message warning of new boss
+				// TODO - move to network packets?
+				if (bossWarning) {
+					TextComponentString bossWarningMsg = new TextComponentString(bossName + ", a powerful " + entityTypeName + " warlord, has joined the battlefield.");
+					bossWarningMsg.getStyle().setColor(TextFormatting.RED);
+					bossWarningMsg.getStyle().setBold(true);
+					
+					// TODO Change to all players within boosWarningDist
+					EntityPlayer closestPlayer = ((EntityLiving)boss).world.getClosestPlayerToEntity((EntityLiving)boss, bossWarningDist);
+					if (closestPlayer != null) {
+						closestPlayer.sendMessage(bossWarningMsg);
+					}
+				}
+				
+				// Play warning sound of boss spawn
+				if (bossWarningSound) {
+					((EntityLiving)boss).playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
+				}
+				
+				// Add Boss features
+				((EntityLiving)boss).getEntityData().setBoolean(BOSS, true);
+				addBossFeatures((EntityLiving)boss);
+				
+				return (EntityLiving)boss;
 			}
-			
-			// Play warning sound of boss spawn
-			if (bossWarningSound) {
-				entity.playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
-			}
-			
-			// Add Boss features
-			entity.getEntityData().setBoolean(BOSS, true);
-			addBossFeatures(entity);
-			
-			return true;
+
+			return null;
 		}
 		
-		public abstract void addBossFeatures(EntityLiving entity); {} // TODO Add special boss features
+		public abstract void addBossFeatures(EntityLiving boss);
 	}
 
 	public static boolean isBoss(Entity entity) {

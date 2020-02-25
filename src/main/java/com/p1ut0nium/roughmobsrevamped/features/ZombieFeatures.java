@@ -49,11 +49,21 @@ public class ZombieFeatures extends EntityFeatures {
 	private String[] breakBlocks;
 	private List<Block> allowedBreakBlocks;
 	
+	// TODO private static Class<? extends Entity>[] validClasses;
+	
 	@SuppressWarnings("unchecked")
 	public ZombieFeatures() {
 		// Sends name and list of classes back to EntityFeatures
 		super("zombie", EntityZombie.class, EntityZombieVillager.class, EntityHusk.class, EntityPigZombie.class);
+		//TODO super("zombie", getValidClasses());
 	}
+	
+	/* TODO
+	public static Class<? extends Entity>[] getValidClasses() {
+		validClasses = new Class[] {EntityZombie.class, EntityZombieVillager.class, EntityHusk.class, EntityPigZombie.class};
+		return validClasses;
+	}
+	*/
 	
 	@Override
 	public void preInit() {
@@ -141,16 +151,12 @@ public class ZombieFeatures extends EntityFeatures {
 		if (!(entity instanceof EntityLiving) || entity.getEntityData().getBoolean(BOSS_MINION))
 			return;
 
-		// Test to see if mob is a boss
-		boolean isBoss = false;
-
 		if (bossesEnabled) {
-			isBoss = bossApplier.trySetBoss((EntityLiving) entity);
-		}
-		
-		// If mob is not a boss, use normal equipment
-		if (!isBoss) {
-			equipApplier.equipEntity((EntityLiving) entity);
+			Entity boss = bossApplier.trySetBoss((EntityLiving) entity);
+			if (boss != null)
+				entity = boss;
+			else
+				equipApplier.equipEntity((EntityLiving) entity);
 		}
 
 		// Attempt to spawn zombie on a horse
@@ -163,4 +169,5 @@ public class ZombieFeatures extends EntityFeatures {
 		if (target instanceof EntityLivingBase && hungerChance > 0)
 			FeatureHelper.addEffect((EntityLivingBase)target, MobEffects.HUNGER, hungerDuration, 0, hungerChance, true, 4);
 	}
+
 }

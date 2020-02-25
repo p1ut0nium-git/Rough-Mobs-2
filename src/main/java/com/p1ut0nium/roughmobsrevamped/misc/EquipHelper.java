@@ -22,7 +22,6 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import scala.Int;
 
 public class EquipHelper {
 	
