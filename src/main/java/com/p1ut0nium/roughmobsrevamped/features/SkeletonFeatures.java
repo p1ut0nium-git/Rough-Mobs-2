@@ -102,12 +102,12 @@ public class SkeletonFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {	
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {	
 		if (entity instanceof EntitySkeleton && entity.getEntityWorld().provider.getDimension() == -1)
 			changeToWither(event, (EntitySkeleton)entity);
 		else if (entity instanceof EntityLiving) {
 			
-			if (bossesEnabled) {
+			if (super.bossesEnabled(entity)) {
 				Entity boss = bossApplier.trySetBoss((EntityLiving) entity);
 				if (boss != null) {
 					entity = boss;

@@ -5,6 +5,8 @@ import java.util.List;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAILeapAtTargetChanced;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAIBreakBlocks;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISunlightBurn;
+import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
+import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
@@ -13,6 +15,7 @@ import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper.HorseType;
 
+import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -22,6 +25,7 @@ import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -136,12 +140,12 @@ public class ZombieFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		
 		if (!(entity instanceof EntityLiving) || entity.getEntityData().getBoolean(BOSS_MINION))
 			return;
 
-		if (bossesEnabled) {
+		if (super.bossesEnabled(entity)) {
 			Entity boss = bossApplier.trySetBoss((EntityLiving) entity);
 			if (boss != null) {
 				entity = boss;

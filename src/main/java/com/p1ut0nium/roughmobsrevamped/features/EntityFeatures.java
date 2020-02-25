@@ -4,9 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
+import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 
+import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -53,11 +56,25 @@ public abstract class EntityFeatures {
 		entityNames = Arrays.asList(RoughConfig.getStringArray(name, "Entities", Constants.getRegNames(entityClasses).toArray(new String[0]), "Entities which count as %s entities"/*, EntityList.getEntityNameList().toArray(new String[0])*/));
 	}
 	
-	public boolean hasDefaultConfig() {
+	private boolean hasDefaultConfig() {
 		return true;
 	}
 	
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	}
+	
+	public boolean bossesEnabled(Entity entity) {
+
+		boolean bossStageEnabled = GameStagesCompat.useBossStage();	
+		
+		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
+		
+		if (bossStageEnabled) {
+			return (GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS));
+		}
+		
+		// If boss game stage isn't enabled, then its ok to spawn bosses
+		return true;
 	}
 	
 	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {

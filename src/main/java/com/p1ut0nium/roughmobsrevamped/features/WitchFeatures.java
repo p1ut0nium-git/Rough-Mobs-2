@@ -90,7 +90,7 @@ public class WitchFeatures extends EntityFeatures {
 		}
 		
 		@Override
-		public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
+		public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 
 			if (features.lingeringChance <= 0 || !(entity instanceof EntityPotion) || !(((EntityPotion)entity).getThrower() instanceof EntityWitch))
 				return;
@@ -101,11 +101,6 @@ public class WitchFeatures extends EntityFeatures {
 				PotionUtils.addPotionToItemStack(potion, PotionUtils.getPotionFromItem(((EntityPotion)entity).getPotion()));
 				((EntityPotion)entity).setItem(potion);
 			}
-		}
-		
-		@Override
-		public boolean hasDefaultConfig() {
-			return false;
 		}
 	}
 }

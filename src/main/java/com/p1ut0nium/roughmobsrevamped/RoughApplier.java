@@ -28,17 +28,12 @@ import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
-import com.p1ut0nium.roughmobsrevamped.util.handlers.SpamFilter;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.client.CPacketPlayer.Position;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -59,10 +54,7 @@ public class RoughApplier {
 	private static Boolean playerHasAbilsStage;
 	private static Boolean abilsStageEnabled;
 	private static Boolean equipStageEnabled;
-	private static Boolean bossStageEnabled;
 	private static Boolean playerHasEquipStage;
-	private static Boolean playerHasBossStage;
-	private static Boolean bossesCanSpawn;
 	
 	public RoughApplier() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -116,9 +108,7 @@ public class RoughApplier {
 			return;
 		
 		Entity entity = event.getEntity();
-		
 		boolean isBoss = entity instanceof IBoss;
-		
 		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 		
 		// Test spawn conditions (from config file)
@@ -129,22 +119,13 @@ public class RoughApplier {
 		gameStagesEnabled = CompatHandler.isGameStagesLoaded();
 		abilsStageEnabled = GameStagesCompat.useAbilitiesStage();
 		equipStageEnabled = GameStagesCompat.useEquipmentStage();
-		bossStageEnabled = GameStagesCompat.useBossStage();	
 		
 		// Test to see if player has these stages unlocked.
 		if (gameStagesEnabled) {
 			playerHasEquipStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP);
 			playerHasAbilsStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS);
-			playerHasBossStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS);
 		} else {
-			playerHasEquipStage = playerHasAbilsStage = playerHasBossStage = false;
-		}
-		
-		// Test to see if player has boss stage
-		if (bossStageEnabled == false || bossStageEnabled && playerHasBossStage) {
-			bossesCanSpawn = true;
-		} else {
-			bossesCanSpawn = false;
+			playerHasEquipStage = playerHasAbilsStage = false;
 		}
 		
 		// Test to see if player has abilities game stage and if stages are enabled
@@ -165,7 +146,7 @@ public class RoughApplier {
 					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
 	
 						if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
-							features.addFeatures(event, entity, bossesCanSpawn);
+							features.addFeatures(event, entity);
 					}
 				}
 				

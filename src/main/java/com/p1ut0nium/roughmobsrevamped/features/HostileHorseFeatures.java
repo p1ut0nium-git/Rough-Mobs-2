@@ -61,7 +61,7 @@ public class HostileHorseFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity, Boolean bossesEnabled) {
+	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		if (entity instanceof EntityLiving && shouldDespawn(entity))
 			ReflectionHelper.setPrivateValue(EntityLiving.class, (EntityLiving)entity, false, 17);
 	}
