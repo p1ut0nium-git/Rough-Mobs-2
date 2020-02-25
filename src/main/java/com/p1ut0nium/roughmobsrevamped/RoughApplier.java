@@ -50,11 +50,11 @@ public class RoughApplier {
 	
 	public static final List<EntityFeatures> FEATURES = new ArrayList<EntityFeatures>();
 	
-	private static Boolean gameStagesEnabled;
-	private static Boolean playerHasAbilsStage;
-	private static Boolean abilsStageEnabled;
-	private static Boolean equipStageEnabled;
-	private static Boolean playerHasEquipStage;
+	private static boolean gameStagesEnabled;
+	private static boolean playerHasAbilsStage;
+	private static boolean abilsStageEnabled;
+	private static boolean equipStageEnabled;
+	private static boolean playerHasEquipStage;
 	
 	public RoughApplier() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -100,49 +100,49 @@ public class RoughApplier {
 		RoughConfig.saveFeatures();
 	}
 	
-	@SubscribeEvent
-	public void onEntitySpawn(EntityJoinWorldEvent event) {
-		
-		// Ignore spawn if on the client, or if entity is the player.
-		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)
-			return;
-		
-		Entity entity = event.getEntity();
-		boolean isBoss = entity instanceof IBoss;
-		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
-		
-		// Test spawn conditions (from config file)
-		if (!isBoss && !SpawnHelper.checkSpawnConditions(entity))
-			return;
-		
-		// Get all Game Stage related info
+	/*
+	 * Test if Game Stages is loaded, if any stages are enabled, and if the player has the stages
+	 */
+	private void getGameStages(EntityPlayer player) {
+
 		gameStagesEnabled = CompatHandler.isGameStagesLoaded();
 		abilsStageEnabled = GameStagesCompat.useAbilitiesStage();
 		equipStageEnabled = GameStagesCompat.useEquipmentStage();
 		
 		// Test to see if player has these stages unlocked.
 		if (gameStagesEnabled) {
-			playerHasEquipStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP);
-			playerHasAbilsStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS);
+			playerHasEquipStage = GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP);
+			playerHasAbilsStage = GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS);
 		} else {
 			playerHasEquipStage = playerHasAbilsStage = false;
 		}
-		
-		// Test to see if player has abilities game stage and if stages are enabled
+	}
+	
+	private void addAttributes(Entity entity) {
+		// Test to see if abilities stage is disabled or if it is enabled and player has it
 		if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 			
 			if (entity instanceof EntityLiving)
 				AttributeHelper.addAttributes((EntityLiving)entity);
 		}
+	}
+	
+	/*
+	 * Add equipment and enchantments, and AI
+	 * Also try to create bosses
+	 */
+	private void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		
-		// Loop through each spawned entity and add features and AI
+		boolean isBoss = entity instanceof IBoss;
+		
+		// Loop through the features list and add equipment and AI to the entity
 		for (EntityFeatures features : FEATURES) 
 		{
 			if (features.isEntity(entity))
 			{
-
+				// Don't attempt to add equipment to a boss. It has already been given equipment in the BossApplier class
 				if (!isBoss) {
-				// Test to see if player has equipment game stage
+				// Test to see if equip stage is disabled or if it is enabled and player has it
 					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
 	
 						if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
@@ -150,7 +150,7 @@ public class RoughApplier {
 					}
 				}
 				
-				// Test to see if player has abilities game stage
+				// Test to see if abilities stage is disabled or if it is enabled and player has it
 				if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 
 					if (entity instanceof EntityLiving)
@@ -158,6 +158,28 @@ public class RoughApplier {
 				}
 			}
 		}
+	}
+	
+	/*
+	 * When an entity spawns, we do all the magic, such as adding equipment and AI, trying to turn it into a boss, etc.
+	 */
+	@SubscribeEvent
+	public void onEntitySpawn(EntityJoinWorldEvent event) {
+		
+		// Ignore spawn if on the client side, or if entity is the player.
+		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)
+			return;
+		
+		Entity entity = event.getEntity();
+		boolean isBoss = entity instanceof IBoss;
+		
+		// If the entity is not a boss, then test spawn conditions
+		if (!isBoss && !SpawnHelper.checkSpawnConditions(entity))
+			return;
+			
+		getGameStages(entity.world.getClosestPlayerToEntity(entity, -1.0D));
+		addAttributes(entity);
+		addFeatures(event, entity);
 		
 		entity.getEntityData().setBoolean(FEATURES_APPLIED, true);
 	}
