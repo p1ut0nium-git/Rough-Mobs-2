@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  * Server side only event handling
  */
 
-public class ServerProxy implements IProxy {
+public class ServerProxy extends CommonProxy {
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {}
@@ -25,8 +25,7 @@ public class ServerProxy implements IProxy {
 	
 	@Override
 	public void serverStarting(FMLServerStartingEvent event) {}
-	
-	@Override
+
 	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) {
 		return ctx.getServerHandler().player;
 	}

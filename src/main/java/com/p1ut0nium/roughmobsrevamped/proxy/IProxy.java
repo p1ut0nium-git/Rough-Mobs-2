@@ -17,7 +17,7 @@ public interface IProxy {
 		
 		void postInit(FMLPostInitializationEvent event);
 		
-		EntityPlayer getPlayerEntityFromContext(MessageContext parContext);
+		// EntityPlayer getPlayerEntityFromContext(MessageContext parContext);
 
 		void serverStarting(FMLServerStartingEvent event);
 

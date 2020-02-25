@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
  */
 
 @EventBusSubscriber(Side.CLIENT)
-public class ClientProxy implements IProxy {
+public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {}
@@ -40,7 +40,6 @@ public class ClientProxy implements IProxy {
 	
 	// public EntityPlayer getClientPlayer() { return Minecraft.getMinecraft().player; }
 
-	@Override
 	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) {
 		return (ctx.side.isClient() ? Minecraft.getMinecraft().player : ctx.getServerHandler().player);
 	}

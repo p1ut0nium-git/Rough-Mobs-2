@@ -19,18 +19,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  */
 
 @EventBusSubscriber
-public class CommonProxy implements IProxy {
+public class CommonProxy {
 
-	@Override
 	public void preInit(FMLPreInitializationEvent event) {}
 	
-	@Override
 	public void init(FMLInitializationEvent event) {}
 	
-	@Override
 	public void postInit(FMLPostInitializationEvent event) {}
 
-	@Override
 	public void serverStarting(FMLServerStartingEvent event) {}
 	
 	@SubscribeEvent
@@ -38,16 +34,13 @@ public class CommonProxy implements IProxy {
 	
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {}
-	
-	@Override
+
 	public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule) {
 		throw new IllegalStateException("This should only be called from client side");
 	}
 	
-	// TODO Is this needed?
-	@Override
 	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) {
-		return (ctx.side.isClient() ? Minecraft.getMinecraft().player : ctx.getServerHandler().player);
+		throw new IllegalStateException("This should only be called from client side");
 	}
 
 }
