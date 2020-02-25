@@ -67,9 +67,8 @@ public abstract class EntityFeatures {
 
 		boolean bossStageEnabled = GameStagesCompat.useBossStage();	
 		
-		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
-		
 		if (bossStageEnabled) {
+			EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 			return (GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS));
 		}
 		
