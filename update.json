@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+  	"2.3.6": "Added colored fog around bosses (configurable); Added additional boss audio",
   	"2.3.5": "Bug fix: console spam on removing entity",
   	"2.3.4": "Boss mob spawn visual improvements; Boss mobs are now custom entities",
   	"2.3.3": "Improved equipment and enchantment spawning; removed redundant full armor set chance",
@@ -22,7 +23,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.3.5",
-    "1.12.2-recommended": "2.3.5"
+    "1.12.2-latest": "2.3.6",
+    "1.12.2-recommended": "2.3.6"
   }
 }

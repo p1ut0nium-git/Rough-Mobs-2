@@ -7,8 +7,8 @@ import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
 import com.p1ut0nium.roughmobsrevamped.entities.IBoss;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
-import com.p1ut0nium.roughmobsrevamped.util.handlers.EffectsHandler;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -16,7 +16,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.event.entity.EntityEvent;
 
 public class BossHelper {
 	
@@ -36,7 +35,14 @@ public class BossHelper {
 		private int bossChance;
 		private boolean bossWarning;
 		private int bossWarningDist;
-
+		
+		public static boolean bossFogEnabled;
+		public static String[] bossFogColor;
+		public static int bossFogMaxDistance;
+		public static int bossFogFarPlane;
+		public static float bossFogStrength;
+		public static int bossFogStartDistance;
+		
 		private boolean bossWarningSound;
 		private String[] bossNames;
 		
@@ -66,6 +72,14 @@ public class BossHelper {
 			bossWarning = RoughConfig.getBoolean(name, "BossWarning", true, "Enable this to have a chat message warning of a boss spawn.");
 			bossWarningDist = RoughConfig.getInteger(name, "BossWarningDistance", 50, 0, Short.MAX_VALUE, "Max bos spawn distance from a player that will trigger a warning.\nUsed for both chat messages and sounds.");
 			bossWarningSound = RoughConfig.getBoolean(name, "BossWarningSound", true, "Play a warning sound when a boss spawns.");
+			
+			bossFogEnabled = RoughConfig.getBoolean(name, "BossFog", true, "Enable this to have thick coloredfog around bosses.");
+			bossFogColor = RoughConfig.getStringArray(name, "BossFogColor", Constants.FOG_COLORS, "Change these three values between 0.0 and 1.0 to change the fog color.\nRed, Green, Blue\n");
+			bossFogMaxDistance = RoughConfig.getInteger(name, "BossFogMaxDist", 50, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distnce");
+			bossFogStartDistance = RoughConfig.getInteger(name, "BossFogStartDist", 5, 0, 50, "Bocks away from boss before fog begins to fade from maximum density.");
+			bossFogFarPlane = RoughConfig.getInteger(name, "BossFogFarPlane", 10, 0, 100, "This effects how far away from you before the fog is at maximum thickness.");
+			bossFogStrength = RoughConfig.getFloat(name, "BossFogStrength", 0.2F, 0.0F, 0.8F, "This controls how thick/strong the fog is");
+			
 			bossChance = RoughConfig.getInteger(name, "BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
 			bossNames = RoughConfig.getStringArray(name, "BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");
 		}
@@ -88,16 +102,17 @@ public class BossHelper {
 				case "Zombie":
 					boss = new BossZombie(entity.world);
 					((BossZombie) boss).setPosition(entity.posX, entity.posY, entity.posZ);
-					entity.world.spawnEntity((BossZombie) boss);
-					entity.setDead();
+					entity.world.spawnEntity((BossZombie) boss);				
 					break;
 				case "Skeleton":
 					boss = new BossSkeleton(entity.world);
 					((BossSkeleton) boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.spawnEntity((BossSkeleton) boss);
-					entity.setDead();
-					break;					
+					break;				
 			}
+			
+			// Remove vanilla mob
+			entity.setDead();
 			
 			if(boss != null) {
 			
@@ -112,11 +127,6 @@ public class BossHelper {
 				// Set Bosses name
 				String bossName = bossNames[RND.nextInt(bossNames.length)];
 				((EntityLiving)boss).setCustomNameTag(bossName);
-				
-				// Play special effects on spawn
-				if (((EntityLiving)boss).getEntityWorld().canBlockSeeSky(((EntityLiving)boss).getPosition())) {
-					EffectsHandler.lightningStrikeOn((EntityLiving)boss);
-				}
 				
 				// Add chat message warning of new boss
 				// TODO - move to network packets?

@@ -163,6 +163,8 @@ public class RoughApplier {
 	/*
 	 * When an entity spawns, we do all the magic, such as adding equipment and AI, trying to turn it into a boss, etc.
 	 */
+	
+	//TODO Move to SpawnHandler class?
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
 		

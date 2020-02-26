@@ -42,6 +42,7 @@ public class PacketDispatcher {
 
 	@SideOnly(Side.CLIENT)
 	public static void sendToServer(IMessage message) {
+		System.out.println("CLIENT -> sendToServer");
 		DISPATCHER.sendToServer(message);
 	}
 }

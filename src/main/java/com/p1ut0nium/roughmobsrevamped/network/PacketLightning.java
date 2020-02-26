@@ -61,7 +61,7 @@ public class PacketLightning implements IMessage {
 				return null;
 			}
 			
-			RoughMobs.proxy.addScheduledTaskClient(() -> processMessage(message, ctx));
+			RoughMobs.proxy.addScheduledTask(() -> processMessage(message, ctx), ctx);
 			return null;
 		}
 

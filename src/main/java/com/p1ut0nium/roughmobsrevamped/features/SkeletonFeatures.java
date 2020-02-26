@@ -3,12 +3,11 @@ package com.p1ut0nium.roughmobsrevamped.features;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAIWeaponSwitch;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISunlightBurn;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
-import com.p1ut0nium.roughmobsrevamped.misc.MountHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
+import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
+import com.p1ut0nium.roughmobsrevamped.misc.MountHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper.HorseType;
-import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

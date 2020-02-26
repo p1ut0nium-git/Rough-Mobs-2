@@ -3,5 +3,15 @@
     "category": "entity",
     "subtitle": "entity.boss.boss_spawn",
     "sounds": [{ "name": "roughmobsrevamped:entity/boss/boss_spawn", "stream": true}]
-  }
+  },
+  "entity.boss.boss_idle": {
+    "category": "entity",
+    "subtitle": "entity.boss.boss_idle",
+    "sounds": [{ "name": "roughmobsrevamped:entity/boss/boss_idle", "stream": true}]
+  },
+  "entity.boss.boss_death": {
+    "category": "entity",
+    "subtitle": "entity.boss.boss_death",
+    "sounds": [{ "name": "roughmobsrevamped:entity/boss/boss_death", "stream": true}]
+  } 
 }
