@@ -1,10 +1,16 @@
 package com.p1ut0nium.roughmobsrevamped.proxy;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.p1ut0nium.roughmobsrevamped.client.model.render.RenderHostileBat;
+import com.p1ut0nium.roughmobsrevamped.entities.EntityHostileBat;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -24,6 +30,14 @@ public class ClientProxy implements IProxy {
         System.out.println("preInit() on Client side");
         
         // Minecraft mc = Minecraft.getMinecraft();
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityHostileBat.class, new IRenderFactory<EntityHostileBat>() {
+            @Override
+            public Render<? super EntityHostileBat> createRenderFor(RenderManager manager)
+            {
+                return new RenderHostileBat(manager);
+            }
+        });
 	}
 	
 	@Override

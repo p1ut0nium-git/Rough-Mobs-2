@@ -1,11 +1,15 @@
 package com.p1ut0nium.roughmobsrevamped.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -13,25 +17,27 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BossZombie extends EntityZombie implements IBoss {
-
-	// TODO: Blased fileball stuff
-	// private static final DataParameter<Byte> ON_FIRE = EntityDataManager.<Byte>createKey(EntityBlaze.class, DataSerializers.BYTE);
+	
+	private static int MAX_ATTACK_RANGE = 30;
+	private static int BAT_MINIONS_MAX = 3;
+	private static int BATSWARM_DELAY = 60; // seconds = BATSWARM_DELAY / 20
+	
+	private int batSwarmTick;
+	
+	private List<EntityHostileBat> batMinions = new ArrayList<EntityHostileBat>();
 	
 	public BossZombie(World worldIn) {
 		super(worldIn);
-        this.experienceValue = 50;
+        this.experienceValue = 100;
+        batSwarmTick = 0;
 	}
-	
-	/* TODO Add Blaze fireball attack
-    protected void initEntityAI()
-    {
-       // this.tasks.addTask(4, new BossZombie.AIFireballAttack(this));
-    }
-    */
-    
-    public void onAddedToWorld() {
+
+	@Override
+	public void onAddedToWorld() {
     	super.onAddedToWorld();
     	
         if (this.world.isRemote) {
@@ -41,6 +47,7 @@ public class BossZombie extends EntityZombie implements IBoss {
         }
     }
 
+	@Override
     public void onLivingUpdate() {
 	
         if (this.world.isRemote) {
@@ -48,24 +55,76 @@ public class BossZombie extends EntityZombie implements IBoss {
                 this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
             }
         }
-        
-        // List entities = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(20));
+                
+        if (!this.world.isRemote) {
+        	
+        	// Batswarm can only be fired every BATSWARM_DELAY ticks
+        	batSwarmTick = Math.max(batSwarmTick - 1, 0);
+        	
+            if (batSwarmTick == 0) {
+            	batSwarmTick = BATSWARM_DELAY;
+            	
+		        EntityPlayer player = this.world.getNearestPlayerNotCreative(this, MAX_ATTACK_RANGE);
+		        
+		        if (player != null && this.canEntityBeSeen(player)) {
+		        	if (batMinions.isEmpty()) {
+		        		for (int i = 0; i < BAT_MINIONS_MAX; i++) {
+		        			EntityHostileBat batMinion = new EntityHostileBat(this.world);
+		        			batMinion.setPosition(this.posX + Math.random() - Math.random(), this.posY + Math.random(), this.posZ + Math.random() - Math.random());
+		        			batMinion.onInitialSpawn(this.getEntityWorld().getDifficultyForLocation(this.getPosition()), null);
+		        			
+		        			this.world.spawnEntity(batMinion);
+		        			
+		        			batMinion.setIsBatHanging(false);
+		        			batMinion.setBoss(this);
+		        			
+		        			batMinions.add(batMinion);
+		        		}
+		        		playSoundBatSwarm();
+		        	}
+		        	
+		        }
+		        
+            }
+            
+	        // Remove any dead bats from the group of batMinions
+	        if (!batMinions.isEmpty()) {
+	        	for (EntityHostileBat bat : batMinions) {
+	        		if (bat.isDead) {
+	        			batMinions.remove(bat);
+	        			break;
+	        		}
+	        	}
+	        }
+        }
 
         super.onLivingUpdate();
     }
-    
+	
+	@SideOnly(Side.CLIENT)
+	private void playSoundBatSwarm() {
+		this.playSound(SoundHandler.ENTITY_BOSS_BATSWARM, 1.0F, 1.0F);
+	}
+
+	@Override
     public void onDeath(DamageSource cause) {
         super.onDeath(cause);
         
-        //TODO Add custom death effects
+        // Max out batSwarmTick so no more bats can spawn
+        batSwarmTick = BATSWARM_DELAY;
+
+        // Kill all bat minions when boss dies
+        if (!batMinions.isEmpty() ) {
+	        for (EntityHostileBat bat : batMinions) {
+	        	bat.setDead();
+	        }
+        }
     }
     
-    //TODO Add custom ambient sound
     protected SoundEvent getAmbientSound() {
         return SoundHandler.ENTITY_BOSS_IDLE;
     }
     
-	//TODO Add custom death sound
     protected SoundEvent getDeathSound() {
         return SoundHandler.ENTITY_BOSS_DEATH;
     }
@@ -75,125 +134,4 @@ public class BossZombie extends EntityZombie implements IBoss {
     protected ResourceLocation getLootTable() {
         return LootTableList.ENTITIES_ZOMBIE;
     }
-    
-    /* TODO - Blaze fireball stuff
-    public void setOnFire(boolean onFire)
-    {
-        byte b0 = ((Byte)this.dataManager.get(ON_FIRE)).byteValue();
-
-        if (onFire)
-        {
-            b0 = (byte)(b0 | 1);
-        }
-        else
-        {
-            b0 = (byte)(b0 & -2);
-        }
-
-        this.dataManager.set(ON_FIRE, Byte.valueOf(b0));
-    }
-    
-    static class AIFireballAttack extends EntityAIBase
-    {
-        private final BossZombie bossZombie;
-        private int attackStep;
-        private int attackTime;
-
-        public AIFireballAttack(BossZombie bossZombieIn)
-        {
-            this.bossZombie = bossZombieIn;
-            this.setMutexBits(3);
-        }
-
-        public boolean shouldExecute()
-        {
-            EntityLivingBase entitylivingbase = this.bossZombie.getAttackTarget();
-            return entitylivingbase != null && entitylivingbase.isEntityAlive();
-        }
-
-        public void startExecuting()
-        {
-            this.attackStep = 0;
-        }
-
-        public void resetTask()
-        {
-            this.bossZombie.setOnFire(false);
-        }
-
-        public void updateTask()
-        {
-            --this.attackTime;
-            EntityLivingBase entitylivingbase = this.bossZombie.getAttackTarget();
-            double d0 = this.bossZombie.getDistanceSq(entitylivingbase);
-
-            if (d0 < 4.0D)
-            {
-                if (this.attackTime <= 0)
-                {
-                    this.attackTime = 20;
-                    this.bossZombie.attackEntityAsMob(entitylivingbase);
-                }
-
-                this.bossZombie.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
-            }
-            else if (d0 < this.getFollowDistance() * this.getFollowDistance())
-            {
-                double d1 = entitylivingbase.posX - this.bossZombie.posX;
-                double d2 = entitylivingbase.getEntityBoundingBox().minY + (double)(entitylivingbase.height / 2.0F) - (this.bossZombie.posY + (double)(this.bossZombie.height / 2.0F));
-                double d3 = entitylivingbase.posZ - this.bossZombie.posZ;
-
-                if (this.attackTime <= 0)
-                {
-                    ++this.attackStep;
-
-                    if (this.attackStep == 1)
-                    {
-                        this.attackTime = 60;
-                        this.bossZombie.setOnFire(true);
-                    }
-                    else if (this.attackStep <= 4)
-                    {
-                        this.attackTime = 6;
-                    }
-                    else
-                    {
-                        this.attackTime = 100;
-                        this.attackStep = 0;
-                        this.bossZombie.setOnFire(false);
-                    }
-
-                    if (this.attackStep > 1)
-                    {
-                        float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.5F;
-                        this.bossZombie.world.playEvent((EntityPlayer)null, 1018, new BlockPos((int)this.bossZombie.posX, (int)this.bossZombie.posY, (int)this.bossZombie.posZ), 0);
-
-                        for (int i = 0; i < 1; ++i)
-                        {
-                            EntitySmallFireball entitysmallfireball = new EntitySmallFireball(this.bossZombie.world, this.bossZombie, d1 + this.bossZombie.getRNG().nextGaussian() * (double)f, d2, d3 + this.bossZombie.getRNG().nextGaussian() * (double)f);
-                            entitysmallfireball.posY = this.bossZombie.posY + (double)(this.bossZombie.height / 2.0F) + 0.5D;
-                            this.bossZombie.world.spawnEntity(entitysmallfireball);
-                        }
-                    }
-                }
-
-                this.bossZombie.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10.0F, 10.0F);
-            }
-            else
-            {
-                this.bossZombie.getNavigator().clearPath();
-                this.bossZombie.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
-            }
-
-            super.updateTask();
-        }
-
-        private double getFollowDistance()
-        {
-            IAttributeInstance iattributeinstance = this.bossZombie.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-            return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
-        }
-    }
-*/
-
 }

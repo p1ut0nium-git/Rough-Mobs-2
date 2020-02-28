@@ -1,8 +1,7 @@
 package com.p1ut0nium.roughmobsrevamped.util.handlers;
 
+import java.awt.Color;
 import java.util.List;
-
-import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
 
 public abstract class Helpers {
 	
@@ -12,9 +11,9 @@ public abstract class Helpers {
 	 * Example:
 	 * 500 in the range of 100 to 1000 becomes 0.5 in the range of 0 to 1.0
 	 */
-	public static float scaleValue(int currentDistance, int oldRangMin, int oldRangeMax, float newRangeMin, double newRangeMax) {
-		double oldPercent = (double) (currentDistance - oldRangMin) / (double) (oldRangeMax - oldRangMin);
-		float newResult = (float)((newRangeMax - newRangeMin) * oldPercent) + newRangeMin;
+	public static double scaleValue(double currentDistance, double oldRangMin, double oldRangeMax, double newRangeMin, double newRangeMax) {
+		double oldPercent = (currentDistance - oldRangMin) / (oldRangeMax - oldRangMin);
+		double newResult = ((newRangeMax - newRangeMin) * oldPercent) + newRangeMin;
 		return newResult;
 	}
 	
@@ -32,5 +31,12 @@ public abstract class Helpers {
 			}
 		}
 		return false;
+	}
+	
+	/*
+	 * Convert RGB values (0 to 255) to normalized values (0.0 - 1.0)
+	 */
+	public static Color normalizeRGB(short colorRed, short colorGreen, short colorBlue) {
+		return new Color(colorRed/255.0F, colorGreen/255.0F, colorBlue/255.0F, 255/255.0F);
 	}
 }

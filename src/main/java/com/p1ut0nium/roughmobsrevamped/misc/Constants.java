@@ -19,6 +19,12 @@ public class Constants {
 	public static final String ROUGHMOBSABILS = "roughmobsabils";
 	public static final String ROUGHMOBSENCHANT = "roughmobsenchant";
 	
+	public static final int SEA_LEVEL = 62;
+	
+	public static final int ENTITY_BOSSZOMBIE = 300;
+	public static final int ENTITY_BOSSSKELETON = 301;
+	public static final int ENTITY_HOSTILEBAT = 302;
+	
 	public static String unique(String id) {
 		return MODID + ":" + id;
 	}
@@ -28,11 +34,18 @@ public class Constants {
 		
 		List<String> regNames = new ArrayList<String>();
 		
-		for(Class clazz : entityClasses) 
+		for(Class clazz : entityClasses) {
 			regNames.add(EntityList.getKey(clazz).toString());
+		}
 		
 		return regNames;
 	}
+	
+	public static final String[] FOG_COLORS = {
+			"0.1",
+			"0.8",
+			"0.1"
+	};
 	
 	public static final String[] SEASONS = {
 			"SUMMER",
@@ -40,7 +53,7 @@ public class Constants {
 			"WINTER",
 			"SPRING"
 	};
-
+	
 	public static final String[] ATTRIBUTE_DEFAULT = {
 			"zombie;generic.maxHealth;1;0.5;/;1",
 			"zombie_pigman;generic.maxHealth;1;0.5;/;1",

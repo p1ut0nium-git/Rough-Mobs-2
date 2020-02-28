@@ -76,7 +76,7 @@ public class BossHelper {
 			bossFogEnabled = RoughConfig.getBoolean(name, "BossFog", true, "Enable this to have thick coloredfog around bosses.");
 			bossFogColor = RoughConfig.getStringArray(name, "BossFogColor", Constants.FOG_COLORS, "Change these three values between 0.0 and 1.0 to change the fog color.\nRed, Green, Blue\n");
 			bossFogMaxDistance = RoughConfig.getInteger(name, "BossFogMaxDist", 50, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distnce");
-			bossFogStartDistance = RoughConfig.getInteger(name, "BossFogStartDist", 5, 0, 50, "Bocks away from boss before fog begins to fade from maximum density.");
+			bossFogStartDistance = RoughConfig.getInteger(name, "BossFogStartDist", 40, 0, 50, "Bocks away from boss before fog begins to fade from maximum density.\nMust be a value lower than BossFogMaxDist");
 			bossFogFarPlane = RoughConfig.getInteger(name, "BossFogFarPlane", 10, 0, 100, "This effects how far away from you before the fog is at maximum thickness.");
 			bossFogStrength = RoughConfig.getFloat(name, "BossFogStrength", 0.2F, 0.0F, 0.8F, "This controls how thick/strong the fog is");
 			
