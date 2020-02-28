@@ -13,5 +13,10 @@
     "category": "entity",
     "subtitle": "entity.boss.boss_death",
     "sounds": [{ "name": "roughmobsrevamped:entity/boss/boss_death", "stream": true}]
+  },
+  "entity.boss.boss_batswarm": {
+    "category": "entity",
+    "subtitle": "entity.boss.boss_batswarm",
+    "sounds": [{ "name": "roughmobsrevamped:entity/boss/boss_batswarm", "stream": true}]
   } 
 }
