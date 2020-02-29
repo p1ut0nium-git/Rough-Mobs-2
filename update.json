@@ -1,7 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
-    "2.3.7": "Improved boss fog for zombie bosses; Added new bat swarm attack to zombie bosses; Adde audio for bat swarm attack",
+    "2.3.7": "Improved boss fog for zombie bosses; Added new bat swarm attack to zombie bosses; Added audio for bat swarm attack",
     "2.3.6": "Added colored fog around bosses (configurable); Added additional boss audio",
     "2.3.5": "Bug fix: console spam on removing entity",
     "2.3.4": "Boss mob spawn visual improvements; Boss mobs are now custom entities",
