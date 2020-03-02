@@ -21,6 +21,8 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Boss mob spawn warning sound effect (toggleable)
 * Mobs spawn with more equipment as you get further from world spawn (toggleable)
 * Mobs spawn with more equipment as it gets closer to midnight (toggleable)
+* Bosses have customizable fog that follows them around
+* Bosses can use Bat Swarm attack
 
 ***Planned***
 
