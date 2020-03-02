@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
+import com.p1ut0nium.roughmobsrevamped.util.Helpers;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;

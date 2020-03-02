@@ -1,4 +1,4 @@
-package com.p1ut0nium.roughmobsrevamped.util.handlers;
+package com.p1ut0nium.roughmobsrevamped.util;
 
 import java.awt.Color;
 import java.util.List;
