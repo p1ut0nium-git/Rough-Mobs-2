@@ -14,7 +14,7 @@
     "2.2.9": "Added chance for mob to spawn with full set of armor (based on equipment chance)",
     "2.2.8": "Zombie pigmen no longer target creative mode players; zombie pigmen should always target closest player.",
     "2.2.7": "Hopefully fixed an issue where dimension specific equipment was being given in the wrong dimensions",
-  	"2.2.6": "Fixed a crash on game load when Serene Seasons or Game Stages wasn't installed",
+    "2.2.6": "Fixed a crash on game load when Serene Seasons or Game Stages wasn't installed",
     "2.2.5": "Added Serene Seasons support; Added boss mob spawn chat warning (toggleable)",
     "2.2.4": "Fixed a crash related to new Zombie Pigmen aggression AI; rewrote the entire class using reflection",
     "2.2.3": "Added config to make zombie pigmen always aggressive, as well as set the range from player before attacking",
