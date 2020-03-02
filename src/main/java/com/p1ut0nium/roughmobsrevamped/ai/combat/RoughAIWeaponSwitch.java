@@ -42,18 +42,14 @@ public class RoughAIWeaponSwitch extends EntityAIBase{
         if (target == null || !entity.getEntitySenses().canSee(target)) return;
 
         double distSq = entity.getDistanceSq(target);
-        if (distSq < rangeNear)
-        {
-            if (entity.getHeldItemMainhand() == ranged)
-            {
+        if (distSq < rangeNear) {
+            if (entity.getHeldItemMainhand() == ranged) {
                 entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, melee);
                 entity.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ranged);
             }
         }
-        else if (distSq > rangeFar)
-        {
-            if (entity.getHeldItemMainhand() == melee)
-            {
+        else if (distSq > rangeFar) {
+            if (entity.getHeldItemMainhand() == melee) {
                 entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ranged);
                 entity.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, melee);
             }

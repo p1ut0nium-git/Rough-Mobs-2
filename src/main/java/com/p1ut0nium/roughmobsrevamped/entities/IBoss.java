@@ -1,5 +1,7 @@
 package com.p1ut0nium.roughmobsrevamped.entities;
 
+import java.util.function.Predicate;
+
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 
@@ -8,4 +10,5 @@ public interface IBoss {
 	void onAddedToWorld();
 	void onDeath(DamageSource cause);
 	BlockPos getPosition();
+	String getName();
 }

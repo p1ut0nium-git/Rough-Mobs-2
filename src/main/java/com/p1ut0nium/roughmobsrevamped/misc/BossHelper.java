@@ -40,8 +40,11 @@ public class BossHelper {
 		public static String[] bossFogColor;
 		public static int bossFogMaxDistance;
 		public static int bossFogFarPlane;
-		public static float bossFogStrength;
+		public static float bossFogFarPlaneScale;
 		public static int bossFogStartDistance;
+		
+		public static int bossBatSwarmCount;
+		public static int bossBatSwarmDelay;
 		
 		private boolean bossWarningSound;
 		private String[] bossNames;
@@ -73,12 +76,14 @@ public class BossHelper {
 			bossWarningDist = RoughConfig.getInteger(name, "BossWarningDistance", 50, 0, Short.MAX_VALUE, "Max bos spawn distance from a player that will trigger a warning.\nUsed for both chat messages and sounds.");
 			bossWarningSound = RoughConfig.getBoolean(name, "BossWarningSound", true, "Play a warning sound when a boss spawns.");
 			
-			bossFogEnabled = RoughConfig.getBoolean(name, "BossFog", true, "Enable this to have thick coloredfog around bosses.");
+			bossFogEnabled = RoughConfig.getBoolean(name, "BossFog", true, "Enable this to have thick colored fog around bosses.");
 			bossFogColor = RoughConfig.getStringArray(name, "BossFogColor", Constants.FOG_COLORS, "Change these three values between 0.0 and 1.0 to change the fog color.\nRed, Green, Blue\n");
-			bossFogMaxDistance = RoughConfig.getInteger(name, "BossFogMaxDist", 50, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distnce");
-			bossFogStartDistance = RoughConfig.getInteger(name, "BossFogStartDist", 40, 0, 50, "Bocks away from boss before fog begins to fade from maximum density.\nMust be a value lower than BossFogMaxDist");
-			bossFogFarPlane = RoughConfig.getInteger(name, "BossFogFarPlane", 10, 0, 100, "This effects how far away from you before the fog is at maximum thickness.");
-			bossFogStrength = RoughConfig.getFloat(name, "BossFogStrength", 0.2F, 0.0F, 0.8F, "This controls how thick/strong the fog is");
+			bossFogMaxDistance = RoughConfig.getInteger(name, "BossFogMaxDist", 50, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distance");
+			bossFogStartDistance = RoughConfig.getInteger(name, "BossFogStartDist", 1, 0, 50, "How far away from boss before fog begins to fade from maximum density.\nMust be a value lower than BossFogMaxDist");
+			bossFogFarPlane = RoughConfig.getInteger(name, "BossFogFarPlane", 10, 0, 192, "This effects how far away from you before the fog is at maximum thickness.");
+			bossFogFarPlaneScale = RoughConfig.getFloat(name, "BossFogFarPlaneScale", 0.2F, 0.0F, 0.8F, "This controls how thick/strong the fog is.");
+			bossBatSwarmCount = RoughConfig.getInteger(name, "BossBatSwarmCount", 3, 0, 10, "The number of bats that attack when a boss fires his Bat Swarm ability.");
+			bossBatSwarmDelay = RoughConfig.getInteger(name, "BossBatSwarmDelay", 3, 0, 60, "The cooldown in seconds before the boss can fire Bat Swarm again.");
 			
 			bossChance = RoughConfig.getInteger(name, "BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
 			bossNames = RoughConfig.getStringArray(name, "BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");

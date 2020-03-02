@@ -2,6 +2,7 @@ package com.p1ut0nium.roughmobsrevamped.entities;
 
 import javax.annotation.Nullable;
 
+import com.p1ut0nium.roughmobsrevamped.util.handlers.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -24,7 +25,7 @@ public class BossSkeleton extends EntitySkeleton implements IBoss {
     public void onAddedToWorld() {
     	super.onAddedToWorld();
     	
-        if (this.world.isRemote) {
+        if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canSeeSky(this.getPosition())) {
 			this.world.addWeatherEffect(new EntityLightningBolt(this.world, this.posX, this.posY, this.posZ, true));
 			SoundEvent soundEvent = new SoundEvent(new ResourceLocation("entity.lightning.thunder"));
 			this.world.playSound(this.posX, this.posY, this.posZ, soundEvent, SoundCategory.AMBIENT, 100.0F, 1.0F, true);
@@ -46,6 +47,8 @@ public class BossSkeleton extends EntitySkeleton implements IBoss {
         super.onDeath(cause);
         
         //TODO Add custom death effects
+        
+        FogEventHandler.bossDied = true;
     }
     
     //TODO Add custom ambient sound

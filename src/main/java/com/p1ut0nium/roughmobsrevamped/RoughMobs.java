@@ -11,6 +11,8 @@
 
 package com.p1ut0nium.roughmobsrevamped;
 
+import java.awt.Color;
+
 import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.Logger;
@@ -32,20 +34,19 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.MODVERSION, updateJSON = Constants.MODUPDATE, acceptableRemoteVersions="*")
 public class RoughMobs {
 	
-	private RoughApplier applier;
-	
 	@SidedProxy(clientSide = "com.p1ut0nium.roughmobsrevamped.proxy.ClientProxy", serverSide = "com.p1ut0nium.roughmobsrevamped.proxy.ServerProxy")
 	public static IProxy proxy;
 	
 	@Instance(Constants.MODID)
 	public static RoughMobs instance;
 	
+	private RoughApplier applier;
+	public static Logger logger;
+	
 	@Nonnull
 	public static RoughMobs instance() {
 		return instance;
 	}
-	
-	public static Logger logger;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
+import com.p1ut0nium.roughmobsrevamped.util.handlers.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -17,14 +19,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BossZombie extends EntityZombie implements IBoss {
 	
 	private static int MAX_ATTACK_RANGE = 30;
-	private static int BAT_MINIONS_MAX = 3;
-	private static int BATSWARM_DELAY = 60; // seconds = BATSWARM_DELAY / 20
+	private static int BAT_MINIONS_MAX = BossApplier.bossBatSwarmCount;
+	private static int BATSWARM_DELAY = BossApplier.bossBatSwarmDelay * 20;
 	
 	private int batSwarmTick;
 	
@@ -40,7 +40,7 @@ public class BossZombie extends EntityZombie implements IBoss {
 	public void onAddedToWorld() {
     	super.onAddedToWorld();
     	
-        if (this.world.isRemote) {
+        if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canSeeSky(this.getPosition())) {
 			this.world.addWeatherEffect(new EntityLightningBolt(this.world, this.posX, this.posY, this.posZ, true));
 			SoundEvent soundEvent = new SoundEvent(new ResourceLocation("entity.lightning.thunder"));
 			this.world.playSound(this.posX, this.posY, this.posZ, soundEvent, SoundCategory.AMBIENT, 100.0F, 1.0F, true);
@@ -69,16 +69,16 @@ public class BossZombie extends EntityZombie implements IBoss {
 		        if (player != null && this.canEntityBeSeen(player)) {
 		        	if (batMinions.isEmpty()) {
 		        		for (int i = 0; i < BAT_MINIONS_MAX; i++) {
-		        			EntityHostileBat batMinion = new EntityHostileBat(this.world);
-		        			batMinion.setPosition(this.posX + Math.random() - Math.random(), this.posY + Math.random(), this.posZ + Math.random() - Math.random());
-		        			batMinion.onInitialSpawn(this.getEntityWorld().getDifficultyForLocation(this.getPosition()), null);
+		        			EntityHostileBat bat = new EntityHostileBat(this.world);
+		        			bat.setPosition(this.posX + Math.random() - Math.random(), this.posY + Math.random(), this.posZ + Math.random() - Math.random());
+		        			bat.onInitialSpawn(this.getEntityWorld().getDifficultyForLocation(this.getPosition()), null);
 		        			
-		        			this.world.spawnEntity(batMinion);
+		        			this.world.spawnEntity(bat);
 		        			
-		        			batMinion.setIsBatHanging(false);
-		        			batMinion.setBoss(this);
+		        			bat.setIsBatHanging(false);
+		        			bat.setBoss(this);
 		        			
-		        			batMinions.add(batMinion);
+		        			batMinions.add(bat);
 		        		}
 		        		playSoundBatSwarm();
 		        	}
@@ -101,9 +101,10 @@ public class BossZombie extends EntityZombie implements IBoss {
         super.onLivingUpdate();
     }
 	
-	@SideOnly(Side.CLIENT)
+	// @SideOnly(Side.CLIENT)
 	private void playSoundBatSwarm() {
-		this.playSound(SoundHandler.ENTITY_BOSS_BATSWARM, 1.0F, 1.0F);
+		if (!world.isRemote)
+			this.playSound(SoundHandler.ENTITY_BOSS_BATSWARM, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -119,6 +120,9 @@ public class BossZombie extends EntityZombie implements IBoss {
 	        	bat.setDead();
 	        }
         }
+        
+        //TODO Is there a better way of handling this?
+        FogEventHandler.bossDied = true;
     }
     
     protected SoundEvent getAmbientSound() {

@@ -27,7 +27,6 @@ public class ClientProxy implements IProxy {
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-        System.out.println("preInit() on Client side");
         
         // Minecraft mc = Minecraft.getMinecraft();
 
@@ -42,28 +41,24 @@ public class ClientProxy implements IProxy {
 	
 	@Override
 	public void init(FMLInitializationEvent event) {
-        System.out.println("init() on Client side");
         
         // Minecraft mc = Minecraft.getMinecraft();
 	}
 	
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
-        System.out.println("postInit() on Client side");
         
         // Minecraft mc = Minecraft.getMinecraft();
 	}
 	
 	@Override
 	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) {
-		System.out.println("CLIENT: getPlayer");
 
         return (ctx.side.isClient() ? Minecraft.getMinecraft().player : ctx.getServerHandler().player);
 	}
 	
 	@Override
 	public ListenableFuture<Object> addScheduledTask(Runnable runnableToSchedule, MessageContext ctx) {
-		System.out.println("CLIENT: addScheduledTask");
 		return (ctx.side.isClient() ? Minecraft.getMinecraft().addScheduledTask(runnableToSchedule) : null);
 	}
 }

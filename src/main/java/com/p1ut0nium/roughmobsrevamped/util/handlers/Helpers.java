@@ -11,7 +11,7 @@ public abstract class Helpers {
 	 * Example:
 	 * 500 in the range of 100 to 1000 becomes 0.5 in the range of 0 to 1.0
 	 */
-	public static double scaleValue(double currentDistance, double oldRangMin, double oldRangeMax, double newRangeMin, double newRangeMax) {
+	public static double scaleValue(float currentDistance, float oldRangMin, float oldRangeMax, float newRangeMin, double newRangeMax) {
 		double oldPercent = (currentDistance - oldRangMin) / (oldRangeMax - oldRangMin);
 		double newResult = ((newRangeMax - newRangeMin) * oldPercent) + newRangeMin;
 		return newResult;
@@ -19,15 +19,19 @@ public abstract class Helpers {
 	
 	/*
 	 * Returns true if a class is contained within a List
+	 * Can take multiple classes to search for as arguments
 	 * 
 	 * Example usage:
 	 * List entities = world.getEntitiesWithinAABB(BossZombie.class, player.getEntityBoundingBox().grow(20)); 
-	 * containsInstance(entities, BossZombie.class);
+	 * containsInstance(entities, BossZombie.class, BossSkeleton.class);
 	 */
-	public static <E> boolean containsInstance(List<E> list, Class<? extends E> clazz) {
-		for (E element : list) {
-			if (clazz.isInstance(element)) {
-				return true;
+	@SafeVarargs
+	public static <E> boolean containsInstance(List<E> list, Class<? extends E> ... clazz) {
+		for (Class<? extends E> i: clazz) {
+			for (E element : list) {
+				if (i.isInstance(element)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -39,4 +43,5 @@ public abstract class Helpers {
 	public static Color normalizeRGB(short colorRed, short colorGreen, short colorBlue) {
 		return new Color(colorRed/255.0F, colorGreen/255.0F, colorBlue/255.0F, 255/255.0F);
 	}
+	
 }

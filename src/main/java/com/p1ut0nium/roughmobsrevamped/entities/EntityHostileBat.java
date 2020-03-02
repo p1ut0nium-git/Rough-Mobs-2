@@ -43,8 +43,7 @@ public class EntityHostileBat extends EntityCreature {
 		targetTasks.addTask(1, new RoughAIBatTarget(this));
 	}
 	
-    protected void entityInit()
-    {
+    protected void entityInit() {
         super.entityInit();
         this.dataManager.register(HANGING, Byte.valueOf((byte)0));
     }
@@ -64,72 +63,58 @@ public class EntityHostileBat extends EntityCreature {
     /**
      * Returns the volume for the sounds this mob makes.
      */
-    protected float getSoundVolume()
-    {
+    protected float getSoundVolume() {
         return 0.1F;
     }
 
     /**
      * Gets the pitch of living sounds in living entities.
      */
-    protected float getSoundPitch()
-    {
+    protected float getSoundPitch() {
         return super.getSoundPitch() * 0.95F;
     }
 
     @Nullable
-    public SoundEvent getAmbientSound()
-    {
+    public SoundEvent getAmbientSound() {
         return this.getIsBatHanging() && this.rand.nextInt(4) != 0 ? null : SoundEvents.ENTITY_BAT_AMBIENT;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_BAT_HURT;
     }
 
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_BAT_DEATH;
     }
 
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.
      */
-    public boolean canBePushed()
-    {
+    public boolean canBePushed() {
         return false;
     }
 
-    protected void collideWithEntity(Entity entityIn)
-    {
+    protected void collideWithEntity(Entity entityIn) {
     }
 
-    protected void collideWithNearbyEntities()
-    {
-    }
+    protected void collideWithNearbyEntities() {}
 
-    protected void applyEntityAttributes()
-    {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
     }
 
-    public boolean getIsBatHanging()
-    {
+    public boolean getIsBatHanging() {
         return (((Byte)this.dataManager.get(HANGING)).byteValue() & 1) != 0;
     }
 
-    public void setIsBatHanging(boolean isHanging)
-    {
+    public void setIsBatHanging(boolean isHanging) {
         byte b0 = ((Byte)this.dataManager.get(HANGING)).byteValue();
 
-        if (isHanging)
-        {
+        if (isHanging) {
             this.dataManager.set(HANGING, Byte.valueOf((byte)(b0 | 1)));
         }
-        else
-        {
+        else {
             this.dataManager.set(HANGING, Byte.valueOf((byte)(b0 & -2)));
         }
     }
@@ -137,25 +122,21 @@ public class EntityHostileBat extends EntityCreature {
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
-    {
+    public void onUpdate() {
         super.onUpdate();
 
-        if (this.getIsBatHanging())
-        {
+        if (this.getIsBatHanging()) {
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
             this.posY = (double)MathHelper.floor(this.posY) + 1.0D - (double)this.height;
         }
-        else
-        {
+        else {
             this.motionY *= 0.6000000238418579D;
         }
     }
 
-    protected void updateAITasks()
-    {
+    protected void updateAITasks() {
         super.updateAITasks();
     }
 
@@ -163,40 +144,30 @@ public class EntityHostileBat extends EntityCreature {
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
-    protected boolean canTriggerWalking()
-    {
+    protected boolean canTriggerWalking() {
         return false;
     }
 
-    public void fall(float distance, float damageMultiplier)
-    {
-    }
+    public void fall(float distance, float damageMultiplier) {}
 
-    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos)
-    {
-    }
+    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
 
     /**
      * Return whether this entity should NOT trigger a pressure plate or a tripwire.
      */
-    public boolean doesEntityNotTriggerPressurePlate()
-    {
+    public boolean doesEntityNotTriggerPressurePlate() {
         return true;
     }
 
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-        if (this.isEntityInvulnerable(source))
-        {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isEntityInvulnerable(source)) {
             return false;
         }
-        else
-        {
-            if (!this.world.isRemote && this.getIsBatHanging())
-            {
+        else {
+            if (!this.world.isRemote && this.getIsBatHanging()) {
                 this.setIsBatHanging(false);
             }
 
@@ -204,16 +175,14 @@ public class EntityHostileBat extends EntityCreature {
         }
     }
 
-    public static void registerFixesBat(DataFixer fixer)
-    {
+    public static void registerFixesBat(DataFixer fixer) {
         EntityLiving.registerFixesMob(fixer, EntityBat.class);
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound compound)
-    {
+    public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.dataManager.set(HANGING, Byte.valueOf(compound.getByte("BatFlags")));
     }
@@ -221,8 +190,7 @@ public class EntityHostileBat extends EntityCreature {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(NBTTagCompound compound)
-    {
+    public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setByte("BatFlags", ((Byte)this.dataManager.get(HANGING)).byteValue());
     }
@@ -230,19 +198,16 @@ public class EntityHostileBat extends EntityCreature {
     /**
      * Checks if the entity's current position is a valid location to spawn this entity.
      */
-    public boolean getCanSpawnHere()
-    {
+    public boolean getCanSpawnHere() {
     	return super.getCanSpawnHere();
     }
 
-    public float getEyeHeight()
-    {
+    public float getEyeHeight() {
         return this.height / 2.0F;
     }
 
     @Nullable
-    protected ResourceLocation getLootTable()
-    {
+    protected ResourceLocation getLootTable() {
         return LootTableList.ENTITIES_BAT;
     }
 

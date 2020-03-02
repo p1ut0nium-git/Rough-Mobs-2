@@ -17,22 +17,18 @@ public class ServerProxy implements IProxy {
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		System.out.println("SERVER: preInit()");
 	}
 	
 	@Override
 	public void init(FMLInitializationEvent event) {
-		System.out.println("SERVER: init()");
 	}
 	
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
-		System.out.println("SERVER: postInit()");
 	}
 	
     @Override
     public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) {
-		System.out.println("SERVER: getPlayer");
         return ctx.getServerHandler().player;
     }
 	
@@ -42,7 +38,6 @@ public class ServerProxy implements IProxy {
 
 	@Override
 	public ListenableFuture<Object> addScheduledTask(Runnable runnableToSchedule, MessageContext ctx) {
-		System.out.println("SERVER: addScheduledTask");
 		return ctx.getServerHandler().player.getServer().addScheduledTask(runnableToSchedule);
 	}
 }
