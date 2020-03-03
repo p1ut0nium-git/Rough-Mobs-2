@@ -2,12 +2,15 @@ package com.p1ut0nium.roughmobsrevamped.util.handlers;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.lwjgl.opengl.GL11;
+
 import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
-import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
-import com.p1ut0nium.roughmobsrevamped.util.Helpers;
+import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Helpers;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -33,13 +36,13 @@ public class FogEventHandler {
     private static EntityLiving closestBoss;
     private static float closestBossDistance;
 
-    private static int fogNearPlaneConfig = BossApplier.bossFogStartDistance;
-    private static int fogMaxDistConfig = BossApplier.bossFogMaxDistance;
-    private static int fogFarPlaneConfig = BossApplier.bossFogFarPlane;
-    private static float fogFarPlaneScaleConfig = BossApplier.bossFogFarPlaneScale;
-    private static float fogColorConfigRed = Float.parseFloat(BossApplier.bossFogColor[0]);
-    private static float fogColorConfigGreen = Float.parseFloat(BossApplier.bossFogColor[1]);
-    private static float fogColorConfigBlue = Float.parseFloat(BossApplier.bossFogColor[2]);
+    private static int fogNearPlaneConfig = BossHelper.bossFogStartDistance;
+    private static int fogMaxDistConfig = BossHelper.bossFogMaxDistance;
+    private static int fogFarPlaneConfig = BossHelper.bossFogFarPlane;
+    private static float fogFarPlaneScaleConfig = BossHelper.bossFogFarPlaneScale;
+    private static float fogColorConfigRed = Float.parseFloat(BossHelper.bossFogColor[0]);
+    private static float fogColorConfigGreen = Float.parseFloat(BossHelper.bossFogColor[1]);
+    private static float fogColorConfigBlue = Float.parseFloat(BossHelper.bossFogColor[2]);
     
     private static float currentFogColorRed;
     private static float currentFogColorGreen;
@@ -65,7 +68,7 @@ public class FogEventHandler {
    		FOG_BLUE = event.getBlue();
 
        	// If player, then check for bosses in range.
-        if (event.getEntity() instanceof EntityPlayer && BossApplier.bossFogEnabled) {
+        if (event.getEntity() instanceof EntityPlayer && BossHelper.bossFogEnabled) {
 
             EntityLiving boss = checkForBossInRange(event);
      
@@ -93,7 +96,7 @@ public class FogEventHandler {
    		FOG_MAX_FARPLANE = event.getFarPlaneDistance();
    		// currentFarPlaneScale = FOG_MAX_FARPLANE_SCALE;
 
-        if (event.getEntity() instanceof EntityPlayer && BossApplier.bossFogEnabled) {
+        if (event.getEntity() instanceof EntityPlayer && BossHelper.bossFogEnabled) {
 
         	EntityLiving boss = checkForBossInRange(event);
             

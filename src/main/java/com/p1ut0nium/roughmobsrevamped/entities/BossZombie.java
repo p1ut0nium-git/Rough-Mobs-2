@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
+import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 
@@ -23,8 +23,8 @@ import net.minecraft.world.storage.loot.LootTableList;
 public class BossZombie extends EntityZombie implements IBoss {
 	
 	private static int MAX_ATTACK_RANGE = 30;
-	private static int BAT_MINIONS_MAX = BossApplier.bossBatSwarmCount;
-	private static int BATSWARM_DELAY = BossApplier.bossBatSwarmDelay * 20;
+	private static int BAT_MINIONS_MAX = BossHelper.bossBatSwarmCount;
+	private static int BATSWARM_DELAY = BossHelper.bossBatSwarmDelay * 20;
 	
 	private int batSwarmTick;
 	

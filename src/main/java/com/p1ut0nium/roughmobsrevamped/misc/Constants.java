@@ -253,4 +253,11 @@ public class Constants {
 	        "witch;*",
 	        "ghast;*"
 	};
+	
+	public static final String[] DEFAULT_TARGETS = {
+			"pig;bosszombie",
+			"pig;zombie",
+			"sheep;zombie",
+			"sheep;skeleton"
+	};
 }
