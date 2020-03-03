@@ -148,7 +148,8 @@ public class RoughApplier {
 			if (features.isEntity(entity))
 			{
 				// Don't attempt to add equipment to a boss. It has already been given equipment in the BossApplier class
-				if (!isBoss) {
+				// Also test if baby zombies should have equipment
+				if (!isBoss || ((EntityLiving)entity).isChild() && SpawnHelper.disableBabyZombieEquipment() != true) {
 				// Test to see if equip stage is disabled or if it is enabled and player has it
 					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
 	

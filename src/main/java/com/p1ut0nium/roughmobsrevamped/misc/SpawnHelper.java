@@ -40,9 +40,14 @@ public class SpawnHelper {
 	private static int maxSpawnHeight;
 	private static int minDistFromSpawn;
 	private static boolean disableBabyZombies;
+	private static boolean disableBabyZombieEquipment;
 
 	public static boolean disableBabyZombies() {
 		return disableBabyZombies;
+	}
+	
+	public static boolean disableBabyZombieEquipment() {
+		return disableBabyZombieEquipment;
 	}
 
 	public static class SpawnEntry {
@@ -216,6 +221,8 @@ public class SpawnHelper {
 		
 		String[] options = RoughConfig.getStringArray("spawnEntries", "_List", Constants.DEFAULT_SPAWN_ENTRIES, "");
 		disableBabyZombies = RoughConfig.getBoolean("spawnEntries", "_DisableBabyZombies", false, "Set to true to disable spawning of baby zombies.");
+		disableBabyZombieEquipment = RoughConfig.getBoolean("spawnEntries", "_DisableBabyZombieEquipment", false, "Set to true to disable baby zombies getting equipment.");
+		
 		fillEntries(options);
 	}
 

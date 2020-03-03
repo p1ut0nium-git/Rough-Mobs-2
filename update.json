@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+    "2.3.10": "Added config option to disable baby zombies from having equipment; ...",
     "2.3.9": "Added ability for mobs to attack other mobs (configurable); Added ability to disable baby zombie spawns (configurable); Created new global boss config options",
     "2.3.8": "Boss fog greatly improved; new config file needed",
     "2.3.7": "Improved boss fog for zombie bosses; Added new bat swarm attack to zombie bosses; Adde audio for bat swarm attack",
@@ -26,7 +27,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.3.8",
-    "1.12.2-recommended": "2.3.8"
+    "1.12.2-latest": "2.3.9",
+    "1.12.2-recommended": "2.3.9"
   }
 }
