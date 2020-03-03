@@ -3,7 +3,7 @@ package com.p1ut0nium.roughmobsrevamped.proxy;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.p1ut0nium.roughmobsrevamped.client.model.render.RenderHostileBat;
 import com.p1ut0nium.roughmobsrevamped.entities.EntityHostileBat;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;

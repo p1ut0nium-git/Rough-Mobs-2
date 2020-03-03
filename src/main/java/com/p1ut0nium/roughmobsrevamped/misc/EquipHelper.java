@@ -9,6 +9,8 @@ import java.lang.Math;
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
+
 import java.util.Random;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.enchantment.Enchantment;

@@ -1,9 +1,9 @@
 package com.p1ut0nium.roughmobsrevamped.features;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper.Rider;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

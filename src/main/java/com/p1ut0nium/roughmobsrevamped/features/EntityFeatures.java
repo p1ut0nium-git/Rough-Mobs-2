@@ -6,7 +6,7 @@ import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;

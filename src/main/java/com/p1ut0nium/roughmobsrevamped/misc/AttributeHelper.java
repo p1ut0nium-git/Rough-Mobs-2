@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.google.common.collect.Multimap;
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 import com.google.common.collect.ArrayListMultimap;
 
 import net.minecraft.entity.Entity;

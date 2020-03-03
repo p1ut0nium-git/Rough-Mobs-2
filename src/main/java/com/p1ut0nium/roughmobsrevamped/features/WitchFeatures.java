@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAIMobBuff;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

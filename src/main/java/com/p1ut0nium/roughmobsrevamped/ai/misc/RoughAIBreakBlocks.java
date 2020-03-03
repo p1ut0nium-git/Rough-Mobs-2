@@ -3,7 +3,7 @@ package com.p1ut0nium.roughmobsrevamped.ai.misc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockMobSpawner;

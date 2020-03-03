@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -46,7 +47,7 @@ public class TargetHelper {
 																+ "\nUse \"*\" instead of the victim or attacker if you want this for all entities except players");
 		
 		String[] attackers = RoughConfig.getStringArray("targetAttacker", "_List", Constants.DEFAULT_TARGETS, "");
-		enableTargetAlways = RoughConfig.getBoolean("targetAttacker", "_Enabled", false, "Set to true to enable the target always feature.");
+		enableTargetAlways = RoughConfig.getBoolean("targetAttacker", "_Enabled", false, "Set to true to enable the target attacker feature.");
 		ignoreSpawnConditions = RoughConfig.getBoolean("targetAttacker", "_IgnoreSpawnConditions", true, "Disable to require spawn conditions be met in order for target attacker feature to work.");
 		
 		fillList(attackers, "targetattacker");

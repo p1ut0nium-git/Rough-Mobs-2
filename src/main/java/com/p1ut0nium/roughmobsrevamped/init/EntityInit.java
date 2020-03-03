@@ -4,7 +4,7 @@ import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
 import com.p1ut0nium.roughmobsrevamped.entities.EntityHostileBat;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

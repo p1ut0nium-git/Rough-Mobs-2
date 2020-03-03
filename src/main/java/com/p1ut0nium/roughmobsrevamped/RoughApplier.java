@@ -26,10 +26,10 @@ import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombiePigmanFeatures;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;

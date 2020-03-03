@@ -8,6 +8,7 @@ import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
 import com.p1ut0nium.roughmobsrevamped.entities.IBoss;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 
 import net.minecraft.entity.Entity;

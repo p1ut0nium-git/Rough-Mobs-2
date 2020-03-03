@@ -1,4 +1,4 @@
-package com.p1ut0nium.roughmobsrevamped.misc;
+package com.p1ut0nium.roughmobsrevamped.util;
 
 import java.util.ArrayList;
 import java.util.List;

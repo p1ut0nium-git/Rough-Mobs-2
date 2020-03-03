@@ -2,7 +2,7 @@ package com.p1ut0nium.roughmobsrevamped.ai.misc;
 
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;

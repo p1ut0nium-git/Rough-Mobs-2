@@ -1,6 +1,6 @@
 package com.p1ut0nium.roughmobsrevamped.util.handlers;
 
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;

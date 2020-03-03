@@ -1,7 +1,7 @@
 package com.p1ut0nium.roughmobsrevamped.compat;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
 import net.minecraft.world.World;
 import sereneseasons.api.season.SeasonHelper;

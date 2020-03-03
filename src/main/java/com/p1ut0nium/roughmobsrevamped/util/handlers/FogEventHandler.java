@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
 import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 import com.p1ut0nium.roughmobsrevamped.util.Helpers;
 
 import net.minecraft.entity.EntityLiving;

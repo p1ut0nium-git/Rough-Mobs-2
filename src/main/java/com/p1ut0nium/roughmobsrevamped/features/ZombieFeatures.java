@@ -5,12 +5,12 @@ import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAILeapAtTargetChanced;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAIBreakBlocks;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISunlightBurn;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper.HorseType;
+import com.p1ut0nium.roughmobsrevamped.util.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 
 import net.minecraft.block.Block;
