@@ -35,12 +35,11 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Version checking chat output with config option to disable
 * In-game config
 * Spawn replacement (convert mob type into another mob type on spawn)
-* Configure mob to always attack list of other mobs (zombies attack pigs, etc.)
 * Zombies use bows
 * Giants?
 * Additional mob abilities & AI
-* Tougher Bosses
-* Boss visual effects
+* Horde AI
+* Skeleton boss fireball attack
 
 ***In Development***
 
