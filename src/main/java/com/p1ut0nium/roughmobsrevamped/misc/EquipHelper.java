@@ -33,6 +33,11 @@ public class EquipHelper {
 	private static boolean chanceTimeMultiplier;
 	private static boolean chanceDistanceMultiplier;
 	private static int distThreshold;
+	private static boolean disableBabyZombieEquipment;
+	
+	public static boolean disableBabyZombieEquipment() {
+		return disableBabyZombieEquipment;
+	}
 	
 	public static class EquipmentApplier {
 		
@@ -203,10 +208,6 @@ public class EquipHelper {
 				enchChance = RoughConfig.getInteger(formatName, "EnchantChance", enchChanceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per item) to enchant newly given items\nSet to 0 to disable item enchanting", true);
 			}
 			
-			chanceTimeMultiplier = RoughConfig.getBoolean(formatName, "TimeMultiplier", true, "Should rough mobs get more gear as it gets closer to midnight?", true);
-			chanceDistanceMultiplier = RoughConfig.getBoolean(formatName, "DistanceMultiplier", true, "Should rough mobs get more gear based upon distance from world spawn?", true);
-			distThreshold = RoughConfig.getInteger(formatName, "DistanceThreshold", 1000, 0, Integer.MAX_VALUE, "The distance threshold used to calculate the DistanceMultiplier.\nShorter distances here means mobs will be tougher closer to the World Spawn.", true);
-			
 			enchMultiplier = RoughConfig.getFloat(formatName, "EnchantMultiplier", enchMultiplierDefault, 0F, 1F, "Multiplier for the applied enchantment level with the max. level. The level can still be a bit lower\ne.g. 0.5 would make sharpness to be at most level 3 (5 x 0.5 = 2.5 and [2.5] = 3) and fire aspect would always be level 1 (2 x 0.5 = 1)", true);
 			dropChance = RoughConfig.getFloat(formatName, "DropChance", dropChanceDefault, 0F, 1F, "Chance (per slot) that the " + name + " drops the equipped item (1 = 100%, 0 = 0%)", true);
 			
@@ -219,6 +220,13 @@ public class EquipHelper {
 			
 			equipWeaponEnchants = RoughConfig.getStringArray(formatName, "WeaponEnchants", defaultWeaponEnchants, "Enchantments which can be applied to mainhand and offhand items");
 			equipArmorEnchants = RoughConfig.getStringArray(formatName, "ArmorEnchants", defaultArmorEnchants, "Enchantments which can be applied to armor items");
+			
+			RoughConfig.getConfig().addCustomCategoryComment("Equipment_GlobalOptions", "Options to control equipment spawning across all mobs that can wear equipment.");
+			
+			chanceTimeMultiplier = RoughConfig.getBoolean("Equipment_GlobalOptions", "_TimeMultiplier", true, "Should rough mobs get more gear as it gets closer to midnight?");
+			chanceDistanceMultiplier = RoughConfig.getBoolean("Equipment_GlobalOptions", "_DistanceMultiplier", true, "Should rough mobs get more gear based upon distance from world spawn?");
+			distThreshold = RoughConfig.getInteger("Equipment_GlobalOptions", "_DistanceThreshold", 1000, 0, Integer.MAX_VALUE, "The distance threshold used to calculate the DistanceMultiplier.\nShorter distances here means mobs will have more gear closer to the World Spawn.");
+			disableBabyZombieEquipment = RoughConfig.getBoolean("Equipment_GlobalOptions", "_DisableBabyZombieEquipment", true, "Set to true to disable baby zombies getting equipment.");
 			
 			return formatName;
 		}
@@ -472,10 +480,10 @@ public class EquipHelper {
 			// Convert time in ticks to hours
 			byte currentHour = (byte) Math.floor(currentTime / 1000);
 
-			// Add additional 16% bonus every hour from 8 PM to midnight
+			// Add additional 16% bonus every hour from 8 PM to midnight up to 100% bonus
 			if (currentHour >= 13 && currentHour <= 18)
 				timeChanceIncrease = (float)((currentHour - 12) * 0.16);
-			// Remove 25% bonus every hour from 1 AM to 6 AM
+			// Remove 25% bonus every hour from 1 AM to 6 AM up to 100% bonus
 			else if (currentHour > 18 && currentHour <= 22)
 				timeChanceIncrease = (float)(Math.abs(currentHour - 23) * 0.25);
 		}

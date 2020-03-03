@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
 public class BossSkeleton extends EntitySkeleton implements IBoss {
+	
+	//TODO private double[] bossColorTheme = {1.0, 0.0, 0.0};
 
 	public BossSkeleton(World worldIn) {
 		super(worldIn);
@@ -66,5 +68,15 @@ public class BossSkeleton extends EntitySkeleton implements IBoss {
     protected ResourceLocation getLootTable() {
         return LootTableList.ENTITIES_ZOMBIE;
     }
+    
+    /* TODO
+	public double[] getBossColorTheme() {
+		return bossColorTheme;
+	}
+
+	public void setBossColorTheme(String[] bossColorTheme) {
+		this.bossColorTheme = Arrays.stream(bossColorTheme).mapToDouble(Double::parseDouble).toArray();
+	}
+	*/
 }
 

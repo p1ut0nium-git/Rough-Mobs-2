@@ -33,21 +33,15 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class SpawnHelper {
 	
 	public static final List<SpawnEntry> ENTRIES = new ArrayList<SpawnEntry>();
-	
-	//TODO private static int mobKillsNeeded;
+
 	private static int playerSpawnLevel;
 	private static boolean isUndergroundEnabled;
 	private static int maxSpawnHeight;
 	private static int minDistFromSpawn;
 	private static boolean disableBabyZombies;
-	private static boolean disableBabyZombieEquipment;
 
 	public static boolean disableBabyZombies() {
 		return disableBabyZombies;
-	}
-	
-	public static boolean disableBabyZombieEquipment() {
-		return disableBabyZombieEquipment;
 	}
 
 	public static class SpawnEntry {
@@ -205,7 +199,6 @@ public class SpawnHelper {
 		RoughConfig.getConfig().addCustomCategoryComment("SpawnConditions", "Configuration options which affect when Rough Mobs can spawn");
 		
 		playerSpawnLevel = RoughConfig.getInteger("SpawnConditions", "_MinPlayerLevel", 0, 0, Short.MAX_VALUE, "Player's Minecraft Experience Level required before a Rough Mob will spawn.");
-		//TODO mobKillsNeeded = RoughConfig.getInteger("SpawnConditions", "_MobsToKillForBoss", 0, 0, 1000, "Number of Rough Mobs to kill before a Rough Mob Boss has a chance to spawn.");
 		isUndergroundEnabled = RoughConfig.getBoolean("SpawnConditions", "_MustBeUnderground", false, "Enable this to require Rough Mobs be underground in order to spawn.");
 		maxSpawnHeight = RoughConfig.getInteger("SpawnConditions", "_MaxSpawnHeight", 256, 0, 256, "Set maximum height for Rough Mobs to spawn. Works in conjunction with MustBeUnderground.");
 		minDistFromSpawn = RoughConfig.getInteger("SpawnConditions", "_MinDistanceFromSpawn", 0, 0, Integer.MAX_VALUE, "Set the minimum distance from the world spawn before a Rough Mob can spawn.");
@@ -221,7 +214,6 @@ public class SpawnHelper {
 		
 		String[] options = RoughConfig.getStringArray("spawnEntries", "_List", Constants.DEFAULT_SPAWN_ENTRIES, "");
 		disableBabyZombies = RoughConfig.getBoolean("spawnEntries", "_DisableBabyZombies", false, "Set to true to disable spawning of baby zombies.");
-		disableBabyZombieEquipment = RoughConfig.getBoolean("spawnEntries", "_DisableBabyZombieEquipment", false, "Set to true to disable baby zombies getting equipment.");
 		
 		fillEntries(options);
 	}

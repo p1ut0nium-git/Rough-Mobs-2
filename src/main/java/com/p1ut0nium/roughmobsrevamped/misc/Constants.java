@@ -47,6 +47,12 @@ public class Constants {
 			"0.1"
 	};
 	
+	public static final String[] BOSS_COLORS = {
+			"0.0",
+			"1.0",
+			"0.0"
+	};
+	
 	public static final String[] SEASONS = {
 			"SUMMER",
 			"AUTUMN",
@@ -255,7 +261,6 @@ public class Constants {
 	};
 	
 	public static final String[] DEFAULT_TARGETS = {
-			"pig;bosszombie",
 			"pig;zombie",
 			"sheep;zombie",
 			"sheep;skeleton"

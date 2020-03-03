@@ -1,5 +1,6 @@
 package com.p1ut0nium.roughmobsrevamped.misc;
 
+import java.util.List;
 import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
@@ -73,6 +74,7 @@ public class BossHelper {
 		
 		private int bossChance;
 		private String[] bossNames;
+		// TODO private String[] bossColors;
 		
 		public BossApplier(String name, int defaultBossChance, float defaultEnchMultiplier, float defaultDropChance, String[] defaultBossNames) {
 			
@@ -97,8 +99,9 @@ public class BossHelper {
 									Constants.DEFAULT_ARMOR_ENCHANTS, 
 									true);
 			
-			bossChance = RoughConfig.getInteger(name, "BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
-			bossNames = RoughConfig.getStringArray(name, "BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");
+			bossChance = RoughConfig.getInteger(name, "_BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
+			bossNames = RoughConfig.getStringArray(name, "_BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");
+			//TODO bossColors = RoughConfig.getStringArray(name, "_BossColors", Constants.BOSS_COLORS, "(WIP) Color theme for boss particles, etc.\nValues are Red, Green, Blue from 0.0 to 1.0");
 		}
 
 		public void postInit() {
@@ -118,12 +121,12 @@ public class BossHelper {
 			switch (entityTypeName) {
 				case "Zombie":
 					boss = new BossZombie(entity.world);
-					((BossZombie) boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					boss.setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.spawnEntity((BossZombie) boss);				
 					break;
 				case "Skeleton":
 					boss = new BossSkeleton(entity.world);
-					((BossSkeleton) boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					boss.setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.spawnEntity((BossSkeleton) boss);
 					break;				
 			}
@@ -132,9 +135,11 @@ public class BossHelper {
 			entity.setDead();
 			
 			if(boss != null) {
+				
+				//TODO boss.setBossColorTheme(bossColors);
 			
 				// Add custom attributes
-				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, ((EntityLiving)boss).getMaxHealth()*2);
+				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, boss.getMaxHealth()*2);
 				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
 				
 				// Add equipment
@@ -143,7 +148,7 @@ public class BossHelper {
 				
 				// Set Bosses name
 				String bossName = bossNames[RND.nextInt(bossNames.length)];
-				((EntityLiving)boss).setCustomNameTag(bossName);
+				boss.setCustomNameTag(bossName);
 				
 				// Add chat message warning of new boss
 				// TODO - move to network packets?
@@ -153,19 +158,20 @@ public class BossHelper {
 					bossWarningMsg.getStyle().setBold(true);
 					
 					// TODO Change to all players within boosWarningDist
-					EntityPlayer closestPlayer = ((EntityLiving)boss).world.getClosestPlayerToEntity((EntityLiving)boss, bossWarningDist);
-					if (closestPlayer != null) {
-						closestPlayer.sendMessage(bossWarningMsg);
+					List<EntityPlayer> players = boss.getEntityWorld().getEntitiesWithinAABB(EntityPlayer.class, (boss.getEntityBoundingBox().grow(bossWarningDist)));
+					if (players != null) {
+						for (EntityPlayer player : players)
+							player.sendMessage(bossWarningMsg);
 					}
 				}
 				
 				// Play warning sound of boss spawn
 				if (bossWarningSound) {
-					((EntityLiving)boss).playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
+					boss.playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
 				}
 				
 				// Add Boss features
-				((EntityLiving)boss).getEntityData().setBoolean(BOSS, true);
+				boss.getEntityData().setBoolean(BOSS, true);
 				addBossFeatures((EntityLiving)boss);
 				
 				return (EntityLiving)boss;

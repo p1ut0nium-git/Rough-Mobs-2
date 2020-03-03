@@ -27,8 +27,9 @@ public class BossZombie extends EntityZombie implements IBoss {
 	private static int BATSWARM_DELAY = BossHelper.bossBatSwarmDelay * 20;
 	
 	private int batSwarmTick;
-	
 	private List<EntityHostileBat> batMinions = new ArrayList<EntityHostileBat>();
+	
+	// TODO private double[] bossColorTheme = {0.0, 1.0, 0.0};
 	
 	public BossZombie(World worldIn) {
 		super(worldIn);
@@ -138,4 +139,14 @@ public class BossZombie extends EntityZombie implements IBoss {
     protected ResourceLocation getLootTable() {
         return LootTableList.ENTITIES_ZOMBIE;
     }
+    
+    /* TODO
+	public double[] getBossColorTheme() {
+		return bossColorTheme;
+	}
+
+	public void setBossColorTheme(String[] bossColorTheme) {
+		this.bossColorTheme = Arrays.stream(bossColorTheme).mapToDouble(Double::parseDouble).toArray();
+	}
+	*/
 }

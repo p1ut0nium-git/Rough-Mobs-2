@@ -21,6 +21,7 @@ public class TargetHelper {
 	private static final List<TargetEntry> BlockerList = new ArrayList<TargetEntry>();
 	
 	public static boolean enableTargetAlways;
+	public static boolean ignoreSpawnConditions;
 	private static final List<TargetEntry> AttackerList = new ArrayList<TargetEntry>();
 	
 	public static void init() {
@@ -46,6 +47,7 @@ public class TargetHelper {
 		
 		String[] attackers = RoughConfig.getStringArray("targetAttacker", "_List", Constants.DEFAULT_TARGETS, "");
 		enableTargetAlways = RoughConfig.getBoolean("targetAttacker", "_Enabled", false, "Set to true to enable the target always feature.");
+		ignoreSpawnConditions = RoughConfig.getBoolean("targetAttacker", "_IgnoreSpawnConditions", true, "Disable to require spawn conditions be met in order for target attacker feature to work.");
 		
 		fillList(attackers, "targetattacker");
 	}

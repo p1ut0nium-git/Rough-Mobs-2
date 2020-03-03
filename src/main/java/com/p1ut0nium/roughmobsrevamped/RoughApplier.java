@@ -27,14 +27,13 @@ import com.p1ut0nium.roughmobsrevamped.features.ZombiePigmanFeatures;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -149,7 +148,7 @@ public class RoughApplier {
 			{
 				// Don't attempt to add equipment to a boss. It has already been given equipment in the BossApplier class
 				// Also test if baby zombies should have equipment
-				if (!isBoss || ((EntityLiving)entity).isChild() && SpawnHelper.disableBabyZombieEquipment() != true) {
+				if (!isBoss || ((EntityLiving)entity).isChild() && EquipHelper.disableBabyZombieEquipment() == false) {
 				// Test to see if equip stage is disabled or if it is enabled and player has it
 					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
 	
@@ -182,19 +181,21 @@ public class RoughApplier {
 		
 		Entity entity = event.getEntity();
 		boolean isBoss = entity instanceof IBoss;
+		boolean canSpawn = SpawnHelper.checkSpawnConditions(event);
 		
-		// If the entity is not a boss, then test spawn conditions
-		if (!isBoss && !SpawnHelper.checkSpawnConditions(event))
+		// If enabled and the entity can spawn, add additional targets from config
+		// Also add additional targets if the entity is ignoring spawn conditions
+		if (TargetHelper.targetAttackerEnabled() && canSpawn || TargetHelper.targetAttackerEnabled() && TargetHelper.ignoreSpawnConditions)
+			TargetHelper.setTargets(entity);
+		
+		// If entity failed spawn conditions, and isn't a boss, then exit event and spawn vanilla mob with no features added
+		if (!isBoss && !canSpawn)
 			return;
-			
+		
 		getGameStages(entity.world.getClosestPlayerToEntity(entity, -1.0D));
 		addAttributes(entity);
 		addFeatures(event, entity);
-		
-		// Add additional targets from config
-		if (TargetHelper.targetAttackerEnabled())
-			TargetHelper.setTargets(entity);
-		
+
 		entity.getEntityData().setBoolean(FEATURES_APPLIED, true);
 	}
 	
@@ -207,20 +208,14 @@ public class RoughApplier {
 		
 		if (trueSource == null || target == null || target instanceof FakePlayer || trueSource instanceof FakePlayer || immediateSource instanceof FakePlayer || target.world.isRemote)
 			return;
-		
-		// boolean finish = false;
-		for (EntityFeatures features : FEATURES) 
-		{
-			if (trueSource instanceof EntityLiving && features.isEntity((EntityLiving)trueSource) && !(target instanceof EntityPlayer && ((EntityPlayer)target).isCreative())) 
-			{
+
+		for (EntityFeatures features : FEATURES) {
+			if (trueSource instanceof EntityLiving && features.isEntity((EntityLiving)trueSource) && !(target instanceof EntityPlayer && ((EntityPlayer)target).isCreative())) {
 				features.onAttack((EntityLiving)trueSource, immediateSource, target, event);
-				// finish = true;
 			}
 			
-			if (target instanceof EntityLiving && features.isEntity((EntityLiving)target) && !(trueSource instanceof EntityPlayer && ((EntityPlayer)trueSource).isCreative())) 
-			{
+			if (target instanceof EntityLiving && features.isEntity((EntityLiving)target) && !(trueSource instanceof EntityPlayer && ((EntityPlayer)trueSource).isCreative())) {
 				features.onDefend((EntityLiving)target, trueSource, immediateSource, event);
-				// finish = true;
 			}
 		}
 	}
@@ -233,10 +228,8 @@ public class RoughApplier {
 		if (deadEntity == null || deadEntity.world.isRemote || !(deadEntity instanceof EntityLiving))
 			return;
 		
-		for (EntityFeatures features : FEATURES) 
-		{
-			if (features.isEntity((EntityLiving)deadEntity)) 
-			{
+		for (EntityFeatures features : FEATURES) {
+			if (features.isEntity((EntityLiving)deadEntity)) {
 				features.onDeath((EntityLiving)deadEntity, event.getSource());
 			}
 		}
@@ -250,10 +243,8 @@ public class RoughApplier {
 		if (entity == null || entity.world.isRemote || !(entity instanceof EntityLiving))
 			return;
 		
-		for (EntityFeatures features : FEATURES) 
-		{
-			if (features.isEntity((EntityLiving)entity)) 
-			{
+		for (EntityFeatures features : FEATURES) {
+			if (features.isEntity((EntityLiving)entity)) {
 				features.onFall((EntityLiving)entity, event);
 			}
 		}
@@ -267,8 +258,7 @@ public class RoughApplier {
 		if (player == null || player.world.isRemote || player.isCreative())
 			return;
 		
-		for (EntityFeatures features : FEATURES) 
-		{
+		for (EntityFeatures features : FEATURES) {
 			features.onBlockBreak(player, event);
 		}
 	}
@@ -281,8 +271,7 @@ public class RoughApplier {
 		
 		Class<? extends Entity> validAttacker = TargetHelper.getBlockerEntityForTarget(event.getTarget());
 		
-		if (validAttacker != null && validAttacker.isInstance(event.getEntityLiving())) 
-		{
+		if (validAttacker != null && validAttacker.isInstance(event.getEntityLiving())) {
 			EntityPlayer player = event.getEntityLiving().getEntityWorld().getNearestAttackablePlayer(event.getEntityLiving(), 32, 32);
 			
 			if (player != null && player.isOnSameTeam(event.getEntityLiving()))
