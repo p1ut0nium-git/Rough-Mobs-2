@@ -66,7 +66,7 @@ public class ZombieFeatures extends EntityFeatures {
 					for (int i = 0; i < 4; i++) 
 					{
 						EntityZombie zombieMinion = new EntityZombie(entity.getEntityWorld());
-						zombieMinion.setPosition(entity.posX + (Math.min(1, Math.random() * 4)), entity.posY, entity.posZ + (Math.min(1, Math.random() * 4)));
+						zombieMinion.setPosition(entity.posX + Math.random() - Math.random(), entity.posY + Math.random(), entity.posZ + Math.random() - Math.random());
 						zombieMinion.onInitialSpawn(entity.getEntityWorld().getDifficultyForLocation(entity.getPosition()), null);
 						zombieMinion.setChild(true);
 						zombieMinion.getEntityData().setBoolean(BOSS_MINION, true);
