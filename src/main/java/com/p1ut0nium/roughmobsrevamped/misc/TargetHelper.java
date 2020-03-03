@@ -40,9 +40,9 @@ public class TargetHelper {
 		RoughConfig.getConfig().addCustomCategoryComment("targetAttacker", "Entities always attack these targets."
 																+ "\ne.g. Zombies always attack pigs."
 																+ "\nTakes 2 arguments divided by a semicolon per entry. victim;attacker"
-																+ "\nvictim: The entity which should be targeted (entity name)"
+																+ "\nvictim: The entity which should be attacked (entity name)"
 																+ "\nattacker: the attacker entity (entity name)"
-																+ "\nMultiple entires for the same victim or attacker are allowed"
+																+ "\nMultiple entries for the same victim or attacker are allowed"
 																+ "\nUse \"*\" instead of the victim or attacker if you want this for all entities except players");
 		
 		String[] attackers = RoughConfig.getStringArray("targetAttacker", "_List", Constants.DEFAULT_TARGETS, "");
