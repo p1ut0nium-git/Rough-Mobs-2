@@ -11,6 +11,8 @@ import com.p1ut0nium.roughmobsrevamped.misc.MountHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper.HorseType;
+import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -59,16 +61,18 @@ public class ZombieFeatures extends EntityFeatures {
 		bossApplier = new BossApplier(name, 200, 1F, 0.2F, new String[]{"Zombie King", "Flesh King", "Dr. Zomboss", "Azog", "Zon-Goku", "Amy", "Z0mb3y"}) {
 			
 			@Override
-			public void addBossFeatures(EntityLiving entity) {	
-				for (int i = 0; i < 4; i++) 
-				{
-					EntityZombie zombieMinion = new EntityZombie(entity.getEntityWorld());
-					zombieMinion.setPosition(entity.posX, entity.posY, entity.posZ);
-					zombieMinion.onInitialSpawn(entity.getEntityWorld().getDifficultyForLocation(entity.getPosition()), null);
-					zombieMinion.setChild(true);
-					zombieMinion.getEntityData().setBoolean(BOSS_MINION, true);
-					
-					entity.world.spawnEntity(zombieMinion);
+			public void addBossFeatures(EntityLiving entity) {
+				if (SpawnHelper.disableBabyZombies() == false) {
+					for (int i = 0; i < 4; i++) 
+					{
+						EntityZombie zombieMinion = new EntityZombie(entity.getEntityWorld());
+						zombieMinion.setPosition(entity.posX, entity.posY, entity.posZ);
+						zombieMinion.onInitialSpawn(entity.getEntityWorld().getDifficultyForLocation(entity.getPosition()), null);
+						zombieMinion.setChild(true);
+						zombieMinion.getEntityData().setBoolean(BOSS_MINION, true);
+						
+						entity.world.spawnEntity(zombieMinion);
+					}
 				}
 			}
 		};

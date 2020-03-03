@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+    "2.3.9": "Added ability for mobs to attack other mobs (configurable); Added ability to disable baby zombie spawns (configurable); Created new global boss config options",
     "2.3.8": "Boss fog greatly improved; new config file needed",
     "2.3.7": "Improved boss fog for zombie bosses; Added new bat swarm attack to zombie bosses; Adde audio for bat swarm attack",
     "2.3.6": "Added colored fog around bosses (configurable); Added additional boss audio",

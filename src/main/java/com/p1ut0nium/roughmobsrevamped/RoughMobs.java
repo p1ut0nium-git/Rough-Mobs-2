@@ -11,8 +11,6 @@
 
 package com.p1ut0nium.roughmobsrevamped;
 
-import java.awt.Color;
-
 import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.Logger;

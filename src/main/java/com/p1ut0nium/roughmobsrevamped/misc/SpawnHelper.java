@@ -14,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
@@ -24,6 +25,7 @@ import net.minecraft.world.biome.BiomeHell;
 import net.minecraft.world.biome.BiomeVoid;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -37,6 +39,11 @@ public class SpawnHelper {
 	private static boolean isUndergroundEnabled;
 	private static int maxSpawnHeight;
 	private static int minDistFromSpawn;
+	private static boolean disableBabyZombies;
+
+	public static boolean disableBabyZombies() {
+		return disableBabyZombies;
+	}
 
 	public static class SpawnEntry {
 		
@@ -207,7 +214,8 @@ public class SpawnHelper {
 														"type:\t\tSpawn Type (AMBIENT = day and night, CREATURE = day only, MONSTER = night only and not in peaceful mode, WATER_CREATURE = only in water)\n" +
 														"biomes:\tBiome name/id/type (Can be more than one). Put a \"!\" in front of the biome to revert this feature and disable entity spawning in the biome. Use " + SpawnEntry.OW_TYPE + " for all non nether/end biomes (Doesn't work with BoP hell biomes). Leave this blank for every biome!");
 		
-		String[] options = RoughConfig.getStringArray("spawnEntries", "List", Constants.DEFAULT_SPAWN_ENTRIES, "");
+		String[] options = RoughConfig.getStringArray("spawnEntries", "_List", Constants.DEFAULT_SPAWN_ENTRIES, "");
+		disableBabyZombies = RoughConfig.getBoolean("spawnEntries", "_DisableBabyZombies", false, "Set to true to disable spawning of baby zombies.");
 		fillEntries(options);
 	}
 
@@ -267,11 +275,21 @@ public class SpawnHelper {
 		}
 	}
 	
-	public static boolean checkSpawnConditions(Entity entity) {
+	public static boolean checkSpawnConditions(EntityJoinWorldEvent event) {
 		
+		Entity entity = event.getEntity();
 		EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
 		World world = entity.getEntityWorld();
 
+		// Test to see if the entity is a baby zombie
+		if (entity.getClass() == EntityZombie.class) {
+			if (((EntityZombie) entity).isChild() == true && disableBabyZombies == true) {
+				entity.setDead();
+				event.setCanceled(true);
+				return false;
+			}
+		}
+		
 		// Test to see if it is the appropriate season to spawn rough mobs
 		boolean sereneSeasonsEnabled = CompatHandler.isSereneSeasonsLoaded();
 		String currentSeason = null;

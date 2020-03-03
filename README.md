@@ -23,6 +23,8 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Mobs spawn with more equipment as it gets closer to midnight (toggleable)
 * Bosses have customizable fog that follows them around
 * Bosses can use Bat Swarm attack
+* Mobs can attack other mobs (configurable)
+* Disable baby zombie spawns (toggleable)
 
 ***Planned***
 

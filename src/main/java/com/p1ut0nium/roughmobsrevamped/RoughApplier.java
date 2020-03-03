@@ -25,13 +25,16 @@ import com.p1ut0nium.roughmobsrevamped.features.WitherFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombiePigmanFeatures;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
+import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -82,6 +85,8 @@ public class RoughApplier {
 		for (EntityFeatures features : FEATURES) 
 			features.preInit();
 		
+		
+		
 		RoughConfig.loadFeatures();
 	}		
 	
@@ -94,6 +99,8 @@ public class RoughApplier {
 		
 		SpawnHelper.initSpawnOption();
 		SpawnHelper.addEntries();
+		
+		BossHelper.initGlobalBossConfig();
 		
 		TargetHelper.init();
 		
@@ -176,12 +183,16 @@ public class RoughApplier {
 		boolean isBoss = entity instanceof IBoss;
 		
 		// If the entity is not a boss, then test spawn conditions
-		if (!isBoss && !SpawnHelper.checkSpawnConditions(entity))
+		if (!isBoss && !SpawnHelper.checkSpawnConditions(event))
 			return;
 			
 		getGameStages(entity.world.getClosestPlayerToEntity(entity, -1.0D));
 		addAttributes(entity);
 		addFeatures(event, entity);
+		
+		// Add additional targets from config
+		if (TargetHelper.targetAttackerEnabled())
+			TargetHelper.setTargets(entity);
 		
 		entity.getEntityData().setBoolean(FEATURES_APPLIED, true);
 	}
