@@ -71,8 +71,8 @@ public class BossHelper {
 		
 		bossBatSwarmCount = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmCount", 3, 0, Short.MAX_VALUE, "The number of bats that attack when a boss fires his Bat Swarm ability.");
 		bossBatSwarmDelay = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmDelay", 3, 0, Short.MAX_VALUE, "The cooldown in seconds before the boss can fire Bat Swarm again.");
-		bossBatSwarmRange = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmRange", 20, 0, Short.MAX_VALUE, "How close a player must be to the boss before it will fire off a Bat Swarm attack.");
-		bossBatSwarmAttackRange = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmAttackRange", 20, 0, Short.MAX_VALUE, "How close a player must be before the bat swarmp attacks.");
+		bossBatSwarmRange = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmUseRange", 20, 0, Short.MAX_VALUE, "How close a player must be to the boss before it will fire off a Bat Swarm attack.");
+		bossBatSwarmAttackRange = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmAttackRange", 20, 0, Short.MAX_VALUE, "How close a player must be before the bat swarm attacks.");
 		bossBatSwarmDamage = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmDamage", 1, 0, Short.MAX_VALUE, "How much damage each bat does on attack.");
 		bossBatSwarmHealth = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmHealth", 6, 1, Short.MAX_VALUE, "How much health each bat in the swarm has.");
 	}
