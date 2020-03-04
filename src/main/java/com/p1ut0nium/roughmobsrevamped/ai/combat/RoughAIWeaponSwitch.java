@@ -1,3 +1,7 @@
+/*
+ * This class/code courtesy of Laike-Endaril from Dynamic Stealth
+ */
+
 package com.p1ut0nium.roughmobsrevamped.ai.combat;
 
 import net.minecraft.entity.EntityLiving;
