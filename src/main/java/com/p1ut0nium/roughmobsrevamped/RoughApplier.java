@@ -83,9 +83,7 @@ public class RoughApplier {
 		
 		for (EntityFeatures features : FEATURES) 
 			features.preInit();
-		
-		
-		
+
 		RoughConfig.loadFeatures();
 	}		
 	
