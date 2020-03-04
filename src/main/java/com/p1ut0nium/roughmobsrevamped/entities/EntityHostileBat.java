@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAIBatAttack;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAIBatTarget;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAIBatFlight;
+import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -101,7 +102,7 @@ public class EntityHostileBat extends EntityCreature {
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(BossHelper.bossBatSwarmHealth);
     }
 
     public boolean getIsBatHanging() {

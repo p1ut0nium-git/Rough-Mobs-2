@@ -1,6 +1,7 @@
 package com.p1ut0nium.roughmobsrevamped.ai.combat;
 
 import com.p1ut0nium.roughmobsrevamped.entities.EntityHostileBat;
+import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,7 +10,7 @@ import net.minecraft.util.DamageSource;
 
 public class RoughAIBatAttack extends EntityAIBase {
 
-	private static int BAT_DAMAGE = 1;
+	private static int BAT_DAMAGE = BossHelper.bossBatSwarmDamage;
 	
     private final EntityHostileBat hostileBat;
     private Entity entityTarget;

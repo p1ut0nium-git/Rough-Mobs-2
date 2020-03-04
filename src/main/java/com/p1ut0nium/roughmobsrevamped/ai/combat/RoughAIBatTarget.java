@@ -1,6 +1,7 @@
 package com.p1ut0nium.roughmobsrevamped.ai.combat;
 
 import com.p1ut0nium.roughmobsrevamped.entities.EntityHostileBat;
+import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -8,7 +9,7 @@ import net.minecraft.entity.ai.EntityAITarget;
 
 public class RoughAIBatTarget extends EntityAITarget {
 
-	private static double MAX_TARGET_RANGE = 10;
+	private static double MAX_TARGET_RANGE = BossHelper.bossBatSwarmAttackRange;
 	
     private EntityHostileBat hostileBat;
     private EntityLivingBase theTarget;
