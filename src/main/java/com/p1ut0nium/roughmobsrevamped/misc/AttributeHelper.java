@@ -134,7 +134,7 @@ public class AttributeHelper {
 					entity.setHealth(entity.getMaxHealth());
 			}
 			else
-				RoughMobs.logError("Error on attribute modification: \"" + attribute.attribute + "\" is not a valid attribute");
+				RoughMobs.logError("Error on attribute modification: \"" + attribute.attribute + "\" is not a valid attribute. Affected Entity: " + entity);
 			
 			i++;
 		}
