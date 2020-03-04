@@ -122,12 +122,12 @@ public class BossHelper {
 			switch (entityTypeName) {
 				case "Zombie":
 					boss = new BossZombie(entity.world);
-					boss.setPosition(entity.posX, entity.posY, entity.posZ);
+					((EntityLiving)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.spawnEntity((BossZombie) boss);				
 					break;
 				case "Skeleton":
 					boss = new BossSkeleton(entity.world);
-					boss.setPosition(entity.posX, entity.posY, entity.posZ);
+					((EntityLiving)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.spawnEntity((BossSkeleton) boss);
 					break;				
 			}
@@ -140,7 +140,7 @@ public class BossHelper {
 				//TODO boss.setBossColorTheme(bossColors);
 			
 				// Add custom attributes
-				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, boss.getMaxHealth()*2);
+				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, ((EntityLiving)boss).getMaxHealth()*2);
 				AttributeHelper.applyAttributeModifier((EntityLiving)boss, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
 				
 				// Add equipment
@@ -149,7 +149,7 @@ public class BossHelper {
 				
 				// Set Bosses name
 				String bossName = bossNames[RND.nextInt(bossNames.length)];
-				boss.setCustomNameTag(bossName);
+				((EntityLiving)boss).setCustomNameTag(bossName);
 				
 				// Add chat message warning of new boss
 				// TODO - move to network packets?
@@ -159,7 +159,7 @@ public class BossHelper {
 					bossWarningMsg.getStyle().setBold(true);
 					
 					// TODO Change to all players within boosWarningDist
-					List<EntityPlayer> players = boss.getEntityWorld().getEntitiesWithinAABB(EntityPlayer.class, (boss.getEntityBoundingBox().grow(bossWarningDist)));
+					List<EntityPlayer> players = ((EntityLiving)boss).world.getEntitiesWithinAABB(EntityPlayer.class, (((EntityLiving)boss).getEntityBoundingBox().grow(bossWarningDist)));
 					if (players != null) {
 						for (EntityPlayer player : players)
 							player.sendMessage(bossWarningMsg);
@@ -168,11 +168,11 @@ public class BossHelper {
 				
 				// Play warning sound of boss spawn
 				if (bossWarningSound) {
-					boss.playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
+					((EntityLiving)boss).playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
 				}
 				
 				// Add Boss features
-				boss.getEntityData().setBoolean(BOSS, true);
+				((EntityLiving)boss).getEntityData().setBoolean(BOSS, true);
 				addBossFeatures((EntityLiving)boss);
 				
 				return (EntityLiving)boss;
