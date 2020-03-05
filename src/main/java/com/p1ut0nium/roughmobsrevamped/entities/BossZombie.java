@@ -27,24 +27,24 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class BossZombie extends EntityZombie implements IBoss {
 	
+	// Bat Swarm variables
 	private static boolean BATSWARM_ENABLED = BossHelper.bossBatSwarmEnabled;
 	private static int BATSWARM_ATTACK_RANGE = BossHelper.bossBatSwarmRange;
 	private static int BATSWARM_MINIONS_MAX = BossHelper.bossBatSwarmCount;
 	private static int BATSWARM_DELAY = BossHelper.bossBatSwarmDelay * 20;
-	
-	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
-    private static int FOG_DOT_DELAY = BossHelper.bossFogDoTDelay * 20;
+	private List<EntityHostileBat> batMinions = new ArrayList<EntityHostileBat>();
+	private static int batSwarmTick;
+
+	// Fog variables
     private static boolean FOG_DOT_ENABLED = BossHelper.bossFogDoTEnabled;
     private static boolean FOG_WARNING_ENABLED = BossHelper.bossFogDoTWarning;
-    private static int FOG_WARNING_TIME = BossHelper.bossFogDoTWarningTime;
-    
-	private static int fog_dot_tick;
-	private static int batSwarmTick;
-    
+	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
+    private static int FOG_DOT_DELAY = BossHelper.bossFogDoTDelay * 20;
+    private static int FOG_WARNING_TIME = BossHelper.bossFogDoTWarningTime * 20;    
     private HashMap<String, Long> playersWarned = new HashMap<>();
     private List<EntityPlayer> playersInFog = new ArrayList<EntityPlayer>();
     private TextComponentString fogWarningMsg;
-	private List<EntityHostileBat> batMinions = new ArrayList<EntityHostileBat>();
+	private static int fog_dot_tick;
 
 	// TODO private double[] bossColorTheme = {0.0, 1.0, 0.0};
 	

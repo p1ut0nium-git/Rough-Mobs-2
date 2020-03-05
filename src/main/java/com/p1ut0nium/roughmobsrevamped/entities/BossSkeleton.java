@@ -26,19 +26,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
 public class BossSkeleton extends EntitySkeleton implements IBoss {
-	
-	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
-    private static int FOG_DOT_DELAY = BossHelper.bossFogDoTDelay * 20;
+
+	// Fog variables
     private static boolean FOG_DOT_ENABLED = BossHelper.bossFogDoTEnabled;
     private static boolean FOG_WARNING_ENABLED = BossHelper.bossFogDoTWarning;
-    private static int FOG_WARNING_TIME = BossHelper.bossFogDoTWarningTime;
-    
-	private static int fog_dot_tick;
-    
+	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
+    private static int FOG_DOT_DELAY = BossHelper.bossFogDoTDelay * 20;
+    private static int FOG_WARNING_TIME = BossHelper.bossFogDoTWarningTime * 20;
     private HashMap<String, Long> playersWarned = new HashMap<>();
     private List<EntityPlayer> playersInFog = new ArrayList<EntityPlayer>();
     private TextComponentString fogWarningMsg;
-	
+	private static int fog_dot_tick;
+
 	//TODO private double[] bossColorTheme = {1.0, 0.0, 0.0};
 
 	public BossSkeleton(World worldIn) {
