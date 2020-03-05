@@ -7,6 +7,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
+import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
+import com.p1ut0nium.roughmobsrevamped.util.Helpers;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 
@@ -25,29 +27,31 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class BossZombie extends EntityZombie implements IBoss {
 	
+	private static boolean BATSWARM_ENABLED = BossHelper.bossBatSwarmEnabled;
 	private static int BATSWARM_ATTACK_RANGE = BossHelper.bossBatSwarmRange;
 	private static int BATSWARM_MINIONS_MAX = BossHelper.bossBatSwarmCount;
 	private static int BATSWARM_DELAY = BossHelper.bossBatSwarmDelay * 20;
 	
 	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
     private static int FOG_DOT_DELAY = BossHelper.bossFogDoTDelay * 20;
-    private static int FOG_DOT_DAMAGE = BossHelper.bossFogDoTDamage;
     private static boolean FOG_DOT_ENABLED = BossHelper.bossFogDoTEnabled;
     private static boolean FOG_WARNING_ENABLED = BossHelper.bossFogDoTWarning;
+    private static int FOG_WARNING_TIME = BossHelper.bossFogDoTWarningTime;
     
 	private static int fog_dot_tick;
 	private static int batSwarmTick;
     
-    private List<EntityPlayer> playersInFogRange;
-    private HashMap<String, Boolean> playersWarned = new HashMap<>();
+    private HashMap<String, Long> playersWarned = new HashMap<>();
+    private List<EntityPlayer> playersInFog = new ArrayList<EntityPlayer>();
     private TextComponentString fogWarningMsg;
 	private List<EntityHostileBat> batMinions = new ArrayList<EntityHostileBat>();
-	
+
 	// TODO private double[] bossColorTheme = {0.0, 1.0, 0.0};
 	
 	public BossZombie(World worldIn) {
 		super(worldIn);
         this.experienceValue = 100;
+        
         fog_dot_tick = 0;
         batSwarmTick = 0;
         
@@ -85,7 +89,7 @@ public class BossZombie extends EntityZombie implements IBoss {
             if (batSwarmTick == 0) {
             	batSwarmTick = BATSWARM_DELAY;
 
-		        if (closetPlayer != null && this.canEntityBeSeen(closetPlayer) && closetPlayer.getDistance(this) <= BATSWARM_ATTACK_RANGE) {
+		        if (BATSWARM_ENABLED && closetPlayer != null && this.canEntityBeSeen(closetPlayer) && closetPlayer.getDistance(this) <= BATSWARM_ATTACK_RANGE) {
 		        	if (batMinions.isEmpty()) {
 		        		for (int i = 0; i < BATSWARM_MINIONS_MAX; i++) {
 		        			EntityHostileBat bat = new EntityHostileBat(this.world);
@@ -115,14 +119,40 @@ public class BossZombie extends EntityZombie implements IBoss {
 	        }
 	        
 	        if (FOG_DOT_ENABLED) {
-	        	playersInFogRange = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(FOG_MAX_DISTANCE));
-				if (playersInFogRange != null) {
+	        	List<EntityPlayer> playersInRange = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(FOG_MAX_DISTANCE));
+	        	
+	    		// Test to see if playersInRange actually contains players
+	    		if (Helpers.containsInstance(playersInRange, EntityPlayer.class)) {
 
-					// Warn player when entering poisonous fog.
-					for (EntityPlayer player : playersInFogRange) {
-						if (FOG_WARNING_ENABLED && !playersWarned.containsKey(player.getName())) {
-							player.sendMessage(fogWarningMsg);
-							playersWarned.put(player.getName(), true);
+					// For each player in range
+					for (EntityPlayer player : playersInRange) {
+						
+						// Add new player to list of players in the fog
+						if (!playersInFog.contains(player)) {
+							playersInFog.add(player);
+							
+							// If fog warning is enabled...
+							if (FOG_WARNING_ENABLED) {
+								// Warn players on first entering the fog and add them to the players warned list
+								if (!playersWarned.containsKey(player.getName())) {
+									playersWarned.put(player.getName(), world.getWorldTime() + FOG_WARNING_TIME);
+									player.sendMessage(fogWarningMsg);
+								}
+								// If warned player hasn't been warned in a while, warn them again
+								else if (playersWarned.containsKey(player.getName()) && world.getWorldTime() >= playersWarned.get(player.getName())) {
+									playersWarned.replace(player.getName(), world.getWorldTime() + FOG_WARNING_TIME);
+									player.sendMessage(fogWarningMsg);
+								}
+							}
+						}
+					}
+					
+					// For each player marked as "in the fog"
+					for (EntityPlayer playerInFog : playersInFog) {
+						
+						// Remove them from the "in fog" list if they are no longer in range
+						if (!Helpers.containsPlayer(playersInRange, playerInFog)) {
+							playersInFog.remove(playerInFog);
 						}
 					}
 
@@ -133,18 +163,18 @@ public class BossZombie extends EntityZombie implements IBoss {
 					
 					// Damage player while inside fog.
 					if (fog_dot_tick == 0) {
-						for (EntityPlayer player : playersInFogRange) {
-							// player.addPotionEffect(new PotionEffect(MobEffects.POISON, FOG_DOT_DELAY, 1, false, true));
-							player.attackEntityFrom(DamageSource.GENERIC, FOG_DOT_DAMAGE);
+						for (EntityPlayer player : playersInRange) {
+							player.attackEntityFrom(DamageSourceFog.POISONOUS_FOG, 0);
 						}
 					}
 
 					fog_dot_tick += 1;
 				}
-				
-				else {
-					playersWarned.clear();
-				}
+	    		
+	    		// If no players are in range, then clear the list that keeps track of all players in the fog
+	    		else if (!Helpers.containsInstance(playersInRange, EntityPlayer.class)) {
+	    			playersInFog.clear();
+	    		}
 	        }
         }
 
@@ -174,6 +204,10 @@ public class BossZombie extends EntityZombie implements IBoss {
         //TODO Is there a better way of handling this?
         FogEventHandler.bossDied = true;
     }
+	
+	protected boolean canDespawn() {
+		return false;
+	}
     
     protected SoundEvent getAmbientSound() {
         return SoundHandler.ENTITY_BOSS_IDLE;

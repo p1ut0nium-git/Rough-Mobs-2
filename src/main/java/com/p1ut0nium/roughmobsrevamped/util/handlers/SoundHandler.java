@@ -12,12 +12,14 @@ public class SoundHandler {
 	public static SoundEvent ENTITY_BOSS_IDLE;
 	public static SoundEvent ENTITY_BOSS_DEATH;
 	public static SoundEvent ENTITY_BOSS_BATSWARM;
+	public static SoundEvent ENTITY_PLAYER_COUGH;
 	
 	public static void registerSounds() {
 		ENTITY_BOSS_SPAWN = registerSound("entity.boss.boss_spawn");
 		ENTITY_BOSS_IDLE = registerSound("entity.boss.boss_idle");
 		ENTITY_BOSS_DEATH = registerSound("entity.boss.boss_death");
 		ENTITY_BOSS_BATSWARM = registerSound("entity.boss.boss_batswarm");
+		ENTITY_PLAYER_COUGH = registerSound("entity.player.player_cough");
 	}
 	
 	private static SoundEvent registerSound(String name) {

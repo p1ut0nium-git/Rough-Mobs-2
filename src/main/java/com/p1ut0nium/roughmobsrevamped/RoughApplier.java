@@ -30,12 +30,16 @@ import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
+import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
+import com.p1ut0nium.roughmobsrevamped.util.handlers.FogEventHandler;
+import com.p1ut0nium.roughmobsrevamped.util.handlers.SoundHandler;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -165,6 +169,28 @@ public class RoughApplier {
 		}
 	}
 	
+	//TODO Move this to fog handler?
+	@SubscribeEvent
+	public void onEntityHurt(LivingAttackEvent event) {
+		if (event.getEntity() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) event.getEntity();
+			if (!player.isCreative()) {
+				if (event.getSource().equals(DamageSourceFog.POISONOUS_FOG)) {
+					
+					if (BossHelper.bossFogPlayerCough)
+						playHurtSound(player);
+				
+					player.setHealth(player.getHealth() - BossHelper.bossFogDoTDamage);
+					event.setCanceled(true);
+				}
+			}
+		}
+	}
+	
+	private void playHurtSound(EntityPlayer player) {
+		player.world.playSound(null, player.getPosition(), SoundHandler.ENTITY_PLAYER_COUGH, SoundCategory.PLAYERS, 1.0F, (float)Math.max(0.75, Math.random()));
+	}
+	
 	/*
 	 * When an entity spawns, we do all the magic, such as adding equipment and AI, trying to turn it into a boss, etc.
 	 */
@@ -172,6 +198,10 @@ public class RoughApplier {
 	//TODO Move to SpawnHandler class?
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
+		
+		if (event.getEntity() instanceof EntityPlayer) {
+			FogEventHandler.playerRespawned = true;
+		}
 		
 		// Ignore spawn if on the client side, or if entity is the player.
 		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)

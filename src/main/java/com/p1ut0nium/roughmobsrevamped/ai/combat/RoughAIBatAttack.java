@@ -6,7 +6,6 @@ import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.DamageSource;
 
 public class RoughAIBatAttack extends EntityAIBase {
 
@@ -73,9 +72,8 @@ public class RoughAIBatAttack extends EntityAIBase {
                 for (; xKnock * xKnock + zKnock * zKnock < 1.0E-4D; zKnock = (Math.random() - Math.random()) * 0.01D) {
                     xKnock = (Math.random() - Math.random()) * 0.01D;
                 }
+
                 hostileBat.knockBack(entityTarget, 0, xKnock, zKnock);
-                
-                entityTarget.attackEntityFrom(DamageSource.causeMobDamage(hostileBat), BAT_DAMAGE);
             }
         }
     }

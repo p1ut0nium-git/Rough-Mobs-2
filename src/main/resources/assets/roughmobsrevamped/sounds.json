@@ -18,5 +18,10 @@
     "category": "entity",
     "subtitle": "entity.boss.boss_batswarm",
     "sounds": [{ "name": "roughmobsrevamped:entity/boss/boss_batswarm", "stream": true}]
+  },
+  "entity.player.player_cough": {
+    "category": "entity",
+    "subtitle": "entity.player.player_cough",
+    "sounds": [{ "name": "roughmobsrevamped:entity/player/player_cough", "stream": true}]
   } 
 }

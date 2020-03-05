@@ -34,12 +34,15 @@ public class BossHelper {
 	public static int bossFogFarPlane;
 	public static float bossFogFarPlaneScale;
 	public static int bossFogStartDistance;
+	public static boolean bossFogPlayerCough;
 	
 	public static boolean bossFogDoTEnabled;
 	public static int bossFogDoTDelay;
 	public static boolean bossFogDoTWarning;
+	public static int bossFogDoTWarningTime;
 	public static int bossFogDoTDamage;
 	
+	public static boolean bossBatSwarmEnabled;
 	public static int bossBatSwarmCount;
 	public static int bossBatSwarmDelay;
 	public static int bossBatSwarmRange;
@@ -59,7 +62,7 @@ public class BossHelper {
 		
 		bossFogEnabled = RoughConfig.getBoolean("Boss_GlobalOptions", "_Fog", true, "Enable this to have thick colored fog around bosses.");
 		bossFogColor = RoughConfig.getStringArray("Boss_GlobalOptions", "_FogColor", Constants.FOG_COLORS, "Change these three values between 0.0 and 1.0 to change the fog color.\nRed, Green, Blue\n");
-		bossFogMaxDistance = RoughConfig.getInteger("Boss_GlobalOptions", "_FogMaxDist", 50, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distance");
+		bossFogMaxDistance = RoughConfig.getInteger("Boss_GlobalOptions", "_FogMaxDist", 20, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distance");
 		bossFogStartDistance = RoughConfig.getInteger("Boss_GlobalOptions", "_FogStartDist", 1, 0, 50, "How far away from boss before fog begins to fade from maximum density.\nMust be a value lower than BossFogMaxDist");
 		bossFogFarPlane = RoughConfig.getInteger("Boss_GlobalOptions", "_FogFarPlane", 10, 0, 192, "This effects how far away from you before the fog is at maximum thickness.");
 		bossFogFarPlaneScale = RoughConfig.getFloat("Boss_GlobalOptions", "_FogFarPlaneScale", 0.2F, 0.0F, 0.8F, "This controls how thick/strong the fog is.");
@@ -67,13 +70,16 @@ public class BossHelper {
 		bossFogDoTEnabled = RoughConfig.getBoolean("Boss_GlobalOptions", "_FogDoTEnabled", true, "If enabled, boss fog will cause poison damage over time.");
 		bossFogDoTDelay = RoughConfig.getInteger("Boss_GlobalOptions", "_FogDoTDelay", 10, 0, Short.MAX_VALUE, "Fires off a poison DoT every X seconds while inside the fog.");
 		bossFogDoTWarning = RoughConfig.getBoolean("Boss_GlobalOptions", "_FogDoTWarning", true, "Should the player recieve a chat warning message when entering the poisonous fog?");
-		bossFogDoTDamage = RoughConfig.getInteger("Boss_GlobalOptions", "_FogDoTDamage", 1, 0, Short.MAX_VALUE, "How much damage the fog DoT does per hit.");
+		bossFogDoTWarningTime = RoughConfig.getInteger("Boss_GlobalOptions", "_FogDoTWarningTime", 1000, 1, Short.MAX_VALUE, "Controls how frequent a player can be warned when entering boss fog.");
+		bossFogDoTDamage = RoughConfig.getInteger("Boss_GlobalOptions", "_FogDoTDamage", 1, 1, 127, "How many half hearts the fog DoT does per hit.");
+		bossFogPlayerCough = RoughConfig.getBoolean("Boss_GlobalOptions", "_FogPlayerCough", true, "Disable this if you find the player cough sound annoying.");
 		
+		bossBatSwarmEnabled = RoughConfig.getBoolean("Boss_GlobalOptions", "_BatSwarmEnabled", true, "Disable this if you don't want bosses to use Bat Swarm attacks.");
 		bossBatSwarmCount = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmCount", 3, 0, Short.MAX_VALUE, "The number of bats that attack when a boss fires his Bat Swarm ability.");
 		bossBatSwarmDelay = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmDelay", 3, 0, Short.MAX_VALUE, "The cooldown in seconds before the boss can fire Bat Swarm again.");
 		bossBatSwarmRange = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmUseRange", 20, 0, Short.MAX_VALUE, "How close a player must be to the boss before it will fire off a Bat Swarm attack.");
 		bossBatSwarmAttackRange = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmAttackRange", 20, 0, Short.MAX_VALUE, "How close a player must be before the bat swarm attacks.");
-		bossBatSwarmDamage = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmDamage", 1, 0, Short.MAX_VALUE, "How much damage each bat does on attack.");
+		bossBatSwarmDamage = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmDamage", 1, 0, Short.MAX_VALUE, "How many half hearts (minus damage immunity) each bat does on attack.");
 		bossBatSwarmHealth = RoughConfig.getInteger("Boss_GlobalOptions", "_BatSwarmHealth", 6, 1, Short.MAX_VALUE, "How much health each bat in the swarm has.");
 	}
 	

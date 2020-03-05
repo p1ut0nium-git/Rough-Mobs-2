@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +28,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
-public class EntityHostileBat extends EntityCreature {
+public class EntityHostileBat extends EntityMob {
+	
+	private static double BAT_DAMAGE = BossHelper.bossBatSwarmDamage;
+	private static double BAT_HEALTH = BossHelper.bossBatSwarmHealth;
 
     private static final DataParameter<Byte> HANGING = EntityDataManager.<Byte>createKey(EntityBat.class, DataSerializers.BYTE);
     /** Coordinates of where the bat spawned. */
@@ -47,6 +51,12 @@ public class EntityHostileBat extends EntityCreature {
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(HANGING, Byte.valueOf((byte)0));
+    }
+    
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(BAT_DAMAGE);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(BAT_HEALTH);
     }
 
 	public void setBoss(BossZombie boss) {
@@ -99,11 +109,6 @@ public class EntityHostileBat extends EntityCreature {
     }
 
     protected void collideWithNearbyEntities() {}
-
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(BossHelper.bossBatSwarmHealth);
-    }
 
     public boolean getIsBatHanging() {
         return (((Byte)this.dataManager.get(HANGING)).byteValue() & 1) != 0;

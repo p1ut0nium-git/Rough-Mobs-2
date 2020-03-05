@@ -58,6 +58,7 @@ public class FogEventHandler {
 
     private static boolean outOfRange = true;
     public static boolean bossDied;
+    public static boolean playerRespawned;
 
     @SubscribeEvent
     public static void onGetFogColor(EntityViewRenderEvent.FogColors event) {
@@ -66,6 +67,13 @@ public class FogEventHandler {
    		FOG_RED = event.getRed();
    		FOG_GREEN = event.getGreen();
    		FOG_BLUE = event.getBlue();
+   		
+   		// If player just died and respawned, reset fog color to normal
+   		if (event.getEntity() instanceof EntityPlayer && playerRespawned) {
+   			event.setRed((float)FOG_RED);
+	        event.setGreen((float)FOG_GREEN);
+	        event.setBlue((float)FOG_BLUE);
+   		}
 
        	// If player, then check for bosses in range.
         if (event.getEntity() instanceof EntityPlayer && BossHelper.bossFogEnabled) {
@@ -88,13 +96,18 @@ public class FogEventHandler {
     		}
         }
     }
-    
+
     @SubscribeEvent
     public static void onRenderFog(EntityViewRenderEvent.RenderFogEvent event) {
 
     	// Set original fog far plane distance & scale
    		FOG_MAX_FARPLANE = event.getFarPlaneDistance();
-   		// currentFarPlaneScale = FOG_MAX_FARPLANE_SCALE;
+   		
+   		// If player just died and respawned, reset fog density to normal
+   		if (event.getEntity() instanceof EntityPlayer && playerRespawned) {
+   			renderFog(event.getFogMode(), FOG_MAX_FARPLANE, FOG_MAX_FARPLANE_SCALE);
+   			playerRespawned = false;
+   		}
 
         if (event.getEntity() instanceof EntityPlayer && BossHelper.bossFogEnabled) {
 

@@ -38,6 +38,18 @@ public abstract class Helpers {
 	}
 	
 	/*
+	 * Returns true if a list contains a player
+	 */
+	public static <EntityPlayer> boolean containsPlayer(List<EntityPlayer> list, EntityPlayer entity) {
+		for (EntityPlayer element : list) {
+			if (entity == element) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/*
 	 * Convert RGB values (0 to 255) to normalized values (0.0 - 1.0)
 	 */
 	public static Color normalizeRGB(short colorRed, short colorGreen, short colorBlue) {
