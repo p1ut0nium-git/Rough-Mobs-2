@@ -1,0 +1,52 @@
+{
+  "entity.boss.boss_spawn": {
+    "category": "entity",
+    "subtitle": "entity.boss.boss_spawn",
+    "sounds": [
+      { 
+        "name": "roughmobsrevamped:entity/boss/boss_spawn", 
+        "stream": true
+      }
+    ]
+  },
+  "entity.boss.boss_idle": {
+    "category": "entity",
+    "subtitle": "entity.boss.boss_idle",
+    "sounds": [
+      { 
+        "name": "roughmobsrevamped:entity/boss/boss_idle",
+        "stream": true
+      }
+    ]
+  },
+  "entity.boss.boss_death": {
+    "category": "entity",
+    "subtitle": "entity.boss.boss_death",
+    "sounds": [
+      { 
+        "name": "roughmobsrevamped:entity/boss/boss_death", 
+        "stream": true
+      }
+    ]
+  },
+  "entity.boss.boss_batswarm": {
+    "category": "entity",
+    "subtitle": "entity.boss.boss_batswarm",
+    "sounds": [
+      { 
+        "name": "roughmobsrevamped:entity/boss/boss_batswarm",
+        "stream": true
+      }
+    ]
+  },
+  "entity.player.player_cough": {
+    "category": "player",
+    "subtitle": "entity.player.player_cough",
+    "sounds": [
+      { 
+        "name": "roughmobsrevamped:entity/player/player_cough",
+        "stream": true
+      }
+    ]
+  } 
+}

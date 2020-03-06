@@ -1,17 +1,21 @@
 package com.p1ut0nium.roughmobsrevamped.client;
 
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.p1ut0nium.roughmobsrevamped.client.renderer.entity.HostileBatRenderer;
+import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
+import com.p1ut0nium.roughmobsrevamped.reference.Constants;
+
 /**
  * Subscribe to events from the MOD EventBus that should be handled on the PHYSICAL CLIENT side in this class
  *
- * @author Cadiboo
+ * @author p1ut0nium_94
  */
 @EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientModEventSubscriber {
@@ -27,6 +31,12 @@ public final class ClientModEventSubscriber {
 	@SubscribeEvent
 	public static void onClientSetup(final FMLClientSetupEvent event) {
 		LOGGER.info(Constants.MODID + ": #3 Client Setup");
+		
+		// Register Entity Renderers
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.HOSTILE_BAT.get(), HostileBatRenderer::new);
+		
+		
+		LOGGER.debug("Registered Entity Renderers");
 	}
 
 }

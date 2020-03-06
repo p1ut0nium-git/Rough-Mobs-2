@@ -1,42 +1,62 @@
-package com.p1ut0nium.roughmobsrevamped.misc;
+package com.p1ut0nium.roughmobsrevamped.reference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.entity.EntityType;
 
 public class Constants {
 	public static final String MODID = "roughmobsrevamped";
+	public static final String MODNAME = "Rough Mobs Revamped";
+	public static final String MODVERSION = "@VERSION@";
+	public static final String MODUPDATE = "https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/blob/1.12.2/update.json";
 
 	public static final String ROUGHMOBSALL = "roughmobsall";
 	public static final String ROUGHMOBSEQUIP = "roughmobsequip";
 	public static final String ROUGHMOBSBOSS = "roughmobsboss";
 	public static final String ROUGHMOBSABILS = "roughmobsabils";
 	public static final String ROUGHMOBSENCHANT = "roughmobsenchant";
+	
+	public static final int SEA_LEVEL = 62;
+	
+	public static final int ENTITY_BOSSZOMBIE = 300;
+	public static final int ENTITY_BOSSSKELETON = 301;
+	public static final int ENTITY_HOSTILEBAT = 302;
 
 	public static String unique(String id) {
 		return MODID + ":" + id;
 	}
-	
+
 	public static List<String> getRegNames(List<Class<? extends Entity>> entityClasses) {
 		
 		List<String> regNames = new ArrayList<String>();
 		
-		for(Class entityClass : entityClasses) {
-			String entityName = entityClass.getName();
-			System.out.println("ENTITY CLASS " + entityClass);
-			System.out.println("ENTITY REGISTRY NAME " + ForgeRegistries.ENTITIES.getRegistryName().toString());
-			System.out.println("ENTITY " + ForgeRegistries.ENTITIES.getValue(new ResourceLocation(entityName)));
-			
-			
-			regNames.add(entityName);
-			//regNames.add(EntityList.getKey(entityClass).toString());
+		for(Class<?> clazz : entityClasses) {
+			regNames.add(EntityType.byKey((clazz).toString()).toString());
 		}
 		
 		return regNames;
 	}
+	
+	public static final String[] FOG_COLORS = {
+			"0.1",
+			"0.4",
+			"0.1"
+	};
+	
+	public static final String[] BOSS_COLORS = {
+			"0.0",
+			"1.0",
+			"0.0"
+	};
+	
+	public static final String[] SEASONS = {
+			"SUMMER",
+			"AUTUMN",
+			"WINTER",
+			"SPRING"
+	};
 	
 	public static final String[] ATTRIBUTE_DEFAULT = {
 			"zombie;generic.maxHealth;1;0.5;/;1",
@@ -236,5 +256,11 @@ public class Constants {
 	        "cave_spider;*",
 	        "witch;*",
 	        "ghast;*"
+	};
+
+	public static final String[] DEFAULT_TARGETS = {
+			"pig;zombie",
+			"sheep;zombie",
+			"sheep;skeleton"
 	};
 }

@@ -2,16 +2,20 @@ package com.p1ut0nium.roughmobsrevamped.server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
 
+import com.p1ut0nium.roughmobsrevamped.reference.Constants;
+
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
+@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.FORGE, value=Dist.DEDICATED_SERVER)
 public final class ServerForgeEventSubscriber {
 
 	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + " Server Forge Event Subscriber");

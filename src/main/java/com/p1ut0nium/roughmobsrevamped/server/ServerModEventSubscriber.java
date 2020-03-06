@@ -2,7 +2,9 @@ package com.p1ut0nium.roughmobsrevamped.server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+
+import com.p1ut0nium.roughmobsrevamped.reference.Constants;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

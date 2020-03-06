@@ -4,7 +4,11 @@ import com.p1ut0nium.roughmobsrevamped.RoughApplier;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.config.ConfigHelper;
 import com.p1ut0nium.roughmobsrevamped.config.ConfigHolder;
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.reference.Constants;
+
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.config.ModConfig;
@@ -62,5 +66,20 @@ public final class CommonModEventSubscriber {
 			ConfigHelper.bakeServer(config);
 			LOGGER.debug("Baked server config");
 		}
+	}
+	
+	@SubscribeEvent
+	public void onPlayerLogIn(PlayerLoggedInEvent event) {
+		LOGGER.info(Constants.MODID + ": Player logged in.");
+	}
+	
+	@SubscribeEvent
+	public void onPlayerSleep(PlayerSleepInBedEvent event) {
+		LOGGER.info(Constants.MODID + ": Player sleep.");
+	}
+	
+	@SubscribeEvent
+	public void onPlayerFalls(LivingFallEvent event) {
+		LOGGER.info(Constants.MODID + ": Player Falls.");
 	}
 }

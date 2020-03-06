@@ -1,6 +1,7 @@
 package com.p1ut0nium.roughmobsrevamped.client;
 
-import com.p1ut0nium.roughmobsrevamped.misc.Constants;
+import com.p1ut0nium.roughmobsrevamped.reference.Constants;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
