@@ -1,18 +1,21 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.RoughMobs;
-import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.util.Constants;
+import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class TargetHelper {
@@ -27,6 +30,7 @@ public class TargetHelper {
 	
 	public static void init() {
 		
+		/* TODO Config
 		RoughConfig.getConfig().addCustomCategoryComment(CATEGORY, "Entities which can't be targeted by other entities."
 																+ "\ne.g. Skeletons can't target other Skeletons by shooting them accidentally"
 																+ "\nTakes 2 arguments divided by a semicolon per entry. victim;attacker"
@@ -51,6 +55,7 @@ public class TargetHelper {
 		ignoreSpawnConditions = RoughConfig.getBoolean("targetAttacker", "_IgnoreSpawnConditions", true, "Disable to require spawn conditions be met in order for target attacker feature to work.");
 		
 		fillList(attackers, "targetattacker");
+		*/
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -71,15 +76,17 @@ public class TargetHelper {
 					}
 					else
 					{
+						/* TODO get entity Class
 						Class<? extends Entity> clazz = EntityList.getClass(new ResourceLocation(split[i].trim()));
 						if (clazz == null)
 						{
 							if (listType == "targetblock")
-							RoughMobs.logError(listType + ": \"" + split[1] + "\" is not a valid entity!");
+							RoughMobsRevamped.LOGGER.error(listType + ": \"" + split[1] + "\" is not a valid entity!");
 							success = false;
 							break;
 						}
 						entities[i] = clazz;
+						*/
 					}
 				}
 				
@@ -90,7 +97,7 @@ public class TargetHelper {
 						AttackerList.add(new TargetEntry(entities[1], entities[0]));
 			}
 			else
-				RoughMobs.logError(listType + ": each option needs at least 2 arguments! (" + option + ")");
+				RoughMobsRevamped.LOGGER.error(listType + ": each option needs at least 2 arguments! (" + option + ")");
 		}
 	}
 
@@ -105,6 +112,7 @@ public class TargetHelper {
 		return null;
 	}
 
+	/* TODO AI
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void setTargets(Entity attacker) {
 		for (TargetEntry entry : AttackerList) {
@@ -112,6 +120,7 @@ public class TargetHelper {
 				((EntityLiving)attacker).targetTasks.addTask(1, new EntityAINearestAttackableTarget((EntityCreature) attacker, entry.getTargetClass(), true));
 		}
 	}
+	*/
 	
 	public static boolean targetBlockerEnabled() {
 		return enableTargetBlock;

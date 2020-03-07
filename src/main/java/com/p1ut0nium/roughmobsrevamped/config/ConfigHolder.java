@@ -7,7 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * This holds the Client & Server Configs and the Client & Server ConfigSpecs.
  * It can be merged into the main ExampleModConfig class, but is separate because of personal preference and to keep the code organised
  *
- * @author Cadiboo
+ * @author p1ut0nium
  */
 public final class ConfigHolder {
 

@@ -1,19 +1,28 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.entity.boss;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
+import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
 import com.p1ut0nium.roughmobsrevamped.util.Utilities;
 
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -49,8 +58,8 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 
 	// TODO private double[] bossColorTheme = {0.0, 1.0, 0.0};
 	
-	public ZombieChampionEntity(EntityType<? extends ZombieChampionEntity> type, World worldIn) {
-		super(type, worldIn);
+	public ZombieChampionEntity(EntityType<ZombieChampionEntity> zombie, World worldIn) {
+		super(zombie, worldIn);
         this.experienceValue = 100;
         
         fog_dot_tick = 0;
@@ -59,39 +68,32 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 		fogWarningMsg = new StringTextComponent("The thick fog reaches out for you... You begin to choke as you move through it.\nPerhaps you should find the source of the poisonous mist, or flee to safety.");
 		fogWarningMsg.getStyle().setColor(TextFormatting.DARK_GREEN);
 	}
-	
-	/*
-	public ZombieChampionEntity(World worldIn) {
-		this(EntityType.ZOMBIE, worldIn);
-	}
-	*/
-
 
 	@Override
 	public void onAddedToWorld() {
     	super.onAddedToWorld();
     	
         if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition())) {
-			this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
+        	this.world.addEntity(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
+			// this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
 			SoundEvent soundEvent = new SoundEvent(new ResourceLocation("entity.lightning.thunder"));
 			this.world.playSound(this.posX, this.posY, this.posZ, soundEvent, SoundCategory.AMBIENT, 100.0F, 1.0F, true);
         }
     }
 
 	@Override
-    public void onLivingUpdate() {
+    public void livingTick() {
 	
         if (this.world.isRemote) {
             for (int i = 0; i < 2; ++i) {
-                this.world.spawnParticle(ParticleTypes.LARGE_SMOKE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
+                this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
             }
         }
                 
         if (!this.world.isRemote) {
         	
+        	// TODO make sure player is not in creative
         	PlayerEntity closetPlayer = this.world.getClosestPlayer(this, FOG_MAX_DISTANCE);
-        	
-        	// TODO make sure player is not in creaive
         	
         	// Bat Swarm can only be fired every BATSWARM_DELAY ticks
         	batSwarmTick = Math.max(batSwarmTick - 1, 0);
@@ -105,9 +107,9 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 		        			// TODO change null to EntityType.HOSTILE_BAT
 		        			HostileBatEntity bat = new HostileBatEntity(null, this.world);
 		        			bat.setPosition(this.posX + Math.random() - Math.random(), this.posY + Math.random(), this.posZ + Math.random() - Math.random());
-		        			bat.onInitialSpawn(world, this.getEntityWorld().getDifficultyForLocation(this.getPosition()), null, null, leashNBTTag);
+		        			bat.onInitialSpawn(world, this.getEntityWorld().getDifficultyForLocation(this.getPosition()), SpawnReason.MOB_SUMMONED, null, null);
 		        			
-		        			this.world.spawnEntity(bat);
+		        			this.world.addEntity(bat);
 		        			
 		        			bat.setIsBatHanging(false);
 		        			bat.setBoss(this);
@@ -122,7 +124,7 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	        // Remove any dead bats from the group of batMinions
 	        if (!batMinions.isEmpty()) {
 	        	for (HostileBatEntity bat : batMinions) {
-	        		if (bat.isDead) {
+	        		if (!bat.isAlive()) {
 	        			batMinions.remove(bat);
 	        			break;
 	        		}
@@ -145,12 +147,12 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 							// If fog warning is enabled...
 							if (FOG_WARNING_ENABLED) {
 								// Warn players on first entering the fog and add them to the players warned list
-								if (!playersWarned.containsKey(player.getName())) {
+								if (!playersWarned.containsKey(player.getScoreboardName())) {
 									playersWarned.put(player.getScoreboardName(), world.getGameTime() + FOG_WARNING_TIME);
 									player.sendMessage(fogWarningMsg);
 								}
 								// If warned player hasn't been warned in a while, warn them again
-								else if (playersWarned.containsKey(player.getName()) && world.getGameTime() >= playersWarned.get(player.getName())) {
+								else if (playersWarned.containsKey(player.getScoreboardName()) && world.getGameTime() >= playersWarned.get(player.getScoreboardName())) {
 									playersWarned.replace(player.getScoreboardName(), world.getGameTime() + FOG_WARNING_TIME);
 									player.sendMessage(fogWarningMsg);
 								}
@@ -189,31 +191,31 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	        }
         }
 
-        super.onLivingUpdate();
+        super.livingTick();
     }
 	
 	// @SideOnly(Side.CLIENT)
 	private void playSoundBatSwarm() {
 		if (!world.isRemote)
-			this.playSound(SoundHandler.ENTITY_BOSS_BATSWARM, 1.0F, 1.0F);
+			this.playSound(ModSounds.ENTITY_BOSS_BATSWARM, 1.0F, 1.0F);
 	}
 
 	@Override
     public void onDeath(DamageSource cause) {
-        super.onDeath(cause);
-        
         // Max out batSwarmTick so no more bats can spawn
         batSwarmTick = BATSWARM_DELAY;
 
         // Kill all bat minions when boss dies
         if (!batMinions.isEmpty() ) {
 	        for (HostileBatEntity bat : batMinions) {
-	        	bat.setDead();
+	        	bat.remove();
 	        }
         }
         
         //TODO Is there a better way of handling this?
         FogEventHandler.bossDied = true;
+        
+        super.onDeath(cause);
     }
 	
 	protected boolean canDespawn() {
@@ -221,10 +223,10 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	}
     
     protected SoundEvent getAmbientSound() {
-        return SoundHandler.ENTITY_BOSS_IDLE;
+        return ModSounds.ENTITY_BOSS_IDLE;
     }
     
     protected SoundEvent getDeathSound() {
-        return SoundHandler.ENTITY_BOSS_DEATH;
+        return ModSounds.ENTITY_BOSS_DEATH;
     }
 }

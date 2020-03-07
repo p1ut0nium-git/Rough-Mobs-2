@@ -1,14 +1,25 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.features.EntityFeatures;
-import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
+import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper;
@@ -19,7 +30,6 @@ import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -74,7 +84,7 @@ public class RoughApplier {
 		for (EntityFeatures features : FEATURES) 
 			features.preInit();
 
-		RoughConfig.loadFeatures();
+		// TODO RoughConfig.loadFeatures();
 	}		
 	
 	public void postInit() {
@@ -85,13 +95,13 @@ public class RoughApplier {
 		AttributeHelper.initAttributeOption();
 		
 		SpawnHelper.initSpawnOption();
-		SpawnHelper.addEntries();
+		// TODO SpawnHelper.addEntries();
 		
 		BossHelper.initGlobalBossConfig();
 		
 		TargetHelper.init();
 		
-		RoughConfig.saveFeatures();
+		// TODO RoughConfig.saveFeatures();
 	}
 	
 	/*
@@ -125,7 +135,7 @@ public class RoughApplier {
 	 * Add equipment and enchantments, and AI
 	 * Also try to create bosses
 	 */
-	private void addFeatures(EntityJoinWorldEvent event, EntityType<?> entity) {
+	private void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		
 		boolean isBoss = entity instanceof IChampion;
 		
@@ -139,8 +149,8 @@ public class RoughApplier {
 				if (!isBoss || ((LivingEntity)entity).isChild() && EquipHelper.disableBabyZombieEquipment() == false) {
 				// Test to see if equip stage is disabled or if it is enabled and player has it
 					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
-	
-						if (!entity.getEntityData().getBoolean(FEATURES_APPLIED)) 
+						
+						if (!entity.getPersistentData().getBoolean(FEATURES_APPLIED)) 
 							features.addFeatures(event, entity);
 					}
 				}
@@ -148,14 +158,15 @@ public class RoughApplier {
 				// Test to see if abilities stage is disabled or if it is enabled and player has it
 				if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 
+					/* TODO AI
 					if (entity instanceof LivingEntity)
 						features.addAI(event, entity, ((LivingEntity)entity).tasks, ((LivingEntity)entity).targetTasks);
+					*/
 				}
 			}
 		}
 	}
 	
-	//TODO Move this to fog handler?
 	@SubscribeEvent
 	public void onEntityHurt(LivingAttackEvent event) {
 		if (event.getEntity() instanceof PlayerEntity) {
@@ -174,14 +185,12 @@ public class RoughApplier {
 	}
 	
 	private void playHurtSound(PlayerEntity player) {
-		player.world.playSound(null, player.getPosition(), SoundHandler.ENTITY_PLAYER_COUGH, SoundCategory.PLAYERS, 1.0F, (float)Math.max(0.75, Math.random()));
+		player.world.playSound(null, player.getPosition(), ModSounds.ENTITY_PLAYER_COUGH, SoundCategory.PLAYERS, 1.0F, (float)Math.max(0.75, Math.random()));
 	}
 	
 	/*
 	 * When an entity spawns, we do all the magic, such as adding equipment and AI, trying to turn it into a boss, etc.
 	 */
-	
-	//TODO Move to SpawnHandler class?
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
 		
@@ -199,8 +208,10 @@ public class RoughApplier {
 		
 		// If enabled and the entity can spawn, add additional targets from config
 		// Also add additional targets if the entity is ignoring spawn conditions
+		/* TODO AI
 		if (TargetHelper.targetAttackerEnabled() && canSpawn || TargetHelper.targetAttackerEnabled() && TargetHelper.ignoreSpawnConditions)
 			TargetHelper.setTargets(entity);
+		*/
 		
 		// If entity failed spawn conditions, and isn't a boss, then exit event and spawn vanilla mob with no features added
 		if (!isBoss && !canSpawn)
@@ -210,7 +221,8 @@ public class RoughApplier {
 		addAttributes(entity);
 		addFeatures(event, entity);
 
-		entity.getEntityData().setBoolean(FEATURES_APPLIED, true);
+		entity.getPersistentData().putBoolean(FEATURES_APPLIED, true);
+		// TODO entity.getEntityData().setBoolean(FEATURES_APPLIED, true);
 	}
 	
 	@SubscribeEvent

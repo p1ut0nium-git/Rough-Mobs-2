@@ -1,4 +1,17 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.common;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.p1ut0nium.roughmobsrevamped.RoughApplier;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
@@ -7,19 +20,15 @@ import com.p1ut0nium.roughmobsrevamped.config.ConfigHolder;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
- * Subscribe to events from the MOD EventBus that should be handled on both PHYSICAL sides in this class
- *
- * @author p1ut0nium_94
+ * Subscribe to events from the MOD EventBus that should be handled on both PHYSICAL sides
  */
 
 @EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -32,11 +41,9 @@ public final class CommonModEventSubscriber {
 	// Pre-Initialization
 	@SubscribeEvent
 	public static void onCommonSetup(final FMLCommonSetupEvent event) {
-		LOGGER.info(Constants.MODID + ": #2 COMMON - Mod Setup Event");
+		LOGGER.info(Constants.MODID + " Common ModSetupEvent");
 
 		// Register Config
-		
-		// TODO Config initialization
 		
 		// Initialize 3rd party mod support
 		CompatHandler.registerGameStages();
@@ -47,6 +54,7 @@ public final class CommonModEventSubscriber {
 		applier.preInit();
 		applier.postInit();
 	}
+
 
 	/**
 	 * This method will be called by Forge when a config changes.

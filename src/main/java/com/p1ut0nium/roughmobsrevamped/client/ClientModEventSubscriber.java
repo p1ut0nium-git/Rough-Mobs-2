@@ -1,40 +1,39 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.client;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.p1ut0nium.roughmobsrevamped.client.renderer.entity.HostileBatRenderer;
-import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
+import com.p1ut0nium.roughmobsrevamped.client.renderer.RendererRegistry;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
 /**
- * Subscribe to events from the MOD EventBus that should be handled on the PHYSICAL CLIENT side in this class
- *
- * @author p1ut0nium_94
+ * Subscribe to events from the MOD EventBus that should be handled on the PHYSICAL CLIENT
  */
 @EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientModEventSubscriber {
 
-	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + " Client Mod Event Subscriber");
-
-	/**
-	 * This method will be called by Forge when it is time for the mod to do its client-side setup
-	 * This method will always be called after the Registry events.
-	 * This means that all Blocks, Items, TileEntityTypes, etc. will all have been registered already
-	 */
+	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + " Client ModEventSubscriber");
 	
 	@SubscribeEvent
-	public static void onClientSetup(final FMLClientSetupEvent event) {
-		LOGGER.info(Constants.MODID + ": #3 Client Setup");
+	public static void onClientSetup(final FMLClientSetupEvent event) {;
 		
 		// Register Entity Renderers
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.HOSTILE_BAT.get(), HostileBatRenderer::new);
-		
+		RendererRegistry.registryEntityRenderers();
 		
 		LOGGER.debug("Registered Entity Renderers");
 	}

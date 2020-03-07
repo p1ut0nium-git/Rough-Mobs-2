@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.ArrayList;
@@ -45,23 +55,28 @@ public class MountHelper {
 		
 		public void initConfigs() {
 			
+			/* TODO Config
 			chance = RoughConfig.getInteger(name, "RiderChance", defaultChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a " + name + " to spawn with another entity riding it\nSet to 0 to disable this feature");
 			entities = RoughConfig.getStringArray(name, "RiderEntities", defaultEntities, "Entities which may ride on " + name + "s");
 			randomRiderChance = RoughConfig.getInteger(name, "RiderChanceRandom", 10, 0, Short.MAX_VALUE, "Chance (1 in X) that a randomly spawned entity from the RiderEntities list can start riding on random " + name + "s\nSet to 0 to disable this feature");
+			*/
 		}
 		
 		public void postInit() {
 			entries = FeatureHelper.getEntitiesFromNames(entities);
 		}
 		
+		/* TODO AI
 		public void addAI(LivingEntity mount) {
 			if (randomRiderChance > 0)
 				mount.tasks.addTask(1, new RoughAISearchForRider(mount, getPossibleRiders(), 32, randomRiderChance));
 		}
+		*/
 		
+		/* TODO horse stuff
 		public void tryAddRider(LivingEntity mount) {
 			
-			if (chance <= 0 || mount == null || entries.isEmpty() || mount.getEntityData().getBoolean(RIDER) || RND.nextInt(chance) != 0)
+			if (chance <= 0 || mount == null || entries.isEmpty() || mount.getPersistentData().getBoolean(RIDER) || RND.nextInt(chance) != 0)
 				return;
 			
 			EntityEntry entry = entries.get(RND.nextInt(entries.size()));
@@ -69,9 +84,9 @@ public class MountHelper {
 			Entity entity = entry.newInstance(mount.getEntityWorld());
 			entity.setPosition(mount.posX, mount.posY, mount.posZ);
 			entity.hurtResistantTime = 60;
-			entity.getEntityData().setBoolean(RIDER, true);
+			entity.getPersistentData().putBoolean(RIDER, true);
 			
-			mount.getEntityWorld().spawnEntity(entity);
+			mount.getEntityWorld().addEntity(entity);
 			if (!entity.isRiding() && !entity.isBeingRidden() && !mount.isRiding() && !mount.isBeingRidden())
 				entity.startRiding(mount);
 		}
@@ -85,15 +100,17 @@ public class MountHelper {
 			return false;
 		}
 		
+		@SuppressWarnings("rawtypes")
 		public List<Class<? extends Entity>> getPossibleRiders() {
 			
 			List<Class<? extends Entity>> list = new ArrayList<Class<? extends Entity>>();
 			
 			for (EntityType entry : entries)
-				list.add(entry.getEntityClass());
+				list.add(entry.getClass());
 			
 			return list;
 		}
+		*/
 	}
 	
 	public enum HorseType {
@@ -118,9 +135,9 @@ public class MountHelper {
 		horse.hurtResistantTime = 60;
         horse.setHorseTamed(true);
         horse.setGrowingAge(0);
-        horse.getEntityData().setBoolean(HostileHorseFeatures.ROUGH_HORSE, true);
+        horse.getPersistentData().putBoolean(HostileHorseFeatures.ROUGH_HORSE, true);
 		
-		world.spawnEntity(horse);
+		world.addEntity(horse);
 		return horse;
 	}
 	
@@ -129,10 +146,12 @@ public class MountHelper {
 		if (rider.posY < minY)
 			return false;
 		
+		/* TODO isRiding?
 		if (!BossHelper.isBoss(rider) && (chance <= 0 || RND.nextInt(chance) != 0 || rider.isRiding() || (rider instanceof ZombieEntity && ((ZombieEntity)rider).isChild())))
 			return false;
+		*/
 		
-		if (rider.getEntityData().getBoolean(Rider.RIDER))
+		if (rider.getPersistentData().getBoolean(Rider.RIDER))
 			return false;
 		
 		AbstractHorseEntity mount = createHorse(rider.world, rider, type);

@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.compat;
 
 import net.minecraft.world.World;
@@ -33,10 +43,6 @@ public abstract class SereneSeasonsCompat {
 	private static boolean hasDefaultConfig() {
 		return true;
 	}
-
-	/*
-	 * Getters
-	 */
 	
 	public static String getSeason(World world) {
 		if (registered)

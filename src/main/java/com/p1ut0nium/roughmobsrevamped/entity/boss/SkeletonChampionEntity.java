@@ -1,12 +1,21 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.entity.boss;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
+import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
 import com.p1ut0nium.roughmobsrevamped.util.Utilities;
@@ -39,8 +48,8 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
 
 	//TODO private double[] bossColorTheme = {1.0, 0.0, 0.0};
 
-	public SkeletonChampionEntity(EntityType<? extends SkeletonChampionEntity> type, World worldIn) {
-		super(type, worldIn);
+	public SkeletonChampionEntity(EntityType<SkeletonChampionEntity> skeleton, World worldIn) {
+		super(skeleton, worldIn);
         this.experienceValue = 100;
         
         fog_dot_tick = 0;
@@ -49,26 +58,21 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
 		fogWarningMsg.getStyle().setColor(TextFormatting.DARK_GREEN);
 	}
 	
-	/*
-	public SkeletonChampionEntity(World worldIn) {
-		this(EntityType.SKELETON, worldIn);
-	}
-	*/
-	
     public void onAddedToWorld() {
     	super.onAddedToWorld();
     	
         if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition())) {
-			this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
+        	this.world.addEntity(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
+			// this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
 			SoundEvent soundEvent = new SoundEvent(new ResourceLocation("entity.lightning.thunder"));
 			this.world.playSound(this.posX, this.posY, this.posZ, soundEvent, SoundCategory.AMBIENT, 100.0F, 1.0F, true);
         }
     }
 	
-    public void onLivingUpdate() {
+    public void livingTick() {
         if (this.world.isRemote) {
             for (int i = 0; i < 2; ++i) {
-                this.world.spawnParticle(ParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
+                this.world.addParticle(ParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
             }
         }
         
@@ -90,13 +94,13 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
 							// If fog warning is enabled...
 							if (FOG_WARNING_ENABLED) {
 								// Warn players on first entering the fog and add them to the players warned list
-								if (!playersWarned.containsKey(player.getName())) {
-									playersWarned.put(player.getName(), world.getGameTime() + FOG_WARNING_TIME);
+								if (!playersWarned.containsKey(player.getScoreboardName())) {
+									playersWarned.put(player.getScoreboardName(), world.getGameTime() + FOG_WARNING_TIME);
 									player.sendMessage(fogWarningMsg);
 								}
 								// If warned player hasn't been warned in a while, warn them again
-								else if (playersWarned.containsKey(player.getName()) && world.getGameTime() >= playersWarned.get(player.getName())) {
-									playersWarned.replace(player.getName(), world.getGameTime() + FOG_WARNING_TIME);
+								else if (playersWarned.containsKey(player.getScoreboardName()) && world.getGameTime() >= playersWarned.get(player.getScoreboardName())) {
+									playersWarned.replace(player.getScoreboardName(), world.getGameTime() + FOG_WARNING_TIME);
 									player.sendMessage(fogWarningMsg);
 								}
 							}
@@ -134,16 +138,14 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
 	        }
         }
 
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
-    public void onDeath(DamageSource cause)
-    {
-        super.onDeath(cause);
-        
-        //TODO Add custom death effects
+    public void onDeath(DamageSource cause) {
         
         FogEventHandler.bossDied = true;
+        
+        super.onDeath(cause);
     }
     
 	protected boolean canDespawn() {
@@ -152,12 +154,12 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
     
     //TODO Add custom ambient sound
     protected SoundEvent getAmbientSound() {
-        return SoundHandler.ENTITY_BOSS_IDLE;
+        return ModSounds.ENTITY_BOSS_IDLE;
     }
     
 	//TODO Add custom death sound
     protected SoundEvent getDeathSound() {
-        return SoundHandler.ENTITY_BOSS_DEATH;
+        return ModSounds.ENTITY_BOSS_DEATH;
     }
 }
 

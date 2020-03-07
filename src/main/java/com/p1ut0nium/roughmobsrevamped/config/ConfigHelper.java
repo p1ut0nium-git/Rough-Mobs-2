@@ -5,7 +5,7 @@ import net.minecraftforge.fml.config.ModConfig;
 /**
  * This bakes the config values to normal fields
  *
- * @author Cadiboo
+ * @author p1ut0nium
  * It can be merged into the main ExampleModConfig class, but is separate because of personal preference and to keep the code organised
  */
 public final class ConfigHelper {

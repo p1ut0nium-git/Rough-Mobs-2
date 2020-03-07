@@ -1,17 +1,18 @@
-package com.p1ut0nium.roughmobsrevamped.config;
-
-import net.minecraft.item.DyeColor;
-
-import java.util.List;
-
 /**
  * This holds the baked (runtime) values for our config.
  * These values should never be from changed outside this package.
  * This can be split into multiple classes (Server, Client, Player, Common)
  * but has been kept in one class for simplicity
  *
- * @author Cadiboo
+ * @author p1ut0nium
  */
+
+package com.p1ut0nium.roughmobsrevamped.config;
+
+import net.minecraft.item.DyeColor;
+
+import java.util.List;
+
 public final class RoughMobsRevampedConfig {
 
 	// Client

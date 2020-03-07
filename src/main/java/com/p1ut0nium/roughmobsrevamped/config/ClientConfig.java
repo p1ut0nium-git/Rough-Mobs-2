@@ -11,7 +11,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
  * For configuration settings that change the behaviour of code on the LOGICAL CLIENT.
  * This can be moved to an inner class of ExampleModConfig, but is separate because of personal preference and to keep the code organised
  *
- * @author Cadiboo
+ * @author p1ut0nium
  */
 final class ClientConfig {
 

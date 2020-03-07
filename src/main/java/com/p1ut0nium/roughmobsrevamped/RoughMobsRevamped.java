@@ -5,6 +5,7 @@
  * 
  * Author: p1ut0nium_94
  * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
  * 
  */
 package com.p1ut0nium.roughmobsrevamped;
@@ -16,6 +17,7 @@ import com.p1ut0nium.roughmobsrevamped.client.ClientModEventSubscriber;
 import com.p1ut0nium.roughmobsrevamped.common.CommonModEventSubscriber;
 import com.p1ut0nium.roughmobsrevamped.config.ConfigHolder;
 import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
+import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import com.p1ut0nium.roughmobsrevamped.server.ServerForgeEventSubscriber;
 import com.p1ut0nium.roughmobsrevamped.server.ServerModEventSubscriber;
@@ -50,9 +52,9 @@ public final class RoughMobsRevamped {
         modEventBus.addListener(ClientModEventSubscriber::onClientSetup);
         modEventBus.addListener(ServerModEventSubscriber::onServerSetup);
 
-		// Register stuff...
+		// Register entities and sounds.
 		ModEntityTypes.ENTITY_TYPES.register(modEventBus);
-		// Register sounds?
+		ModSounds.registerSounds();
 		
 		// Register Configs
 		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);

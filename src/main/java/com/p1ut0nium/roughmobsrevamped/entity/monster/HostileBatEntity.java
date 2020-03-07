@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.entity.monster;
 
 import javax.annotation.Nullable;
@@ -42,14 +52,16 @@ public class HostileBatEntity extends MonsterEntity {
 
 	public HostileBatEntity(EntityType<? extends HostileBatEntity> type, final World worldIn) {
         super(type, worldIn);
-        // this.setSize(0.5F, 0.9F);
+        //this.setSize(0.5F, 0.9F);
         this.setIsBatHanging(false);
+        this.experienceValue = 0;
         
+        // TODO - goals
         //tasks.addTask(1, new RoughAIBatAttack(this));
         //tasks.addTask(2, new RoughAIBatFlight(this));
 		//targetTasks.addTask(1, new RoughAIBatTarget(this));
 	}
-	
+
 	protected void registerGoals() {
 	}
 	

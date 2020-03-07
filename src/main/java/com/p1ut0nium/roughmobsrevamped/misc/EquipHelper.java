@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.ArrayList;
@@ -5,25 +15,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.lang.Math;
+import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
-import java.util.Random;
-
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class EquipHelper {
 	
@@ -138,7 +147,7 @@ public class EquipHelper {
 		
 		public void equipEntity(LivingEntity entity, boolean isBoss) {
 			
-			if (entity == null || entity.getEntityData().getBoolean(KEY_APPLIED))
+			if (entity == null || (entity.getPersistentData()).getBoolean(KEY_APPLIED))
 				return;
 			
 			// Get nearest player to the spawned mob
@@ -180,17 +189,19 @@ public class EquipHelper {
 					
 					if (stack != null) {
 						entity.setItemStackToSlot(slot, stack);
-						entity.setDropChance(slot, dropChance);
+						((MobEntity)entity).setDropChance(slot, dropChance);
 					}
 				}
 			}
 			
-			entity.getEntityData().setBoolean(KEY_APPLIED, true);
+			(entity.getPersistentData()).putBoolean(KEY_APPLIED, true);
 		}
 
 		public String initConfig(String[] defaultMainhand, String[] defaultOffhand, String[] defaultHelmets, String[] defaultChestplates, String[] defaultLeggings, String[] defaultBoots, String[] defaultWeaponEnchants, String[] defaultArmorEnchants, boolean skipChanceOptions) {
 
 			String formatName = name.toLowerCase().replace(" ", "") + "Equipment";
+			
+			/* TODO Config
 			RoughConfig.getConfig().addCustomCategoryComment(formatName, "Add enchanted armor and weapons to a newly spawned " + name + ". Takes 2-3 values seperated by a semicolon:\n"
 																				 + "Format: item or enchantment;chance;dimension\n"
 																				 + "item or enchantment:\tthe item/enchantment id\n"
@@ -230,6 +241,7 @@ public class EquipHelper {
 			distThreshold = RoughConfig.getInteger("Equipment_GlobalOptions", "_DistanceThreshold", 1000, 0, Integer.MAX_VALUE, "The distance threshold used to calculate the DistanceMultiplier.\nShorter distances here means mobs will have more gear closer to the World Spawn.");
 			disableBabyZombieEquipment = RoughConfig.getBoolean("Equipment_GlobalOptions", "_DisableBabyZombieEquipment", true, "Set to true to disable baby zombies getting equipment.");
 			
+			*/
 			return formatName;
 		}
 		
@@ -282,7 +294,8 @@ public class EquipHelper {
 			
 			if (parts.length >= 2) {
 				try {
-					Enchantment ench = Enchantment.getEnchantmentByLocation(parts[0]);
+					// TODO Enchantment ench = EnchantmentgetEnchantmentByLocation(parts[0]);
+					Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(parts[0]));
 					int probability = Integer.parseInt(parts[1]);
 					int dimension = parts.length > 2 ? Integer.parseInt(parts[2]) : Integer.MIN_VALUE;
 					
@@ -320,16 +333,19 @@ public class EquipHelper {
 			
 			if (parts.length >= 2) {
 				try {
-					Item item = Item.REGISTRY.getObject(new ResourceLocation(parts[0]));
+					// TODO Item item = REGISTRY.getObject(new ResourceLocation(parts[0]));
+					Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(parts[0]));
 					int probability = Integer.parseInt(parts[1]);
 					int dimension = parts.length >= 3 ? Integer.parseInt(parts[2]) : Integer.MIN_VALUE;
+					// TODO meta
 					int meta = parts.length >= 4 ? Integer.parseInt(parts[3]) : 0;
 					String nbt = parts.length >= 5 ? parts[4] : "";
 					
 					if (item == null)
 						return "Invalid item: " + parts[0] + " in line: " + s;
 					else
-						addItem(new ItemStack(item, 1, meta), probability, dimension, nbt);
+						// TODO addItem(new ItemStack(item, 1, meta), probability, dimension, nbt);
+						addItem(new ItemStack(item), probability, dimension, nbt);
 				}
 				catch(NumberFormatException e) {
 					return "Invalid numbers in line: " + s;
@@ -412,15 +428,19 @@ public class EquipHelper {
 				Object[] data = entry.getValue();
 				
 				T key = entry.getKey();
+				
+				/* TODO JsonToNBT
 				if (key instanceof ItemStack && data.length > 2 && ((String)data[2]).length() != 0) {
 					try {
-						((ItemStack)key).setTagCompound(JsonToNBT.getTagFromJson((String) data[2]));
+						CompoundNBT nbt = ((ItemStack)key).getShareTag();
+						((ItemStack)key).share  setTagCompound(JsonToNBT.getTagFromJson((String) data[2]));
 					} 
 					catch (NBTException e) {
 						RoughMobsRevamped.LOGGER.error("NBT Tag invalid: %s", e.toString());
 						e.printStackTrace();
 					}
 				}
+				*/
 				
 				// Exclude non-matching dimensions for entry's associated entity
 				if (isDimension(entity, String.valueOf(data[1]))) {

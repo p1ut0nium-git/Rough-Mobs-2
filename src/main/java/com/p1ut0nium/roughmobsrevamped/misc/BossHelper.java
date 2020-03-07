@@ -1,28 +1,32 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.List;
 import java.util.Random;
 
-import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.entities.BossSkeleton;
-import com.p1ut0nium.roughmobsrevamped.entities.BossZombie;
-import com.p1ut0nium.roughmobsrevamped.entities.IBoss;
+import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
+import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
 public class BossHelper {
@@ -60,6 +64,7 @@ public class BossHelper {
 		if (!hasDefaultConfig())
 			return;
 		
+		/* TODO Config
 		RoughConfig.getConfig().addCustomCategoryComment("BossGlobal", "Miscellaneous config options which affect all bosses");
 		
 		bossWarning = RoughConfig.getBoolean("BossGlobal", "_SpawnWarning", true, "Enable this to have a chat message warning of a boss spawn.");
@@ -91,6 +96,7 @@ public class BossHelper {
 		bossBatSwarmAttackRange = RoughConfig.getInteger("BatSwarm", "_BatAttackRange", 20, 0, Short.MAX_VALUE, "How close a player must be before the bat swarm attacks.");
 		bossBatSwarmDamage = RoughConfig.getInteger("BatSwarm", "_Damage", 1, 0, Short.MAX_VALUE, "How many half hearts (minus damage immunity) each bat does on attack.");
 		bossBatSwarmHealth = RoughConfig.getInteger("BatSwarm", "_Health", 6, 1, Short.MAX_VALUE, "How much health each bat in the swarm has.");
+		*/
 	}
 	
 	public static boolean hasDefaultConfig() {
@@ -133,9 +139,10 @@ public class BossHelper {
 									Constants.DEFAULT_WEAPON_ENCHANTS, 
 									Constants.DEFAULT_ARMOR_ENCHANTS, 
 									true);
-				
-			bossChance = RoughConfig.getInteger(name, "_BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
-			bossNames = RoughConfig.getStringArray(name, "_BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");
+			
+			// TODO Config
+			// bossChance = RoughConfig.getInteger(name, "_BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
+			// bossNames = RoughConfig.getStringArray(name, "_BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");
 			//TODO bossColors = RoughConfig.getStringArray(name, "_BossColors", Constants.BOSS_COLORS, "(WIP) Color theme for boss particles, etc.\nValues are Red, Green, Blue from 0.0 to 1.0");
 		}
 
@@ -143,39 +150,41 @@ public class BossHelper {
 			equipApplier.createPools();
 		}
 			
+		@SuppressWarnings("unchecked")
 		public LivingEntity trySetBoss(LivingEntity entity) {
 				
 			if (bossChance <= 0 || RND.nextInt(bossChance) != 0 || (entity instanceof ZombieEntity && ((ZombieEntity)entity).isChild()))
 				return null;
 				
 			// Despawn normal skeletons and zombies and replace with BossSkeleton or BossZombie respectively
-			IBoss boss = null;
+			IChampion boss = null;
 				
 			String entityTypeName = entity.getScoreboardName();
 				
 			switch (entityTypeName) {
 				case "Zombie":
-					boss = new ZombieChampionEntity(boss, entity.world);
+					boss = new ZombieChampionEntity((EntityType<ZombieChampionEntity>) boss, entity.world);
 					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
-					entity.world.spawnEntity((ZombieChampionEntity) boss);				
+					entity.world.addEntity((ZombieChampionEntity) boss);				
 					break;
 				case "Skeleton":
-					boss = new SkeletonChampionEntity(entity.world);
+					boss = new SkeletonChampionEntity((EntityType<SkeletonChampionEntity>) boss, entity.world);
 					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
-					entity.world.spawnEntity((SkeletonChampionEntity) boss);
+					entity.world.addEntity((SkeletonChampionEntity) boss);
 					break;				
 			}
 				
 			// Remove vanilla mob
-			entity.setDead();
+			entity.remove();
 				
 			if(boss != null) {
 					
 				//TODO boss.setBossColorTheme(bossColors);
 			
+				// TODO Fix attribute helper stuff
 				// Add custom attributes
-				AttributeHelper.applyAttributeModifier((LivingEntity)boss, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, ((LivingEntity)boss).getMaxHealth()*2);
-				AttributeHelper.applyAttributeModifier((LivingEntity)boss, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
+				//AttributeHelper.applyAttributeModifier((LivingEntity)boss, SharedMonsterAttributes.MAX_HEALTH, name + "BossHealth", 0, ((LivingEntity)boss).getMaxHealth()*2);
+				//AttributeHelper.applyAttributeModifier((LivingEntity)boss, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, name + "BossKnock", 1, 1);
 				
 				// Add equipment
 				boolean isBoss = true;
@@ -192,8 +201,7 @@ public class BossHelper {
 					bossWarningMsg.getStyle().setColor(TextFormatting.RED);
 					bossWarningMsg.getStyle().setBold(true);
 					
-					// TODO Change to all players within boosWarningDist
-					List<PlayerEntity> players = ((LivingEntity)boss).world.getEntitiesWithinAABB(PlayerEntity.class, (((LivingEntity)boss).getEntityBoundingBox().grow(bossWarningDist)));
+					List<PlayerEntity> players = ((LivingEntity)boss).world.getEntitiesWithinAABB(PlayerEntity.class, (((LivingEntity)boss).getBoundingBox().grow(bossWarningDist)));
 					if (players != null) {
 						for (PlayerEntity player : players)
 							player.sendMessage(bossWarningMsg);
@@ -202,11 +210,18 @@ public class BossHelper {
 				
 				// Play warning sound of boss spawn
 				if (bossWarningSound) {
-					((LivingEntity)boss).playSound(SoundHandler.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
+					((LivingEntity)boss).playSound(ModSounds.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
 				}
 				
 				// Add Boss features
-				((LivingEntity)boss).getEntityData().setBoolean(BOSS, true);
+				CompoundNBT nbt = ((LivingEntity)boss).getPersistentData();
+				nbt.putBoolean(BOSS, true);
+				((LivingEntity)boss).writeAdditional(nbt);
+				
+				// TODO Delete this after testing
+				nbt = ((LivingEntity)boss).getPersistentData();
+				System.out.println("Is Zombie Champion a boss? " + nbt.getBoolean(BOSS));
+				
 				addBossFeatures((LivingEntity)boss);
 				
 				return (LivingEntity)boss;
@@ -219,6 +234,6 @@ public class BossHelper {
 	}
 
 	public static boolean isBoss(Entity entity) {
-		return entity.getEntityData() != null && entity.getEntityData().getBoolean(BOSS);
+		return entity.getPersistentData() != null && (entity.getPersistentData()).getBoolean(BOSS);
 	}
 }

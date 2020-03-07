@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.ArrayList;
@@ -9,10 +19,12 @@ import java.util.Random;
 import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effect;
@@ -26,6 +38,7 @@ import net.minecraft.entity.EntityType;
 
 public class FeatureHelper {
 	
+	/* TODO AI
 	public static boolean removeTask(CreatureEntity entity, Class<? extends EntityAIBase> aiClass) {
 		return tryRemoveTask(entity, entity.task, aiClass) || tryRemoveTask(entity, entity.targetTasks, aiClass);
 	}
@@ -43,6 +56,7 @@ public class FeatureHelper {
 		
 		return false;
 	}
+	*/
 
 	public static boolean addEffect(LivingEntity entity, Effect effect, int duration, int startAmplifier, int chance, boolean isIncreasing, int maxAmplifier) {
 		
@@ -86,7 +100,7 @@ public class FeatureHelper {
 			double moveX = (rnd.nextDouble() - 0.5D) * 2.0D * spread;
 			double moveY = -rnd.nextDouble() * spread;
 			double moveZ = (rnd.nextDouble() - 0.5D) * 2.0D * spread;
-			((ServerWorld)entity.world).spawnParticle(type, entity.posX + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), entity.posY + rnd.nextDouble() * (double)entity.getHeight() - 0.25D, entity.posZ + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), 1, moveX, moveY, moveZ, 0.0D);
+			// TODO ((ServerWorld)entity.world).spawnParticle(type, entity.posX + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), entity.posY + rnd.nextDouble() * (double)entity.getHeight() - 0.25D, entity.posZ + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), 1, moveX, moveY, moveZ, 0.0D);
 		}
 	}
 	
@@ -113,7 +127,7 @@ public class FeatureHelper {
 		double xRatio = attacker.posX - target.posX;
 		double zRatio = attacker.posZ - target.posZ;
 		target.knockBack(attacker, strength, xRatio, zRatio);
-		target.motionY += extraLeap;
+		// TODO target.motionY += extraLeap;
 	}
 
 	public static List<Block> getBlocksFromNames(String[] breakBlocks) {
@@ -122,8 +136,8 @@ public class FeatureHelper {
 		
 		for (String name : breakBlocks) 
 		{
-			// TODO Block block = Block.getBlockFromItem(itemIn)
-			Block block = Block.getBlockFromName(name);
+			// TODO Block block = Block.getBlockFromName(name);
+			Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(name));
 			if (block == null) 
 				RoughMobsRevamped.LOGGER.error(name + " isn't a valid block!");
 			else

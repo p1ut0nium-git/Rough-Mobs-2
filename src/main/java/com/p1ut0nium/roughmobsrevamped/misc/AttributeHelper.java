@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.lang.reflect.Field;
@@ -10,6 +20,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import com.google.common.collect.ArrayListMultimap;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -17,6 +28,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class AttributeHelper {
 	
@@ -28,15 +40,15 @@ public class AttributeHelper {
 		
 		private UUID uuid;
 		private String attribute;
-		private Operation operator;
+		private int operator;
 		private double value;
 		private int dimension;
 		private int child;
 		
-		public AttributeEntry(UUID uuid, String attribute, Operation operator, double value, int dimension, int child) {
+		public AttributeEntry(UUID uuid, String attribute, int operator2, double value, int dimension, int child) {
 			this.uuid = uuid;
 			this.attribute = attribute;
-			this.operator = operator;
+			this.operator = operator2;
 			this.value = value;
 			this.dimension = dimension;
 			this.child = child;
@@ -50,7 +62,7 @@ public class AttributeHelper {
 			return attribute;
 		}
 		
-		public Operation getOperator() {
+		public int getOperator() {
 			return operator;
 		}
 		
@@ -77,6 +89,7 @@ public class AttributeHelper {
 
 	public static void initAttributeOption() {
 		
+		/* TODO Config
 		RoughConfig.getConfig().addCustomCategoryComment("attributes", "Add attribute modifiers to entities to change their stats. Takes 4-6 values seperated by a semicolon:\n"
 																		+ "Format: entity;attribute;operator;value;dimension;child\n"
 																		+ "entity:\t\tentity name\n"
@@ -88,6 +101,7 @@ public class AttributeHelper {
 		
 		String[] options = RoughConfig.getStringArray("attributes", "Modifier", Constants.ATTRIBUTE_DEFAULT, "Attributes:");
 		fillMap(options);
+		*/
 	}
 	
 	public static boolean applyAttributeModifier(LivingEntity entity, IAttribute attribute, String name, Operation operator, double amount) {
@@ -112,7 +126,8 @@ public class AttributeHelper {
 	
 	public static void addAttributes(LivingEntity entity) {
 		
-		if (entity.getEntityData().getBoolean(KEY_ATTRIBUTES))
+		// TODO if (entity.getEntityData().getBoolean(KEY_ATTRIBUTES))
+		if (entity.getPersistentData().getBoolean(KEY_ATTRIBUTES))
 			return;
 		
 		Collection<AttributeEntry> attributes = map.get(entity.getClass());
@@ -126,11 +141,13 @@ public class AttributeHelper {
 			IAttributeInstance instance = entity.getAttributes().getAttributeInstanceByName(attribute.attribute);
 			if (instance != null) 
 			{
+				/* TODO Operator
 				AttributeModifier modifier = new AttributeModifier(attribute.getUuid(), Constants.unique("mod" + i), attribute.getValue(), attribute.getOperator());
 				instance.applyModifier(modifier);
 				
 				if (instance.getAttribute() == SharedMonsterAttributes.MAX_HEALTH)
 					entity.setHealth(entity.getMaxHealth());
+				*/
 			}
 			else
 				RoughMobsRevamped.LOGGER.error("Error on attribute modification: \"" + attribute.attribute + "\" is not a valid attribute. Affected Entity: " + entity);
@@ -138,7 +155,8 @@ public class AttributeHelper {
 			i++;
 		}
 		
-		entity.getEntityData().setBoolean(KEY_ATTRIBUTES, true);
+		// TODO entity.getEntityData().setBoolean(KEY_ATTRIBUTES, true);
+		entity.getPersistentData().putBoolean(KEY_ATTRIBUTES, true);
 	}
 
 	private static void fillMap(String[] options) {	
@@ -150,12 +168,13 @@ public class AttributeHelper {
 			
 			if (pars.length >= 4) 
 			{
+				/* TODO getClass using resource location
 				Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(pars[0]));
 				if (entityClass != null) 
 				{
 					try 
 					{
-						Operation operator = Integer.parseInt(pars[2]);
+						int operator = Integer.parseInt(pars[2]);
 						double value = Double.parseDouble(pars[3]);
 						int dimension = pars.length >= 5 && !pars[4].equals("/") ? Integer.parseInt(pars[4]) : Integer.MIN_VALUE;
 						int child = pars.length >= 6 ? Integer.parseInt(pars[5]) : 0;
@@ -175,6 +194,7 @@ public class AttributeHelper {
 				}
 				else
 					RoughMobsRevamped.LOGGER.error("Error on attribute initialization: Entity " + pars[0] + " does not exist");
+				*/
 			}
 			else
 				RoughMobsRevamped.LOGGER.error("Error on attribute initialization: Wrong amount of arguments: " + line);

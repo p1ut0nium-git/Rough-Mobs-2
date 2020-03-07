@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.ArrayList;
@@ -21,6 +31,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class SpawnHelper {
@@ -39,7 +50,7 @@ public class SpawnHelper {
 
 	public static class SpawnEntry {
 		
-		public static final Map<String, Type> TYPE_MAP = ReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, 0);
+		public static final Map<String, Type> TYPE_MAP = ObfuscationReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, 0);
 		public static final String OW_TYPE = "OVERWORLD";
 		public static final String DISABLE_KEY = "!";
 		
@@ -54,7 +65,7 @@ public class SpawnHelper {
 		public Tuple<Biome[], Biome[]> biomes;
 		
 		public SpawnEntry(String entityName, String prob, String min, String max, String type, String... biomes) {
-			this.entityClass = getEntityClass(entityName);
+			// TODO this.entityClass = getEntityClass(entityName);
 			this.prob = getInteger(prob);
 			this.min = getInteger(min);
 			this.max = getInteger(max);
@@ -76,10 +87,12 @@ public class SpawnHelper {
 				Type type = TYPE_MAP.get(biomeId);
 				if (biomeId.equals(OW_TYPE))
 				{
+					/* TODO Biome stuff
 					for (Biome biome : SpawnHelper.getOverworldBiomes())
 					{
 						list.add(biome);
 					}
+					*/
 				}
 				else if (type != null) 
 				{
@@ -87,7 +100,8 @@ public class SpawnHelper {
 				}
 				else
 				{
-					Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(biomeId));
+					// TODO Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(biomeId));
+					Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeId));
 					if (biome != null) 
 					{
 						list.add(biome);
@@ -97,6 +111,7 @@ public class SpawnHelper {
 						int id = getInteger(biomeId);
 						if (id >= 0) 
 						{
+							/* TODO Biome stuff
 							biome = Biome.getBiomeForId(id);
 							if (biome != null)
 								list.add(biome);
@@ -105,6 +120,7 @@ public class SpawnHelper {
 								this.valid = false;
 								this.error = "Biomes with the id/name " + id + " don't exist!";
 							}
+							*/
 						}
 					}
 				}
@@ -112,7 +128,8 @@ public class SpawnHelper {
 			
 			if (biomes.length == 0) 
 			{
-				for (Biome biome : Biome.REGISTRY) 
+				// TODO biomes
+				for (Biome biome : ForgeRegistries.BIOMES) 
 					listAdd.add(biome);
 			}
 			
@@ -149,6 +166,8 @@ public class SpawnHelper {
 				return -1;
 			}
 		}
+		
+		/* TODO get entity class
 
 		@SuppressWarnings("unchecked")
 		private Class<? extends LivingEntity> getEntityClass(String entityName) {
@@ -176,6 +195,8 @@ public class SpawnHelper {
 			return null;
 		}
 		
+		*/
+		
 		public boolean isValid() {
 			return valid;
 		}
@@ -189,6 +210,7 @@ public class SpawnHelper {
 		if (!hasDefaultConfig())
 			return;
 		
+		/* TODO Config
 		RoughConfig.getConfig().addCustomCategoryComment("SpawnConditions", "Configuration options which affect when Rough Mobs can spawn");
 		
 		playerSpawnLevel = RoughConfig.getInteger("SpawnConditions", "_MinPlayerLevel", 0, 0, Short.MAX_VALUE, "Player's Minecraft Experience Level required before a Rough Mob will spawn.");
@@ -209,12 +231,14 @@ public class SpawnHelper {
 		disableBabyZombies = RoughConfig.getBoolean("spawnEntries", "_DisableBabyZombies", false, "Set to true to disable spawning of baby zombies.");
 		
 		fillEntries(options);
+		*/
 	}
 
+	/* TODO Biome stuff
 	public static List<Biome> getOverworldBiomes() {
 
 		List<Biome> biomes = new ArrayList<Biome>();
-		
+
 		for (Biome biome : ForgeRegistries.BIOMES.getValuesCollection())
 		{
 			if (biome instanceof BiomeVoid || biome instanceof BiomeHell || biome instanceof BiomeEnd)
@@ -226,6 +250,7 @@ public class SpawnHelper {
 		
 		return biomes;
 	}
+	*/
 
 	private static void fillEntries(String[] options) {
 		
@@ -252,6 +277,7 @@ public class SpawnHelper {
 		}
 	}
 
+	/* TODO Biome stuff
 	public static void addEntries() {
 		
 		for (SpawnEntry entry : ENTRIES) 
@@ -266,6 +292,7 @@ public class SpawnHelper {
 			EntityRegistry.removeSpawn(entry.entityClass, entry.type, entry.biomes.getSecond());
 		}
 	}
+	*/
 	
 	public static boolean checkSpawnConditions(EntityJoinWorldEvent event) {
 		

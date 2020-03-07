@@ -1,6 +1,17 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.init;
 
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
+import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
@@ -24,8 +35,8 @@ public class ModEntityTypes {
 	
 	// Champion Skeleton
 	public static final String SKELETON_CHAMPION_NAME = "skeleton_champion";
-	public static final RegistryObject<EntityType<ZombieChampionEntity>> SKELETON_CHAMPION = ENTITY_TYPES.register(SKELETON_CHAMPION_NAME, () ->
-					EntityType.Builder.<ZombieChampionEntity>create(ZombieChampionEntity::new, EntityClassification.MONSTER)
+	public static final RegistryObject<EntityType<SkeletonChampionEntity>> SKELETON_CHAMPION = ENTITY_TYPES.register(SKELETON_CHAMPION_NAME, () ->
+					EntityType.Builder.<SkeletonChampionEntity>create(SkeletonChampionEntity::new, EntityClassification.MONSTER)
 					.size(EntityType.SKELETON.getWidth(), EntityType.SKELETON.getHeight())
 					.build(new ResourceLocation(Constants.MODID, SKELETON_CHAMPION_NAME).toString())
 	);

@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.features;
 
 import java.util.Arrays;
@@ -10,6 +20,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -37,8 +48,9 @@ public abstract class EntityFeatures {
 		this.entityClasses = Arrays.asList(entityClasses);
 	}
 
-	public boolean isEntity(EntityType<?> creature) {
-		ResourceLocation loc = EntityType.getKey(creature);
+	public boolean isEntity(Entity creature) {;
+		EntityType<?> entityType = creature.getType();
+		ResourceLocation loc = EntityType.getKey(entityType);
 		return featuresEnabled && loc != null && entityNames.contains(loc.toString());
 	}
 	
@@ -47,10 +59,13 @@ public abstract class EntityFeatures {
 		if (!hasDefaultConfig())
 			return;
 	
-		RoughConfig.getConfig().addCustomCategoryComment(name, "Configuration options which affect " + name + " features");
+		// TODO Config
 		
-		featuresEnabled = RoughConfig.getBoolean(name, "FeaturesEnabled", true, "Set to false to disable ALL %s features", true);
-		entityNames = Arrays.asList(RoughConfig.getStringArray(name, "Entities", Constants.getRegNames(entityClasses).toArray(new String[0]), "Entities which count as %s entities"/*, EntityList.getEntityNameList().toArray(new String[0])*/));
+		//RoughConfig.getConfig().addCustomCategoryComment(name, "Configuration options which affect " + name + " features");
+		
+		//featuresEnabled = RoughConfig.getBoolean(name, "FeaturesEnabled", true, "Set to false to disable ALL %s features", true);
+		//entityNames = Arrays.asList(RoughConfig.getStringArray(name, "Entities", Constants.getRegNames(entityClasses).toArray(new String[0]), "Entities which count as %s entities"/*, EntityList.getEntityNameList().toArray(new String[0])*/));
+		
 	}
 	
 	private boolean hasDefaultConfig() {
@@ -69,33 +84,29 @@ public abstract class EntityFeatures {
 			return (GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS));
 		}
 		
-		// If boss game stage isn't enabled, then its ok to spawn bosses
+		// If boss game stage isn't enabled, then it is ok to spawn bosses
 		return true;
 	}
-	
-	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
+
+	public void preInit() {
+	}
+
+	public void postInit() {
+		
 	}
 
 	public void onAttack(Entity attacker, Entity immediateAttacker, Entity target, LivingAttackEvent event) {
 	}
 
-	public void onDefend(Entity target, Entity attacker, Entity immediateAttacker, LivingAttackEvent event) {
+	public void onDefend(LivingEntity target, Entity trueSource, Entity immediateSource, LivingAttackEvent event) {
 	}
 
-	public void onDeath(Entity deadEntity, DamageSource source) {
-		if (source.getTrueSource() instanceof PlayerEntity) {
-		}
+	public void onDeath(LivingEntity deadEntity, DamageSource source) {
 	}
-	
-	public void onFall(Entity entity, LivingFallEvent event) {
+
+	public void onFall(LivingEntity entity, LivingFallEvent event) {
 	}
-	
+
 	public void onBlockBreak(PlayerEntity player, BreakEvent event) {
-	}
-	
-	public void preInit() {
-	}
-
-	public void postInit() {
 	}
 }

@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.features;
 
 import java.util.ArrayList;
@@ -30,11 +40,14 @@ public class HostileHorseFeatures extends EntityFeatures {
 	public void initConfig() {
 		super.initConfig();
 		
-		horseBurn = RoughConfig.getBoolean(name, "Burn", true, "Set this to false to prevent undead horses from burning in sunlight (as long as they have no rider)");
-		randomRiderChance = RoughConfig.getInteger(name, "RandomRiderChance", 3, 0, MAX, "Chance (1 in X) that a random skeleton or zombie starts riding unmounted hostile horses around it");
-		canDespawn = RoughConfig.getBoolean(name, "CanDespawn", true, "Set to false to prevent undead horses summoned through this mod from despawning");
+		// TODO Config
+		
+		//horseBurn = RoughConfig.getBoolean(name, "Burn", true, "Set this to false to prevent undead horses from burning in sunlight (as long as they have no rider)");
+		//randomRiderChance = RoughConfig.getInteger(name, "RandomRiderChance", 3, 0, MAX, "Chance (1 in X) that a random skeleton or zombie starts riding unmounted hostile horses around it");
+		//canDespawn = RoughConfig.getBoolean(name, "CanDespawn", true, "Set to false to prevent undead horses summoned through this mod from despawning");
 	}
 	
+	/* TODO AI
 	@Override
 	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
 		
@@ -58,10 +71,13 @@ public class HostileHorseFeatures extends EntityFeatures {
 		if (entity instanceof LivingEntity && shouldDespawn(entity))
 			ReflectionHelper.setPrivateValue(LivingEntity.class, (LivingEntity)entity, false, 17);
 	}
+	*/
 	
+	/* TODO getEntityData alternative
 	private boolean shouldDespawn(Entity entity) {
 		return canDespawn && entity.getEntityData().getBoolean(ROUGH_HORSE);
 	}
+	*/
 
 	private List<Class<? extends Entity>> getRiders(Entity entity) {
 

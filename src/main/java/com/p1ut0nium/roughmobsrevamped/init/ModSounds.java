@@ -1,45 +1,42 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.init;
 
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModSounds {
-	private static void initialize() {
+	
+	public static SoundEvent ENTITY_BOSS_SPAWN;
+	public static SoundEvent ENTITY_BOSS_IDLE;
+	public static SoundEvent ENTITY_BOSS_DEATH;
+	public static SoundEvent ENTITY_BOSS_BATSWARM;
+	public static SoundEvent ENTITY_PLAYER_COUGH;
+		
+	public static void registerSounds() {
+		ENTITY_BOSS_SPAWN = registerSound("entity.boss.boss_spawn");
+		ENTITY_BOSS_IDLE = registerSound("entity.boss.boss_idle");
+		ENTITY_BOSS_DEATH = registerSound("entity.boss.boss_death");
+		ENTITY_BOSS_BATSWARM = registerSound("entity.boss.boss_batswarm");
+		ENTITY_PLAYER_COUGH = registerSound("entity.player.player_cough");
 	}
 	
-	@Mod.EventBusSubscriber(modid = Constants.MODID)
-	public static class RegistrationHandler {
-		
-		@SubscribeEvent
-		public static void onEvent(final RegistryEvent.Register<SoundEvent> event) {
-			final String[] arraySoundEvents = {
-					
-				// bosses
-				"entity.boss.boss_spawn",
-				"entity.boss.boss_idle",
-				"entity.boss.boss_death",
-				"entity.boss.bpss_batswarm",
-				
-				// player
-				"entity.player.player_cough"
-			};
-			
-			final IForgeRegistry<SoundEvent> registry = event.getRegistry();
-			
-			System.out.println("Registering sound events.");
-			
-			for (final String soundName : arraySoundEvents) {
-				registry.register(new SoundEvent(new ResourceLocation(Constants.MODID, soundName)).setRegistryName(soundName));
-			}
-			
-			initialize();
-		}
-		
+	private static SoundEvent registerSound(String name) {
+		ResourceLocation location = new ResourceLocation(Constants.MODID, name);
+		SoundEvent event = new SoundEvent(location);
+		event.setRegistryName(name);
+		ForgeRegistries.SOUND_EVENTS.register(event);
+		return event;
 	}
 }
