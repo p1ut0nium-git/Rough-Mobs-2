@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
+import com.p1ut0nium.roughmobsrevamped.config.FogConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
 import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
@@ -46,11 +47,11 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	private static int batSwarmTick;
 
 	// Fog variables
-    private static boolean FOG_DOT_ENABLED = BossHelper.bossFogDoTEnabled;
-    private static boolean FOG_WARNING_ENABLED = BossHelper.bossFogDoTWarning;
+    private static boolean FOG_DOT_ENABLED = FogConfig.bossFogDoTEnabled.get();
+    private static boolean FOG_WARNING_ENABLED = FogConfig.bossFogDoTWarning.get();
 	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
-    private static int FOG_DOT_DELAY = BossHelper.bossFogDoTDelay * 20;
-    private static int FOG_WARNING_TIME = BossHelper.bossFogDoTWarningTime * 20;    
+    private static int FOG_DOT_DELAY = FogConfig.bossFogDoTDelay.get() * 20;
+    private static int FOG_WARNING_TIME = FogConfig.bossFogDoTWarningTime.get() * 20;    
     private HashMap<String, Long> playersWarned = new HashMap<>();
     private List<PlayerEntity> playersInFog = new ArrayList<PlayerEntity>();
     private StringTextComponent fogWarningMsg;
@@ -75,7 +76,7 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
     	
         if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition())) {
         	this.world.addEntity(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
-			// this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
+			// TODO - Lighting - this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
 			SoundEvent soundEvent = new SoundEvent(new ResourceLocation("entity.lightning.thunder"));
 			this.world.playSound(this.posX, this.posY, this.posZ, soundEvent, SoundCategory.AMBIENT, 100.0F, 1.0F, true);
         }

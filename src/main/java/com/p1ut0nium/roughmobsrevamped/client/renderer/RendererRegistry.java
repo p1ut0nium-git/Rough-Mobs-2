@@ -11,7 +11,6 @@
 package com.p1ut0nium.roughmobsrevamped.client.renderer;
 
 import com.p1ut0nium.roughmobsrevamped.client.renderer.entity.HostileBatRenderer;
-import com.p1ut0nium.roughmobsrevamped.client.renderer.entity.HostileBatRenderer.RenderFactory;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
 
 import net.minecraftforge.api.distmarker.Dist;

@@ -10,6 +10,8 @@
  */
 package com.p1ut0nium.roughmobsrevamped.compat;
 
+import com.p1ut0nium.roughmobsrevamped.config.ModCompatConfig;
+
 public abstract class GameStagesCompat {
 	
 	//public static final GameStagesCompat INSTANCE = new GameStagesCompat();
@@ -35,30 +37,16 @@ public abstract class GameStagesCompat {
 		if (!hasDefaultConfig())
 			return;
 	
-		/* Rewrite with new config system
-		RoughConfig.getConfig().addCustomCategoryComment("GameStages", "Configuration options for enabling/disabling Game Stages.\n"
-																		+ "The mod Game Stages must be installed for these features to work.\n"
-																		+ "\n"
-																		+ "Stages: \n"
-																		+ "\n"
-																		+ "roughmobsall - gives all stages at once.\n"
-																		+ "roughmobsequip - allows mobs to spawn with equipment.\n"
-																		+ "roughmobsenchant - allows mob gear to be enchanted.\n"
-																		+ "roughmobsboss - allows some mobs to be bosses.\n"
-																		+ "roughmobsabils - allows mobs to have special abilities.");
-		
-		useAllStages = RoughConfig.getBoolean("GameStages", "_AllStages", false, "Enable this Game Stage to allow all Rough Mobs stages at once. Or turn them on individually");		
-		useEquipmentStage = RoughConfig.getBoolean("GameStages", "_Equipment", false, "Enable this Game stage for Rough Mobs to have equipment.");
-		useBossStage = RoughConfig.getBoolean("GameStages", "_Bosses", false, "Enable this Game Stage needed for Rough Mob Bosses to spawn. Must also enable Equipment stage for this to work.");
-		useAbilitiesStage = RoughConfig.getBoolean("GameStages", "_Abilities", false, "Enable this Game Stage for Rough Mobs to have special combat AI and attributes.");
-		useEnchantStage = RoughConfig.getBoolean("GameStages", "_Enchantments", false, "Enable this Game Stage for Rough Mob equipment to be enchanted.");		
+		useAllStages = ModCompatConfig.useAllStages.get();
+		useEquipmentStage = ModCompatConfig.useEquipmentStage.get();
+		useBossStage = ModCompatConfig.useBossStage.get();
+		useAbilitiesStage = ModCompatConfig.useAbilitiesStage.get();
+		useEnchantStage = ModCompatConfig.useEnchantStage.get();
 		
 		// If useAllStages is true, then all other stages should also be set to true
 		if (useAllStages) {
 			useEquipmentStage = useBossStage = useAbilitiesStage = useEnchantStage = true;
 		}
-		*/
-
 	}
 	
 	public static void initConfig() {	
@@ -70,10 +58,6 @@ public abstract class GameStagesCompat {
 	private static boolean hasDefaultConfig() {
 		return true;
 	}
-
-	/*
-	 * Getters
-	 */
 	
 	public static Boolean useEquipmentStage() {
 		if (registered) {

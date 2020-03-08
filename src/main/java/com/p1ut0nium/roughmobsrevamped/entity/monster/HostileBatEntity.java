@@ -56,7 +56,7 @@ public class HostileBatEntity extends MonsterEntity {
         this.setIsBatHanging(false);
         this.experienceValue = 0;
         
-        // TODO - goals
+        // TODO AI
         //tasks.addTask(1, new RoughAIBatAttack(this));
         //tasks.addTask(2, new RoughAIBatFlight(this));
 		//targetTasks.addTask(1, new RoughAIBatTarget(this));

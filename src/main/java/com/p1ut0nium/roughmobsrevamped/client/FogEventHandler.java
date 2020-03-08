@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import com.p1ut0nium.roughmobsrevamped.config.FogConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
@@ -48,6 +49,7 @@ public class FogEventHandler {
     private static LivingEntity closestBoss;
     private static float closestBossDistance;
 
+    private static boolean fogEnabled = FogConfig.bossFogEnabled.get();
     private static int fogNearPlaneConfig = BossHelper.bossFogStartDistance;
     private static int fogMaxDistConfig = BossHelper.bossFogMaxDistance;
     private static int fogFarPlaneConfig = BossHelper.bossFogFarPlane;
@@ -88,7 +90,7 @@ public class FogEventHandler {
    		}
 
        	// If player, then check for bosses in range.
-        if (((IForgeEntity) event).getEntity() instanceof PlayerEntity && BossHelper.bossFogEnabled) {
+        if (((IForgeEntity) event).getEntity() instanceof PlayerEntity && fogEnabled) {
 
             LivingEntity boss = checkForBossInRange(event);
      
@@ -121,7 +123,7 @@ public class FogEventHandler {
    			playerRespawned = false;
    		}
 
-        if (((IForgeEntity) event).getEntity() instanceof PlayerEntity && BossHelper.bossFogEnabled) {
+        if (((IForgeEntity) event).getEntity() instanceof PlayerEntity && fogEnabled) {
 
         	LivingEntity boss = checkForBossInRange(event);
             

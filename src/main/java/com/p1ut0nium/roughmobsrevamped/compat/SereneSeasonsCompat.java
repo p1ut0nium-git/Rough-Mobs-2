@@ -10,6 +10,10 @@
  */
 package com.p1ut0nium.roughmobsrevamped.compat;
 
+import java.util.Arrays;
+
+import com.p1ut0nium.roughmobsrevamped.config.ModCompatConfig;
+
 import net.minecraft.world.World;
 import sereneseasons.api.season.SeasonHelper;
 
@@ -32,12 +36,12 @@ public abstract class SereneSeasonsCompat {
 		if (!hasDefaultConfig())
 			return;
 		
-		/* Rewrite for new cofig system
-		RoughConfig.getConfig().addCustomCategoryComment("SereneSeasons", "Configuration options for enabling/disabling Serene Seasons support.\n"
-				+ "The mod Serene Seasons must be installed for these features to work.\n");
-
-		seasonWhiteList = RoughConfig.getStringArray("SereneSeasons", "_WhiteList", Constants.SEASONS, "Whitelist of all seasons that Rough Mobs can spawn in.");
-		*/
+		// Get season white list from config and convert to an array of strings
+		seasonWhiteList = (String[]) ModCompatConfig.seasonWhiteList.get().toArray();
+		
+		// TODO - may be able to delete this
+		// Object[] whiteListConfig = ModCompatConfig.seasonWhiteList.get().toArray();
+		// seasonWhiteList = Arrays.copyOf(whiteListConfig, whiteListConfig.length, String[].class);
 	}
 	
 	private static boolean hasDefaultConfig() {

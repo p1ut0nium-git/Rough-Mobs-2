@@ -16,6 +16,7 @@ import java.util.List;
 import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
+import com.p1ut0nium.roughmobsrevamped.config.FogConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.features.EntityFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
@@ -174,10 +175,10 @@ public class RoughApplier {
 			if (!player.isCreative()) {
 				if (event.getSource().equals(DamageSourceFog.POISONOUS_FOG)) {
 					
-					if (BossHelper.bossFogPlayerCough)
+					if (FogConfig.bossFogPlayerCough.get())
 						playHurtSound(player);
 				
-					player.setHealth(player.getHealth() - BossHelper.bossFogDoTDamage);
+					player.setHealth(player.getHealth() - FogConfig.bossFogDoTDamage.get());
 					event.setCanceled(true);
 				}
 			}

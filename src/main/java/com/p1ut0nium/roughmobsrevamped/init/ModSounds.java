@@ -14,8 +14,12 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModSounds {
 	
 	public static SoundEvent ENTITY_BOSS_SPAWN;
@@ -24,7 +28,8 @@ public class ModSounds {
 	public static SoundEvent ENTITY_BOSS_BATSWARM;
 	public static SoundEvent ENTITY_PLAYER_COUGH;
 		
-	public static void registerSounds() {
+	@SubscribeEvent
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
 		ENTITY_BOSS_SPAWN = registerSound("entity.boss.boss_spawn");
 		ENTITY_BOSS_IDLE = registerSound("entity.boss.boss_idle");
 		ENTITY_BOSS_DEATH = registerSound("entity.boss.boss_death");
@@ -32,10 +37,10 @@ public class ModSounds {
 		ENTITY_PLAYER_COUGH = registerSound("entity.player.player_cough");
 	}
 	
-	private static SoundEvent registerSound(String name) {
-		ResourceLocation location = new ResourceLocation(Constants.MODID, name);
+	private static SoundEvent registerSound(String soundName) {
+		ResourceLocation location = new ResourceLocation(Constants.MODID, soundName);
 		SoundEvent event = new SoundEvent(location);
-		event.setRegistryName(name);
+		event.setRegistryName(location);
 		ForgeRegistries.SOUND_EVENTS.register(event);
 		return event;
 	}
