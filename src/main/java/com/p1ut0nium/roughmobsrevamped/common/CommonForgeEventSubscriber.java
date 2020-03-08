@@ -23,5 +23,5 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.FORGE)
 public final class CommonForgeEventSubscriber {
 
-	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + " Server ForgeEventSubscriber");
+	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + ": COMMON ForgeEventSubscriber");
 }

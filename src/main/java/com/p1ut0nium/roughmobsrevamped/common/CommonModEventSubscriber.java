@@ -15,8 +15,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.p1ut0nium.roughmobsrevamped.RoughApplier;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
-import com.p1ut0nium.roughmobsrevamped.config.ConfigHelper;
-import com.p1ut0nium.roughmobsrevamped.config.ConfigHolder;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -30,50 +28,22 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 /**
  * Subscribe to events from the MOD EventBus that should be handled on both PHYSICAL sides
  */
-
 @EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class CommonModEventSubscriber {
 	
 	private static RoughApplier applier;
 
-	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + " Mod Event Subscriber");
+	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + ": Mod Event Subscriber");
 
 	// Pre-Initialization
 	@SubscribeEvent
 	public static void onCommonSetup(final FMLCommonSetupEvent event) {
 		LOGGER.info(Constants.MODID + " Common ModSetupEvent");
-
-		// Register Config
-		
-		// Initialize 3rd party mod support
-		CompatHandler.registerGameStages();
-		CompatHandler.registerSereneSeasons();
 		
 		// Begin adding features, etc.
 		applier = new RoughApplier();
 		applier.preInit();
 		applier.postInit();
-	}
-
-
-	/**
-	 * This method will be called by Forge when a config changes.
-	 */
-
-	@SubscribeEvent
-	public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
-		
-		LOGGER.info(Constants.MODID + ": #1 COMMON - ModConfig Event");
-		
-		final ModConfig config = event.getConfig();
-		// Rebake the configs when they change
-		if (config.getSpec() == ConfigHolder.CLIENT_SPEC) {
-			ConfigHelper.bakeClient(config);
-			LOGGER.debug("Baked client config");
-		} else if (config.getSpec() == ConfigHolder.SERVER_SPEC) {
-			ConfigHelper.bakeServer(config);
-			LOGGER.debug("Baked server config");
-		}
 	}
 	
 	@SubscribeEvent

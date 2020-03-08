@@ -1,3 +1,13 @@
+/*
+ * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * 
+ * This is a complete revamp of Lellson's Rough Mobs 2
+ * 
+ * Author: p1ut0nium_94
+ * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * 
+ */
 package com.p1ut0nium.roughmobsrevamped.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -8,6 +18,7 @@ public class FogConfig {
 	public static final ForgeConfigSpec SPEC;
 	
 	public static final ForgeConfigSpec.BooleanValue bossFogEnabled;
+	
 	public static final ForgeConfigSpec.BooleanValue bossFogDoTEnabled;
 	public static final ForgeConfigSpec.BooleanValue bossFogDoTWarning;
 	public static final ForgeConfigSpec.BooleanValue bossFogPlayerCough;
@@ -17,12 +28,16 @@ public class FogConfig {
 
 	static {
 		
+		// Base Fog Settings
+		
 		BUILDER.comment("Config options for controlling how boss fog looks.");
 		BUILDER.push("Boss Fog");
 		bossFogEnabled = BUILDER
 				.comment("Enable this to have thick colored fog around bosses.")
 				.define("Fog_Enabled", true);
 		BUILDER.pop();
+		
+		// Fog DoT Settings
 		
 		BUILDER.comment("Config options for enabling and adjusting the poisonous version of boss fog.");
 		BUILDER.push("DoT Fog");
@@ -50,7 +65,7 @@ public class FogConfig {
 	}
 }
 
-/*
+/* TODO
 bossFogColor = RoughConfig.getStringArray("BossFog", "_FogColor", Constants.FOG_COLORS, "Change these three values between 0.0 and 1.0 to change the fog color.\nRed, Green, Blue\n");
 bossFogMaxDistance = RoughConfig.getInteger("BossFog", "_FogMaxDist", 20, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distance");
 bossFogStartDistance = RoughConfig.getInteger("BossFog", "_FogStartDist", 1, 0, 50, "How far away from boss before fog begins to fade from maximum density.\nMust be a value lower than BossFogMaxDist");

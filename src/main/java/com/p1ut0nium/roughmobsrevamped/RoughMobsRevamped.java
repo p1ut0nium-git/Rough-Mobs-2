@@ -61,10 +61,6 @@ public final class RoughMobsRevamped {
 		// Register entities and sounds.
 		ModEntityTypes.ENTITY_TYPES.register(modEventBus);
 		// ModSounds.registerSounds();
-		
-		// Register Configs
-		//modLoadingContext.registerConfig(ModConfig.Type.SERVER, Config.config_server);
-		//Config.loadConfig(Config.config_server, FMLPaths.CONFIGDIR.get().resolve("roughmobsrevamped-server.toml").toString());
 	}
     
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD

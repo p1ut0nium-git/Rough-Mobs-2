@@ -71,22 +71,6 @@ public class BossHelper {
 		bossWarningDist = RoughConfig.getInteger("BossGlobal", "_SpawnWarningDistance", 50, 0, Short.MAX_VALUE, "Max bos spawn distance from a player that will trigger a warning.\nUsed for both chat messages and sounds.");
 		bossWarningSound = RoughConfig.getBoolean("BossGlobal", "_SpawnWarningSound", true, "Play a warning sound when a boss spawns.");
 		
-		RoughConfig.getConfig().addCustomCategoryComment("BossFog", "Configuration options for adjusting the poisonous fog that shrouds all bosses.");
-		
-		bossFogEnabled = RoughConfig.getBoolean("BossFog", "_Enabled", true, "Enable this to have thick colored fog around bosses.", true);
-		bossFogColor = RoughConfig.getStringArray("BossFog", "_FogColor", Constants.FOG_COLORS, "Change these three values between 0.0 and 1.0 to change the fog color.\nRed, Green, Blue\n");
-		bossFogMaxDistance = RoughConfig.getInteger("BossFog", "_FogMaxDist", 20, 0, 100, "Max distance from boss for fog to render.\nFog will only occur if you are within this distance");
-		bossFogStartDistance = RoughConfig.getInteger("BossFog", "_FogStartDist", 1, 0, 50, "How far away from boss before fog begins to fade from maximum density.\nMust be a value lower than BossFogMaxDist");
-		bossFogFarPlane = RoughConfig.getInteger("BossFog", "_FogFarPlane", 10, 0, 192, "This effects how far away from you before the fog is at maximum thickness.");
-		bossFogFarPlaneScale = RoughConfig.getFloat("BossFog", "_FogFarPlaneScale", 0.2F, 0.0F, 0.8F, "This controls how thick/strong the fog is.");
-		
-		bossFogDoTEnabled = RoughConfig.getBoolean("BossFog", "_DoTEnabled", true, "If enabled, boss fog will cause poison damage over time.", true);
-		bossFogDoTDelay = RoughConfig.getInteger("BossFog", "_DoTCoolDown", 10, 0, Short.MAX_VALUE, "The cooldown (in seconds) between each damage event while inside the fog.");
-		bossFogDoTWarning = RoughConfig.getBoolean("BossFog", "_DoTWarning", true, "Should the player recieve a chat warning message when entering the poisonous fog?");
-		bossFogDoTWarningTime = RoughConfig.getInteger("BossFog", "_DoTWarningTime", 60, 1, Short.MAX_VALUE, "Controls how frequent (in seconds) a player can be warned when entering boss fog.");
-		bossFogDoTDamage = RoughConfig.getInteger("BossFog", "_DoTDamage", 1, 1, 127, "How many half hearts the fog DoT does per hit.");
-		bossFogPlayerCough = RoughConfig.getBoolean("BossFog", "_PlayerCough", true, "Disable this if you find the player cough sound annoying.\nOnly happens in poisonous fog.");
-		
 		RoughConfig.getConfig().addCustomCategoryComment("BatSwarm", "Configuration options for the Bat Swarm attack.");
 		
 		bossBatSwarmEnabled = RoughConfig.getBoolean("BatSwarm", "_Enabled", true, "Disable this if you don't want bosses to use Bat Swarm attacks.", true);
