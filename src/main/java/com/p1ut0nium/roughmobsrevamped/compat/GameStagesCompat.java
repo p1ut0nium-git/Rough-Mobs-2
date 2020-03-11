@@ -10,7 +10,7 @@
  */
 package com.p1ut0nium.roughmobsrevamped.compat;
 
-import com.p1ut0nium.roughmobsrevamped.config.ModCompatConfig;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 
 public abstract class GameStagesCompat {
 	
@@ -37,11 +37,11 @@ public abstract class GameStagesCompat {
 		if (!hasDefaultConfig())
 			return;
 	
-		useAllStages = ModCompatConfig.useAllStages.get();
-		useEquipmentStage = ModCompatConfig.useEquipmentStage.get();
-		useBossStage = ModCompatConfig.useBossStage.get();
-		useAbilitiesStage = ModCompatConfig.useAbilitiesStage.get();
-		useEnchantStage = ModCompatConfig.useEnchantStage.get();
+		useAllStages = RoughConfig.useAllStages;
+		useEquipmentStage = RoughConfig.useEquipmentStage;
+		useBossStage = RoughConfig.useBossStage;
+		useAbilitiesStage = RoughConfig.useAbilitiesStage;
+		useEnchantStage = RoughConfig.useEnchantStage;
 		
 		// If useAllStages is true, then all other stages should also be set to true
 		if (useAllStages) {

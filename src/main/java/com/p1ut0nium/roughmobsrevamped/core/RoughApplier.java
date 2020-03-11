@@ -8,7 +8,7 @@
  * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
  * 
  */
-package com.p1ut0nium.roughmobsrevamped;
+package com.p1ut0nium.roughmobsrevamped.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +16,12 @@ import java.util.List;
 import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
-import com.p1ut0nium.roughmobsrevamped.config.FogConfig;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.features.EntityFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
 import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
-import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
-import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
@@ -86,6 +84,8 @@ public class RoughApplier {
 			features.preInit();
 
 		// TODO RoughConfig.loadFeatures();
+		for (EntityFeatures features : FEATURES) 
+			features.initConfig();
 	}		
 	
 	public void postInit() {
@@ -93,14 +93,14 @@ public class RoughApplier {
 		for (EntityFeatures features : FEATURES) 
 			features.postInit();
 		
-		AttributeHelper.initAttributeOption();
+		//AttributeHelper.initAttributeOption();
 		
-		SpawnHelper.initSpawnOption();
+		//SpawnHelper.initSpawnOption();
 		// TODO SpawnHelper.addEntries();
 		
-		BossHelper.initGlobalBossConfig();
+		//BossHelper.initGlobalBossConfig();
 		
-		TargetHelper.init();
+		//TargetHelper.init();
 		
 		// TODO RoughConfig.saveFeatures();
 	}
@@ -147,7 +147,7 @@ public class RoughApplier {
 			{
 				// Don't attempt to add equipment to a boss. It has already been given equipment in the BossApplier class
 				// Also test if baby zombies should have equipment
-				if (!isBoss || ((LivingEntity)entity).isChild() && EquipHelper.disableBabyZombieEquipment() == false) {
+				if (!isBoss || ((LivingEntity)entity).isChild() && !RoughConfig.disableBabyZombieEquipment) {
 				// Test to see if equip stage is disabled or if it is enabled and player has it
 					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
 						
@@ -175,10 +175,10 @@ public class RoughApplier {
 			if (!player.isCreative()) {
 				if (event.getSource().equals(DamageSourceFog.POISONOUS_FOG)) {
 					
-					if (FogConfig.bossFogPlayerCough.get())
+					if (RoughConfig.bossFogPlayerCough)
 						playHurtSound(player);
 				
-					player.setHealth(player.getHealth() - FogConfig.bossFogDoTDamage.get());
+					player.setHealth(player.getHealth() - RoughConfig.bossFogDoTDamage);
 					event.setCanceled(true);
 				}
 			}
@@ -195,13 +195,16 @@ public class RoughApplier {
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
 		
-		if (event.getEntity() instanceof PlayerEntity) {
+		/* TODO
+		if (event.getEntity() instanceof PlayerEntity)
 			FogEventHandler.playerRespawned = true;
-		}
+		*/
 		
 		// Ignore spawn if on the client side, or if entity is the player.
 		if (event.getWorld().isRemote || event.getEntity() instanceof PlayerEntity)
 			return;
+		
+		System.out.println("Spawning entity");
 		
 		Entity entity = event.getEntity();
 		boolean isBoss = entity instanceof IChampion;
@@ -219,11 +222,10 @@ public class RoughApplier {
 			return;
 		
 		getGameStages(entity.world.getClosestPlayer(entity, -1.0D));
-		addAttributes(entity);
+		// TODO addAttributes(entity);
 		addFeatures(event, entity);
 
 		entity.getPersistentData().putBoolean(FEATURES_APPLIED, true);
-		// TODO entity.getEntityData().setBoolean(FEATURES_APPLIED, true);
 	}
 	
 	@SubscribeEvent

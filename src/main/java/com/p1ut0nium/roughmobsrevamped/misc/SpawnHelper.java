@@ -11,13 +11,13 @@
 package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.SereneSeasonsCompat;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -38,10 +38,6 @@ public class SpawnHelper {
 	
 	public static final List<SpawnEntry> ENTRIES = new ArrayList<SpawnEntry>();
 
-	private static int playerSpawnLevel;
-	private static boolean isUndergroundEnabled;
-	private static int maxSpawnHeight;
-	private static int minDistFromSpawn;
 	private static boolean disableBabyZombies;
 
 	public static boolean disableBabyZombies() {
@@ -211,12 +207,7 @@ public class SpawnHelper {
 			return;
 		
 		/* TODO Config
-		RoughConfig.getConfig().addCustomCategoryComment("SpawnConditions", "Configuration options which affect when Rough Mobs can spawn");
 		
-		playerSpawnLevel = RoughConfig.getInteger("SpawnConditions", "_MinPlayerLevel", 0, 0, Short.MAX_VALUE, "Player's Minecraft Experience Level required before a Rough Mob will spawn.");
-		isUndergroundEnabled = RoughConfig.getBoolean("SpawnConditions", "_MustBeUnderground", false, "Enable this to require Rough Mobs be underground in order to spawn.");
-		maxSpawnHeight = RoughConfig.getInteger("SpawnConditions", "_MaxSpawnHeight", 256, 0, 256, "Set maximum height for Rough Mobs to spawn. Works in conjunction with MustBeUnderground.");
-		minDistFromSpawn = RoughConfig.getInteger("SpawnConditions", "_MinDistanceFromSpawn", 0, 0, Integer.MAX_VALUE, "Set the minimum distance from the world spawn before a Rough Mob can spawn.");
 		
 		RoughConfig.getConfig().addCustomCategoryComment("spawnEntries", "Add custom entity spawn entries or override old ones. Takes 5+ values seperated by a semicolon:\n" +
 														"Format: entity;chance;min;max;type;biome1;biome2;...\n" +
@@ -228,6 +219,7 @@ public class SpawnHelper {
 														"biomes:\tBiome name/id/type (Can be more than one). Put a \"!\" in front of the biome to revert this feature and disable entity spawning in the biome. Use " + SpawnEntry.OW_TYPE + " for all non nether/end biomes (Doesn't work with BoP hell biomes). Leave this blank for every biome!");
 		
 		String[] options = RoughConfig.getStringArray("spawnEntries", "_List", Constants.DEFAULT_SPAWN_ENTRIES, "");
+		
 		disableBabyZombies = RoughConfig.getBoolean("spawnEntries", "_DisableBabyZombies", false, "Set to true to disable spawning of baby zombies.");
 		
 		fillEntries(options);
@@ -312,27 +304,27 @@ public class SpawnHelper {
 		// Test to see if it is the appropriate season to spawn rough mobs
 		boolean sereneSeasonsEnabled = CompatHandler.isSereneSeasonsLoaded();
 		String currentSeason = null;
-		List<String> seasonWhiteList = null;
+		List<? extends String> seasonWhiteList = null;
 		
 		if (sereneSeasonsEnabled) {
 			currentSeason = SereneSeasonsCompat.getSeason(world);
-			seasonWhiteList = Arrays.asList(SereneSeasonsCompat.getSeasonWhitelist());
+			seasonWhiteList = SereneSeasonsCompat.getSeasonWhitelist();
 		}
 		
 		if (!sereneSeasonsEnabled || seasonWhiteList.contains(currentSeason)) {
 				
 			// Test to see if mob spawn is far enough away from world spawn to be a rough mob.
 			Double distanceToSpawn = entity.getDistanceSq(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
-			if (distanceToSpawn >= minDistFromSpawn) {
+			if (distanceToSpawn >= RoughConfig.minDistFromSpawn) {
 		
 				// Test to see if closest player is high enough level to spawn as a rough mob
-				if (playerClosest != null && playerClosest.experienceLevel >= playerSpawnLevel) {
+				if (playerClosest != null && playerClosest.experienceLevel >= RoughConfig.minPlayerLevel) {
 											
 					// Test to see if  mob is underground
-					if(!isUndergroundEnabled || !world.canBlockSeeSky(entity.getPosition()) && isUndergroundEnabled) {
+					if(!RoughConfig.mustBeUnderground || !world.canBlockSeeSky(entity.getPosition()) && RoughConfig.mustBeUnderground) {
 							
 						// Test to see if mob is below maximum spawn height
-						if (entity.getPosition().getY() <= maxSpawnHeight) {
+						if (entity.getPosition().getY() <= RoughConfig.maxSpawnHeight) {
 							return true;
 						}
 					}
@@ -344,9 +336,5 @@ public class SpawnHelper {
 
 	public static boolean hasDefaultConfig() {
 		return true;
-	}
-	
-	public static int getMinDistFromSpawn() {
-		return minDistFromSpawn;
 	}
 }

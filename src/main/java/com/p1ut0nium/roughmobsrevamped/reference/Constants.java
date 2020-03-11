@@ -12,9 +12,23 @@ package com.p1ut0nium.roughmobsrevamped.reference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.HuskEntity;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.monster.ZombiePigmanEntity;
+import net.minecraft.entity.monster.ZombieVillagerEntity;
+import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
+import net.minecraft.entity.passive.horse.ZombieHorseEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.ResourceLocationUtils;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
 
 public class Constants {
 	public static final String MODID = "roughmobsrevamped";
@@ -28,6 +42,13 @@ public class Constants {
 	public static final String ROUGHMOBSABILS = "roughmobsabils";
 	public static final String ROUGHMOBSENCHANT = "roughmobsenchant";
 	
+	public static final String MOD_CONFIG_DIRECTORY = "roughmobsrevamped";
+	public static final String MOD_COMPAT_CONFIG_FILENAME = "modcompat.toml";
+	public static final String SPAWN_CONDITIONS_CONFIG_FILENAME = "spawnconditions.toml";
+	public static final String EQUIPMENT_CONFIG_FILENAME = "equipment.toml";
+	public static final String FEATURES_CONFIG_FILENAME = "features.toml";
+	public static final String FOG_CONFIG_FILENAME = "fog.toml";
+	
 	public static final int SEA_LEVEL = 62;
 	
 	public static final int ENTITY_BOSSZOMBIE = 300;
@@ -38,21 +59,32 @@ public class Constants {
 		return MODID + ":" + id;
 	}
 
-	public static List<String> getRegNames(List<Class<? extends Entity>> entityClasses) {
+	public static List<String> getRegNames(List<EntityType> entityType) {
 		
 		List<String> regNames = new ArrayList<String>();
 		
-		for(Class<?> clazz : entityClasses) {
-			regNames.add(EntityType.byKey((clazz).toString()).toString());
+		for(EntityType clazz : entityType) {
+			regNames.add(EntityType.getKey(clazz).toString());
 		}
-		
 		return regNames;
 	}
 	
-	public static final String[] FOG_COLORS = {
-			"0.1",
-			"0.4",
-			"0.1"
+	public static final EntityType[] ZOMBIES = {
+			EntityType.ZOMBIE,
+			EntityType.ZOMBIE_VILLAGER,
+			EntityType.HUSK,
+			EntityType.ZOMBIE_PIGMAN
+	};
+	
+	public static final EntityType[] HOSTILE_HORSES = {
+			EntityType.ZOMBIE_HORSE,
+			EntityType.SKELETON_HORSE
+	};
+	
+	public static final Float[] FOG_COLORS = {
+			0.1F,
+			0.4F,
+			0.1F
 	};
 	
 	public static final String[] BOSS_COLORS = {
@@ -67,6 +99,12 @@ public class Constants {
 			"WINTER",
 			"SPRING"
 	};
+	
+	public static final int CHANCE_PER_WEAPON_DEFAULT = 3;
+	public static final int CHANCE_PER_ARMOR_DEFAULT = 4;
+	public static final int CHANCE_PER_ENCHANT_DEFAULT = 8;
+	public static final float ENCHANT_MULTIPLIER_DEFAULT = 0.5F;
+	public static final float DROP_CHANCE_DEFAULT = 0.085F;
 	
 	public static final String[] ATTRIBUTE_DEFAULT = {
 			"zombie;generic.maxHealth;1;0.5;/;1",

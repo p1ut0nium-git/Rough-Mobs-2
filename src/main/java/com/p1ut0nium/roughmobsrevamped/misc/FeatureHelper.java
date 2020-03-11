@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;

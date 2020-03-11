@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
-import com.p1ut0nium.roughmobsrevamped.config.FogConfig;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
 import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
@@ -47,11 +47,11 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	private static int batSwarmTick;
 
 	// Fog variables
-    private static boolean FOG_DOT_ENABLED = FogConfig.bossFogDoTEnabled.get();
-    private static boolean FOG_WARNING_ENABLED = FogConfig.bossFogDoTWarning.get();
+	private static boolean FOG_DOT_ENABLED = RoughConfig.bossFogDoTEnabled;
+    private static boolean FOG_WARNING_ENABLED = RoughConfig.bossFogDoTWarning;
 	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
-    private static int FOG_DOT_DELAY = FogConfig.bossFogDoTDelay.get() * 20;
-    private static int FOG_WARNING_TIME = FogConfig.bossFogDoTWarningTime.get() * 20;    
+    private static int FOG_DOT_DELAY = RoughConfig.bossFogDoTDelay* 20;
+    private static int FOG_WARNING_TIME = RoughConfig.bossFogDoTWarningTime * 20;    
     private HashMap<String, Long> playersWarned = new HashMap<>();
     private List<PlayerEntity> playersInFog = new ArrayList<PlayerEntity>();
     private StringTextComponent fogWarningMsg;
@@ -90,9 +90,9 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
                 this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
             }
         }
-                
+
         if (!this.world.isRemote) {
-        	
+
         	// TODO make sure player is not in creative
         	PlayerEntity closetPlayer = this.world.getClosestPlayer(this, FOG_MAX_DISTANCE);
         	
@@ -214,7 +214,7 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
         }
         
         //TODO Is there a better way of handling this?
-        FogEventHandler.bossDied = true;
+        // FogEventHandler.bossDied = true;
         
         super.onDeath(cause);
     }

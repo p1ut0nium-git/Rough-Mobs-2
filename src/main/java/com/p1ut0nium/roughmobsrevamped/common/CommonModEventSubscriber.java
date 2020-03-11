@@ -13,8 +13,10 @@ package com.p1ut0nium.roughmobsrevamped.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.p1ut0nium.roughmobsrevamped.RoughApplier;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
+import com.p1ut0nium.roughmobsrevamped.config.ConfigHelper;
+import com.p1ut0nium.roughmobsrevamped.config.ConfigHolder;
+import com.p1ut0nium.roughmobsrevamped.core.RoughApplier;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -39,6 +41,10 @@ public final class CommonModEventSubscriber {
 	@SubscribeEvent
 	public static void onCommonSetup(final FMLCommonSetupEvent event) {
 		LOGGER.info(Constants.MODID + " Common ModSetupEvent");
+
+		// Initialize 3rd party mod support
+		CompatHandler.registerGameStages();
+		CompatHandler.registerSereneSeasons();
 		
 		// Begin adding features, etc.
 		applier = new RoughApplier();
@@ -59,5 +65,27 @@ public final class CommonModEventSubscriber {
 	@SubscribeEvent
 	public void onPlayerFalls(LivingFallEvent event) {
 		LOGGER.info(Constants.MODID + ": Player Falls.");
+	}
+	
+	@SubscribeEvent
+	public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
+		final ModConfig config = event.getConfig();
+		// Rebake the configs when they change
+		if (config.getSpec() == ConfigHolder.MODCOMPAT_SPEC) {
+			ConfigHelper.bakeModCompat(config);
+			LOGGER.debug("Baked mod compatibility config");
+		} else if (config.getSpec() == ConfigHolder.SPAWNCONDITIONS_SPEC) {
+			ConfigHelper.bakeSpawnConditions(config);
+			LOGGER.debug("Baked spawn conditions config");
+		} else if (config.getSpec() == ConfigHolder.EQUIPMENT_SPEC) {
+			ConfigHelper.bakeEquipment(config);
+			LOGGER.debug("Baked equipment config");
+		} else if (config.getSpec() == ConfigHolder.FEATURES_SPEC) {
+			ConfigHelper.bakeFeatures(config);
+			LOGGER.debug("Baked features config");
+		} else if (config.getSpec() == ConfigHolder.FOG_SPEC) {
+			ConfigHelper.bakeFog(config);
+			LOGGER.debug("Baked fog config");
+		}
 	}
 }

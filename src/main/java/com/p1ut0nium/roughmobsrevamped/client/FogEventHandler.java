@@ -15,12 +15,10 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import com.p1ut0nium.roughmobsrevamped.config.FogConfig;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
-import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.util.Utilities;
-
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.entity.LivingEntity;
@@ -35,6 +33,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class FogEventHandler {
 	
+	/*
 	private static double FOG_RED = 0.7116436;
 	private static double FOG_GREEN = 0.81895345;
 	private static double FOG_BLUE = 0.99999976;
@@ -49,14 +48,14 @@ public class FogEventHandler {
     private static LivingEntity closestBoss;
     private static float closestBossDistance;
 
-    private static boolean fogEnabled = FogConfig.bossFogEnabled.get();
-    private static int fogNearPlaneConfig = BossHelper.bossFogStartDistance;
-    private static int fogMaxDistConfig = BossHelper.bossFogMaxDistance;
-    private static int fogFarPlaneConfig = BossHelper.bossFogFarPlane;
-    private static float fogFarPlaneScaleConfig = BossHelper.bossFogFarPlaneScale;
-    private static float fogColorConfigRed = Float.parseFloat(BossHelper.bossFogColor[0]);
-    private static float fogColorConfigGreen = Float.parseFloat(BossHelper.bossFogColor[1]);
-    private static float fogColorConfigBlue = Float.parseFloat(BossHelper.bossFogColor[2]);
+    private static boolean fogEnabled = RoughConfig.bossFogEnabled;
+    private static int fogNearPlaneConfig = RoughConfig.bossFogStartDist;
+    private static int fogMaxDistConfig = RoughConfig.bossFogMaxDist;
+    private static int fogFarPlaneConfig = RoughConfig.bossFogFarPlane;
+    private static float fogFarPlaneScaleConfig = RoughConfig.bossFogFarPlaneScale;
+    private static float fogColorConfigRed = RoughConfig.bossFogColor.get(0);
+    private static float fogColorConfigGreen = RoughConfig.bossFogColor.get(1);
+    private static float fogColorConfigBlue = RoughConfig.bossFogColor.get(2);
     
     private static float currentFogColorRed;
     private static float currentFogColorGreen;
@@ -140,9 +139,6 @@ public class FogEventHandler {
         }
     }
 
-    /*
-     * Updates the fog's far plane distance
-     */
     private static void renderFog(int fogMode, float farPlaneDistance, float farPlaneDistanceScale) {
         if (fogMode < 0) {
             GL11.glFogf(GL11.GL_FOG_START, 0.0F);
@@ -153,9 +149,6 @@ public class FogEventHandler {
         }
     }
 
-    /*
-     * Finds the closest boss to the player
-     */
     private static LivingEntity checkForBossInRange(EntityViewRenderEvent event) {
     	
     	PlayerEntity player = (PlayerEntity) ((IForgeEntity) event).getEntity();
@@ -210,9 +203,6 @@ public class FogEventHandler {
     	return closestBoss;
     }
 
-    /*
-     * This fades the fog color from the current color to the normal fog color over FOG_FADE_TIME ticks
-     */
     private static void fadeOutFogColor(EntityViewRenderEvent.FogColors event) {
     	
     	fog_colorfade_tick += 1;
@@ -251,9 +241,6 @@ public class FogEventHandler {
     	}
     }
     
-    /*
-     * Fades fog far plane from current distance to normal distance over FOG_FADE_TIME ticks
-     */
     private static void adjustFogFarPlane(EntityViewRenderEvent.RenderFogEvent event) {
     	
     	fog_farplane_tick += 1;
@@ -282,4 +269,5 @@ public class FogEventHandler {
     		renderFog(event.getFogMode(), FOG_MAX_FARPLANE, FOG_MAX_FARPLANE_SCALE);
     	}  
     }
+    */
 }

@@ -17,8 +17,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
+import com.p1ut0nium.roughmobsrevamped.config.EquipmentConfig;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.darkhax.gamestages.GameStageHelper;
@@ -41,53 +43,42 @@ public class EquipHelper {
 
 	private static boolean playerHasEnchantStage;
 	private static boolean enchantStageEnabled;
-	private static boolean chanceTimeMultiplier;
-	private static boolean chanceDistanceMultiplier;
-	private static int distThreshold;
-	private static boolean disableBabyZombieEquipment;
-	
-	public static boolean disableBabyZombieEquipment() {
-		return disableBabyZombieEquipment;
-	}
 	
 	public static class EquipmentApplier {
 		
 		private final String name;
 		private final int chancePerWeaponDefault;
-		private final int chancePerPieceDefault;
+		private final int chancePerArmorDefault;
 		private final int enchChanceDefault;
 		private final float enchMultiplierDefault;
 		private final float dropChanceDefault;
 		
-		private EquipmentPool poolMainhand;
-		private EquipmentPool poolOffhand;
-		
-		private EquipmentPool poolHelmet;
-		private EquipmentPool poolChestplate;
-		private EquipmentPool poolLeggings;
-		private EquipmentPool poolBoots;
-		
 		private int chancePerWeapon;
-		private int chancePerPiece;
+		private int chancePerArmor;
 		private int enchChance;
 		private float enchMultiplier;
 		private float dropChance;
 		
-		private String[] equipMainhand;
-		private String[] equipOffhand;
+		private EquipmentPool poolMainhand;
+		private EquipmentPool poolOffhand;
+		private EquipmentPool poolHelmet;
+		private EquipmentPool poolChestplate;
+		private EquipmentPool poolLeggings;
+		private EquipmentPool poolBoots;
+
+		private List<? extends String> equipMainhand;
+		private List<? extends String> equipOffhand;
+		private List<? extends String> equipHelmet;
+		private List<? extends String> equipChestplate;
+		private List<? extends String> equipLeggings;
+		private List<? extends String> equipBoots;
+		private List<? extends String> equipWeaponEnchants;
+		private List<? extends String> equipArmorEnchants;
 		
-		private String[] equipHelmet;
-		private String[] equipChestplate;
-		private String[] equipLeggings;
-		private String[] equipBoots;
-		
-		private String[] equipWeaponEnchants;
-		private String[] equipArmorEnchants;
-		
-		public EquipmentApplier(String name, int chancePerWeaponDefault, int chancePerPieceDefault, int enchChanceDefault, float enchMultiplierDefault, float dropChanceDefault) {
+		public EquipmentApplier(String name, int chancePerWeaponDefault, int chancePerArmorDefault, int enchChanceDefault, float enchMultiplierDefault, float dropChanceDefault) {
 			this.name = name;
 			this.chancePerWeaponDefault = chancePerWeaponDefault;
-			this.chancePerPieceDefault = chancePerPieceDefault;
+			this.chancePerArmorDefault = chancePerArmorDefault;
 			this.enchChanceDefault = enchChanceDefault;
 			this.enchMultiplierDefault = enchMultiplierDefault;
 			this.dropChanceDefault = dropChanceDefault;
@@ -181,7 +172,7 @@ public class EquipHelper {
 				EquipmentSlotType slot = EquipmentSlotType.values()[i];
 				
 				// For slots 0 and 1, use chancePerWeapon, for all others, use chancePerPiece
-				int chance = i <= 1 ? chancePerWeapon : chancePerPiece;
+				int chance = i <= 1 ? chancePerWeapon : chancePerArmor;
 				
 				// Test for each weapon and each piece of armor, or if entity should have complete armor set
 				if (getChance(entity, chance) || (completeArmorSet && i > 1)) {
@@ -197,52 +188,35 @@ public class EquipHelper {
 			(entity.getPersistentData()).putBoolean(KEY_APPLIED, true);
 		}
 
-		public String initConfig(String[] defaultMainhand, String[] defaultOffhand, String[] defaultHelmets, String[] defaultChestplates, String[] defaultLeggings, String[] defaultBoots, String[] defaultWeaponEnchants, String[] defaultArmorEnchants, boolean skipChanceOptions) {
+		public void initConfig(boolean isBoss, boolean useDefaultValues) {
 
 			String formatName = name.toLowerCase().replace(" ", "") + "Equipment";
 			
-			/* TODO Config
-			RoughConfig.getConfig().addCustomCategoryComment(formatName, "Add enchanted armor and weapons to a newly spawned " + name + ". Takes 2-3 values seperated by a semicolon:\n"
-																				 + "Format: item or enchantment;chance;dimension\n"
-																				 + "item or enchantment:\tthe item/enchantment id\n"
-																				 + "chance:\t\t\t\tthe higher this number the more this item/enchantment gets selected\n"
-																				 + "dimension:\t\t\tdimension (ID) in which the item/enchantment can be selected (optional! Leave this blank for any dimension)");
-			
-			if (skipChanceOptions) 
-			{
+			// TODO make this work for both skeletons and zombies without duplication of code			
+			if (useDefaultValues) {
 				chancePerWeapon = chancePerWeaponDefault;
-				chancePerPiece = chancePerPieceDefault;
+				chancePerArmor= chancePerArmorDefault;
 				enchChance = enchChanceDefault;
+				enchMultiplier = enchMultiplierDefault;
+				dropChance = dropChanceDefault;
+			} else {
+				chancePerWeapon = RoughConfig.chancePerWeapon;
+				chancePerArmor = RoughConfig.chancePerArmor;
+				enchChance = RoughConfig.chancePerEnchantment;
+				enchMultiplier = RoughConfig.enchantMultiplier;
+				dropChance = RoughConfig.dropChance;
 			}
-			else
-			{
-				chancePerWeapon = RoughConfig.getInteger(formatName, "WeaponChance", chancePerWeaponDefault, 0, Short.MAX_VALUE, "Chance (1 in X per hand) to give a " + name + " new weapons on spawn.\nNOTE: Bosses always spawn with weapons.\nSet to 0 to disable new weapons", true);
-				chancePerPiece = RoughConfig.getInteger(formatName, "ArmorChance", chancePerPieceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per piece) to give a " + name + " new armor on spawn.\nSet to 0 to disable new armor.", true);
-				enchChance = RoughConfig.getInteger(formatName, "EnchantChance", enchChanceDefault, 0, Short.MAX_VALUE, "Chance (1 in X per item) to enchant newly given items\nSet to 0 to disable item enchanting", true);
-			}
+
+			// TODO make this work for isBoss
+			equipMainhand = RoughConfig.equipMainhand;
+			equipOffhand = RoughConfig.equipOffhand;
+			equipHelmet = RoughConfig.equipHelmet;
+			equipChestplate = RoughConfig.equipChestplate;
+			equipLeggings = RoughConfig.equipLeggings;
+			equipBoots = RoughConfig.equipBoots;
 			
-			enchMultiplier = RoughConfig.getFloat(formatName, "EnchantMultiplier", enchMultiplierDefault, 0F, 1F, "Multiplier for the applied enchantment level with the max. level. The level can still be a bit lower\ne.g. 0.5 would make sharpness to be at most level 3 (5 x 0.5 = 2.5 and [2.5] = 3) and fire aspect would always be level 1 (2 x 0.5 = 1)", true);
-			dropChance = RoughConfig.getFloat(formatName, "DropChance", dropChanceDefault, 0F, 1F, "Chance (per slot) that the " + name + " drops the equipped item (1 = 100%, 0 = 0%)", true);
-			
-			equipMainhand = RoughConfig.getStringArray(formatName, "Mainhand", defaultMainhand, "Items which can be wielded by a " + name + " in their mainhand");
-			equipOffhand = RoughConfig.getStringArray(formatName, "Offhand", defaultOffhand, "Items which can be wielded by a " + name + " in their offhand");
-			equipHelmet = RoughConfig.getStringArray(formatName, "Helmet", defaultHelmets, "Helmets which can be worn by a " + name + " in their helmet slot");
-			equipChestplate = RoughConfig.getStringArray(formatName, "Chestplate", defaultChestplates, "Chestplates which can be worn by a " + name + " in their chestplate slot");
-			equipLeggings = RoughConfig.getStringArray(formatName, "Leggings", defaultLeggings, "Leggings which can be worn by a " + name + " in their leggings slot");
-			equipBoots = RoughConfig.getStringArray(formatName, "Boots", defaultBoots, "Boots which can be worn by a " + name + " in their boots slot");
-			
-			equipWeaponEnchants = RoughConfig.getStringArray(formatName, "WeaponEnchants", defaultWeaponEnchants, "Enchantments which can be applied to mainhand and offhand items");
-			equipArmorEnchants = RoughConfig.getStringArray(formatName, "ArmorEnchants", defaultArmorEnchants, "Enchantments which can be applied to armor items");
-			
-			RoughConfig.getConfig().addCustomCategoryComment("Equipment_GlobalOptions", "Options to control equipment spawning across all mobs that can wear equipment.");
-			
-			chanceTimeMultiplier = RoughConfig.getBoolean("Equipment_GlobalOptions", "_TimeMultiplier", true, "Should rough mobs get more gear as it gets closer to midnight?");
-			chanceDistanceMultiplier = RoughConfig.getBoolean("Equipment_GlobalOptions", "_DistanceMultiplier", true, "Should rough mobs get more gear based upon distance from world spawn?");
-			distThreshold = RoughConfig.getInteger("Equipment_GlobalOptions", "_DistanceThreshold", 1000, 0, Integer.MAX_VALUE, "The distance threshold used to calculate the DistanceMultiplier.\nShorter distances here means mobs will have more gear closer to the World Spawn.");
-			disableBabyZombieEquipment = RoughConfig.getBoolean("Equipment_GlobalOptions", "_DisableBabyZombieEquipment", true, "Set to true to disable baby zombies getting equipment.");
-			
-			*/
-			return formatName;
+			equipWeaponEnchants = RoughConfig.equipWeaponEnchants;
+			equipArmorEnchants = RoughConfig.equipArmorEnchants;
 		}
 		
 		public void createPools() {
@@ -261,25 +235,25 @@ public class EquipHelper {
 		public final EntryPool<ItemStack> ITEM_POOL = new EntryPool<ItemStack>();
 		public final EntryPool<Enchantment> ENCHANTMENT_POOL = new EntryPool<Enchantment>();
 		
-		public static EquipmentPool createEquipmentPool(String name, String[] arrayItems, String[] arrayEnchants) {
+		public static EquipmentPool createEquipmentPool(String name, List<? extends String> equipMainhand, List<? extends String> equipWeaponEnchants) {
 			
 			EquipmentPool pool = new EquipmentPool();
 			
-			List<String> errorItems = pool.addItemsFromNames(arrayItems);
+			List<String> errorItems = pool.addItemsFromNames(equipMainhand);
 			if (!errorItems.isEmpty()) 
 				RoughMobsRevamped.LOGGER.error(Constants.MODNAME + ": error on creating the " + name + " item pool! " + String.join(", ", errorItems));
 			
-			List<String> errorEnchants = pool.addEnchantmentsFromNames(arrayEnchants);
+			List<String> errorEnchants = pool.addEnchantmentsFromNames(equipWeaponEnchants);
 			if (!errorEnchants.isEmpty()) 
 				RoughMobsRevamped.LOGGER.error(Constants.MODNAME + ": error on creating the " + name + " enchantment pool! " + String.join(", ", errorEnchants));
 			
 			return pool;
 		}
 		
-		public List<String> addEnchantmentsFromNames(String[] array) {
+		public List<String> addEnchantmentsFromNames(List<? extends String> equipWeaponEnchants) {
 			
 			List<String> errors = new ArrayList<String>();
-			for (String s : array) {
+			for (String s : equipWeaponEnchants) {
 				String error = addEnchantmentFromName(s);
 				if (error != null)
 					errors.add(error);
@@ -294,7 +268,7 @@ public class EquipHelper {
 			
 			if (parts.length >= 2) {
 				try {
-					// TODO Enchantment ench = EnchantmentgetEnchantmentByLocation(parts[0]);
+					// TODO Verify this replacement works - Enchantment ench = EnchantmentgetEnchantmentByLocation(parts[0]);
 					Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(parts[0]));
 					int probability = Integer.parseInt(parts[1]);
 					int dimension = parts.length > 2 ? Integer.parseInt(parts[2]) : Integer.MIN_VALUE;
@@ -315,10 +289,10 @@ public class EquipHelper {
 			return null;
 		}
 
-		public List<String> addItemsFromNames(String[] array) {
+		public List<String> addItemsFromNames(List<? extends String> equipMainhand) {
 			
 			List<String> errors = new ArrayList<String>();
-			for (String s : array) {
+			for (String s : equipMainhand) {
 				String error = addItemFromName(s);
 				if (error != null)
 					errors.add(error);
@@ -333,18 +307,18 @@ public class EquipHelper {
 			
 			if (parts.length >= 2) {
 				try {
-					// TODO Item item = REGISTRY.getObject(new ResourceLocation(parts[0]));
+					// TODO Verify this replacement works - Item item = REGISTRY.getObject(new ResourceLocation(parts[0]));
 					Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(parts[0]));
 					int probability = Integer.parseInt(parts[1]);
 					int dimension = parts.length >= 3 ? Integer.parseInt(parts[2]) : Integer.MIN_VALUE;
-					// TODO meta
+					// TODO meta currently not being used below
 					int meta = parts.length >= 4 ? Integer.parseInt(parts[3]) : 0;
 					String nbt = parts.length >= 5 ? parts[4] : "";
 					
 					if (item == null)
 						return "Invalid item: " + parts[0] + " in line: " + s;
 					else
-						// TODO addItem(new ItemStack(item, 1, meta), probability, dimension, nbt);
+						// TODO get meta data back? addItem(new ItemStack(item, 1, meta), probability, dimension, nbt);
 						addItem(new ItemStack(item), probability, dimension, nbt);
 				}
 				catch(NumberFormatException e) {
@@ -493,7 +467,7 @@ public class EquipHelper {
 		float timeChanceIncrease = 0;
 		
 		// Increase chance the closer it is to midnight.
-		if (chanceTimeMultiplier) {
+		if (RoughConfig.chanceTimeMultiplier) {
 			long currentTime = entity.getEntityWorld().getGameTime();
 			
 			// Ensure the current time is in the range of 0 to 24000
@@ -511,13 +485,13 @@ public class EquipHelper {
 		}
 	
 		// Increase chance the farther from world spawn the mob is.
-		if (chanceDistanceMultiplier) {
+		if (RoughConfig.chanceDistMultiplier) {
 			World world = entity.getEntityWorld();
 			double distanceToSpawn = entity.getDistanceSq(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
 
-			if (distanceToSpawn >= SpawnHelper.getMinDistFromSpawn()) {
-				distanceToSpawn = distanceToSpawn - SpawnHelper.getMinDistFromSpawn();
-				distanceChanceIncrease = Math.min(1, (float)distanceToSpawn / distThreshold);
+			if (distanceToSpawn >= RoughConfig.minDistFromSpawn) {
+				distanceToSpawn = distanceToSpawn - RoughConfig.minDistFromSpawn;
+				distanceChanceIncrease = Math.min(1, (float)distanceToSpawn / RoughConfig.distThreshold);
 			}
 		}
 		

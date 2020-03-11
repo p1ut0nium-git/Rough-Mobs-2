@@ -10,73 +10,69 @@
  */
 package com.p1ut0nium.roughmobsrevamped.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class ModCompatConfig {
+final class ModCompatConfig {
 	
-	public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-	public static final ForgeConfigSpec SPEC;
+	final ForgeConfigSpec.BooleanValue useAllStages;
+	final ForgeConfigSpec.BooleanValue useEquipmentStage;
+	final ForgeConfigSpec.BooleanValue useBossStage;
+	final ForgeConfigSpec.BooleanValue useAbilitiesStage;
+	final ForgeConfigSpec.BooleanValue useEnchantStage;
 	
-	public static final ForgeConfigSpec.BooleanValue useAllStages;
-	public static final ForgeConfigSpec.BooleanValue useEquipmentStage;
-	public static final ForgeConfigSpec.BooleanValue useBossStage;
-	public static final ForgeConfigSpec.BooleanValue useAbilitiesStage;
-	public static final ForgeConfigSpec.BooleanValue useEnchantStage;
-	
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> seasonWhiteList;
+	final ForgeConfigSpec.ConfigValue<List<String>> seasonWhiteList;
 
-	static {
+	ModCompatConfig(final ForgeConfigSpec.Builder builder) {
 		
 		// Game Stages
 		
-		BUILDER.comment("Config options for enabling/disabling Game Stages support.\n"
-				+ "The mod Game Stages must be installed for these features to work.\n"
-				+ "\n"
-				+ "Stages to give player in game: \n"
-				+ "\n"
-				+ "roughmobsall - gives all stages below at once.\n"
-				+ "roughmobsequip - allows mobs to spawn with equipment.\n"
-				+ "roughmobsenchant - allows mob gear to be enchanted.\n"
-				+ "roughmobsboss - allows some mobs to be bosses.\n"
-				+ "roughmobsabils - allows mobs to have special abilities.");
-		BUILDER.push("Game Stages");
-		useAllStages = BUILDER
-				.comment("Require this Game Stage to allow all Rough Mobs stages below to be given at once."
-						+ "\nRequires the player to have 'roughmobsall'")
-				.define("GameStages_AllStages", false);
-		useEquipmentStage = BUILDER
-				.comment("Require this Game Stage for Rough Mobs to have equipment."
-						+ "\nRequires the player to have 'roughmobsequip'")
+		builder.comment("Config options for enabling/disabling Game Stages support.");
+		builder.push("Game Stages");
+		useAllStages = builder
+				.comment("Require this Game Stage to allow all Rough Mobs stages be given at once.")
+				.define("GameStages_AllStages", false);		
+		useEquipmentStage = builder
+				.comment("Require this Game Stage for Rough Mobs to have equipment.")
 				.define("GameStages_Equipment", false);
-		useBossStage = BUILDER
-				.comment("Require this Game Stage for Rough Mob Bosses to spawn. \nMust also enable Equipment stage for this to work."
-						+ "\nRequires the player to have 'roughmobsboss'")
+		useBossStage = builder
+				.comment("Require this Game Stage for Rough Mob Bosses to spawn.")
 				.define("GameStages_Bosses", false);
-		useAbilitiesStage = BUILDER
-				.comment("Require this Game Stage for Rough Mobs to have special combat AI and attributes."
-						+ "\nRequired the player to have roughmobsabils")
+		useAbilitiesStage = builder
+				.comment("Require this Game Stage for Rough Mobs to have special combat AI and attributes.")
 				.define("GameStages_Abilities", false);
-		useEnchantStage = BUILDER
-				.comment("Require this Game Stage for Rough Mob equipment to be enchanted."
-						+ "\nRequires the player to have roughmobsenchant")
+		useEnchantStage = builder
+				.comment("Require this Game Stage for Rough Mob equipment to be enchanted.")
 				.define("GameStages_Enchantments", false);
-		BUILDER.pop();
-		
+		builder.pop();
+				
 		// Serene Seasons
 		
-		BUILDER.comment("Config options for enabling/disabling Serene Seasons support.\n"
-				+ "The mod Game Stages must be installed for these features to work.\n");
-		BUILDER.push("Serene Seasons");
-		seasonWhiteList = BUILDER
+		builder.comment("Config options for enabling/disabling Serene Seasons support.");
+		builder.push("Serene Seasons");
+		seasonWhiteList = builder
 				.comment("Whitelist of all seasons that Rough Mobs can spawn in.")
-				.defineList("Season_Whitelist", Arrays.asList(Constants.SEASONS), null);
-		
-		SPEC = BUILDER.build();
+				.define("Season_Whitelist", Arrays.asList(Constants.SEASONS), SEASON_VALIDATOR);
+		builder.pop();
 	}
+	
+    private static final Predicate<Object> SEASON_VALIDATOR = (obj) -> {
+    	List<Object> seasons = Arrays.asList(obj);
+        try {
+        	seasons.stream().allMatch(e -> e.getClass().equals(String.class));
+        }
+        catch (Exception e) {
+            // Not all elements are a string, so return invalid
+            return false;
+        }
+
+        return true;
+    };
 }
 

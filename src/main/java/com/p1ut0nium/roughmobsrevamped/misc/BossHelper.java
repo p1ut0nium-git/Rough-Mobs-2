@@ -114,15 +114,9 @@ public class BossHelper {
 			
 		public void initConfig() {
 
-			equipApplier.initConfig(Constants.DEFAULT_BOSS_MAINHAND, 
-									Constants.DEFAULT_BOSS_OFFHAND, 
-									Constants.DEFAULT_BOSS_HELMETS, 
-									Constants.DEFAULT_BOSS_CHESTPLATES, 
-									Constants.DEFAULT_BOSS_LEGGINGS, 
-									Constants.DEFAULT_BOSS_BOOTS, 
-									Constants.DEFAULT_WEAPON_ENCHANTS, 
-									Constants.DEFAULT_ARMOR_ENCHANTS, 
-									true);
+			boolean isBoss = true;
+			boolean useDefaultValues = true;
+			equipApplier.initConfig(isBoss, useDefaultValues);
 			
 			// TODO Config
 			// bossChance = RoughConfig.getInteger(name, "_BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);

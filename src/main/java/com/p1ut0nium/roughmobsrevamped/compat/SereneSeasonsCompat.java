@@ -10,9 +10,9 @@
  */
 package com.p1ut0nium.roughmobsrevamped.compat;
 
-import java.util.Arrays;
+import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.config.ModCompatConfig;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 
 import net.minecraft.world.World;
 import sereneseasons.api.season.SeasonHelper;
@@ -24,7 +24,7 @@ public abstract class SereneSeasonsCompat {
 	private SereneSeasonsCompat() {}
 	
 	private static boolean registered;
-	private static String[] seasonWhiteList;
+	private static List<? extends String> seasonWhiteList;
 	
 	public static void register() {
 		if (registered)
@@ -37,7 +37,7 @@ public abstract class SereneSeasonsCompat {
 			return;
 		
 		// Get season white list from config and convert to an array of strings
-		seasonWhiteList = (String[]) ModCompatConfig.seasonWhiteList.get().toArray();
+		seasonWhiteList = RoughConfig.seasonWhiteList;
 		
 		// TODO - may be able to delete this
 		// Object[] whiteListConfig = ModCompatConfig.seasonWhiteList.get().toArray();
@@ -54,7 +54,7 @@ public abstract class SereneSeasonsCompat {
 		return null;
 	}
 	
-	public static String[] getSeasonWhitelist() {
+	public static List<? extends String> getSeasonWhitelist() {
 		return seasonWhiteList;
 	}
 }

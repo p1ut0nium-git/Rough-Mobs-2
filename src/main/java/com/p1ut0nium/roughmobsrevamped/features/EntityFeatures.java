@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.darkhax.gamestages.GameStageHelper;
@@ -36,36 +37,23 @@ public abstract class EntityFeatures {
 	
 	//Default
 	public String name;
-	protected List<Class<? extends Entity>> entityClasses;
-
-	//Config
-	protected boolean featuresEnabled;
-	protected List<String> entityNames;
+	protected EntityType[] entityTypes;
 	
-	@SuppressWarnings("unchecked")
-	public EntityFeatures(String name, Class<? extends Entity>... entityClasses) {
+	public EntityFeatures(String name, EntityType[] entityTypes) {
 		this.name = name;
-		this.entityClasses = Arrays.asList(entityClasses);
+		this.entityTypes = entityTypes;
 	}
 
 	public boolean isEntity(Entity creature) {;
 		EntityType<?> entityType = creature.getType();
 		ResourceLocation loc = EntityType.getKey(entityType);
-		return featuresEnabled && loc != null && entityNames.contains(loc.toString());
+		return RoughConfig.featuresEnabled && loc != null && RoughConfig.entityNames.contains(loc.toString());
 	}
 	
 	public void initConfig() {
 		
 		if (!hasDefaultConfig())
 			return;
-	
-		// TODO Config
-		
-		//RoughConfig.getConfig().addCustomCategoryComment(name, "Configuration options which affect " + name + " features");
-		
-		//featuresEnabled = RoughConfig.getBoolean(name, "FeaturesEnabled", true, "Set to false to disable ALL %s features", true);
-		//entityNames = Arrays.asList(RoughConfig.getStringArray(name, "Entities", Constants.getRegNames(entityClasses).toArray(new String[0]), "Entities which count as %s entities"/*, EntityList.getEntityNameList().toArray(new String[0])*/));
-		
 	}
 	
 	private boolean hasDefaultConfig() {

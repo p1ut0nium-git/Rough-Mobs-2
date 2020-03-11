@@ -56,16 +56,25 @@ public class ZombieFeatures extends EntityFeatures {
 	private String[] breakBlocks;
 	private List<Block> allowedBreakBlocks;
 	
-	@SuppressWarnings("unchecked")
 	public ZombieFeatures() {
-		super("zombie", ZombieEntity.class, ZombieVillagerEntity.class, HuskEntity.class, ZombiePigmanEntity.class);
+		super("zombie", Constants.ZOMBIES);
 	}
 	
 	@Override
 	public void preInit() {
 		nbt.putBoolean(BOSS_MINION, true);
-		equipApplier = new EquipmentApplier(name, 3, 4, 8, 0.5f, 0.085F);
-		bossApplier = new BossApplier(name, 200, 1F, 0.2F, new String[]{"Zombie King", "Flesh King", "Dr. Zomboss", "Azog", "Zon-Goku", "Amy", "Z0mb3y"}) {
+		equipApplier = new EquipmentApplier(
+				name, 
+				Constants.CHANCE_PER_WEAPON_DEFAULT, 
+				Constants.CHANCE_PER_ARMOR_DEFAULT, 
+				Constants.CHANCE_PER_ENCHANT_DEFAULT, 
+				Constants.ENCHANT_MULTIPLIER_DEFAULT, 
+				Constants.DROP_CHANCE_DEFAULT);
+		bossApplier = new BossApplier(name, 
+				200, 
+				1F, 
+				0.2F, 
+				new String[]{"Zombie King", "Flesh King", "Dr. Zomboss", "Azog", "Zon-Goku", "Amy", "Z0mb3y"}) {
 			
 			@Override
 			public void addBossFeatures(LivingEntity entity) {
@@ -89,13 +98,6 @@ public class ZombieFeatures extends EntityFeatures {
 	}
 	
 	@Override
-	public void postInit() {
-		equipApplier.createPools();
-		bossApplier.postInit();
-		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
-	}
-	
-	@Override
 	public void initConfig() {
 		super.initConfig();
 		
@@ -115,19 +117,18 @@ public class ZombieFeatures extends EntityFeatures {
 		breakBlocks = RoughConfig.getStringArray(name, "BreakBlocks", Constants.DEFAULT_DESTROY_BLOCKS, "Blocks which can be destroyed by %ss if they have no attack target\nDelete all lines to disable this feature");
 		*/
 
-		equipApplier.initConfig(
-			Constants.DEFAULT_MAINHAND,
-			Constants.DEFAULT_OFFHAND,
-			Constants.DEFAULT_HELMETS,
-			Constants.DEFAULT_CHESTPLATES,
-			Constants.DEFAULT_LEGGINGS,
-			Constants.DEFAULT_BOOTS,
-			Constants.DEFAULT_WEAPON_ENCHANTS,
-			Constants.DEFAULT_ARMOR_ENCHANTS,
-			false
-		);
+		boolean isBoss = false;
+		boolean useDefaultValues = false;
+		equipApplier.initConfig(isBoss, useDefaultValues);
 
 		bossApplier.initConfig();
+	}
+
+	@Override
+	public void postInit() {
+		equipApplier.createPools();
+		bossApplier.postInit();
+		//TODO allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
 	}
 	
 	/* TODO Add AI
@@ -168,7 +169,7 @@ public class ZombieFeatures extends EntityFeatures {
 		}
 
 		// Attempt to spawn zombie on a horse
-		MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
+		//TODO MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
 	}
 	
 	@Override

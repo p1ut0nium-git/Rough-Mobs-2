@@ -36,6 +36,7 @@ import net.minecraft.world.World;
 
 public class SkeletonChampionEntity extends SkeletonEntity implements IChampion {
 
+	/*
 	// Fog variables
     private static boolean FOG_DOT_ENABLED = FogConfig.bossFogDoTEnabled.get();
     private static boolean FOG_WARNING_ENABLED = FogConfig.bossFogDoTWarning.get();
@@ -46,6 +47,7 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
     private List<PlayerEntity> playersInFog = new ArrayList<PlayerEntity>();
     private StringTextComponent fogWarningMsg;
 	private static int fog_dot_tick;
+	*/
 
 	//TODO private double[] bossColorTheme = {1.0, 0.0, 0.0};
 
@@ -53,10 +55,10 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
 		super(skeleton, worldIn);
         this.experienceValue = 100;
         
-        fog_dot_tick = 0;
+        //fog_dot_tick = 0;
         
-		fogWarningMsg = new StringTextComponent("The thick fog reaches out for you... You begin to choke as you move through it.\nPerhaps you should find the source of the poisonous mist, or flee to safety.");
-		fogWarningMsg.getStyle().setColor(TextFormatting.DARK_GREEN);
+		//fogWarningMsg = new StringTextComponent("The thick fog reaches out for you... You begin to choke as you move through it.\nPerhaps you should find the source of the poisonous mist, or flee to safety.");
+		//fogWarningMsg.getStyle().setColor(TextFormatting.DARK_GREEN);
 	}
 	
     public void onAddedToWorld() {
@@ -77,6 +79,7 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
             }
         }
         
+        /*
         if (!this.world.isRemote) {
 	        
 	        if (FOG_DOT_ENABLED) {
@@ -138,13 +141,14 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
 	    		}
 	        }
         }
+        */
 
         super.livingTick();
     }
 
     public void onDeath(DamageSource cause) {
         
-        FogEventHandler.bossDied = true;
+        //FogEventHandler.bossDied = true;
         
         super.onDeath(cause);
     }

@@ -13,7 +13,7 @@ package com.p1ut0nium.roughmobsrevamped.misc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

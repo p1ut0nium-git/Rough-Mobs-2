@@ -31,9 +31,8 @@ public class HostileHorseFeatures extends EntityFeatures {
 	private int randomRiderChance; 
 	private boolean canDespawn;
 	
-	@SuppressWarnings("unchecked")
 	public HostileHorseFeatures() {
-		super("hostileHorse", ZombieHorseEntity.class, SkeletonHorseEntity.class);
+		super("hostileHorse", Constants.HOSTILE_HORSES);
 	}
 	
 	@Override

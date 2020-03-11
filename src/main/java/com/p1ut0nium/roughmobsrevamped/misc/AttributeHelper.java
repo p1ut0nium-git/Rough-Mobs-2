@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import com.google.common.collect.Multimap;
-import com.p1ut0nium.roughmobsrevamped.RoughMobsRevamped;
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import com.google.common.collect.ArrayListMultimap;
 

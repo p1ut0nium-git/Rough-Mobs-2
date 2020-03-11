@@ -8,7 +8,7 @@
  * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
  * 
  */
-package com.p1ut0nium.roughmobsrevamped;
+package com.p1ut0nium.roughmobsrevamped.core;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +24,8 @@ import com.p1ut0nium.roughmobsrevamped.server.ServerModEventSubscriber;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -56,10 +58,11 @@ public final class RoughMobsRevamped {
         MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		
         // Setup config
-        RoughConfig.setup();
+        RoughConfig.init();
+        RoughConfig.register(ModLoadingContext.get());
 
 		// Register entities and sounds.
-		ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+		// ModEntityTypes.ENTITY_TYPES.register(modEventBus);
 		// ModSounds.registerSounds();
 	}
     
@@ -70,11 +73,8 @@ public final class RoughMobsRevamped {
     }
     
     private void loadComplete(final FMLLoadCompleteEvent event) {
-    	//proxy.init
-    	
-		// Initialize 3rd party mod support
-		CompatHandler.registerGameStages();
-		CompatHandler.registerSereneSeasons();
+    	System.out.println("Rough Mobs Revamped load complete...");
+
     }
     
     public void serverStarting(FMLServerStartingEvent event) {
