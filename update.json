@@ -1,9 +1,5 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
-  "1.14.4": {
-    "0.1.1": "Added config system; lots of additional work to update from 1.12.2",
-    "0.1.0": "Initial alpha release"
-  },
   "promos": {
     "1.14.4-latest": "0.1.1",
     "1.14.4-recommended": "0.1.1"
