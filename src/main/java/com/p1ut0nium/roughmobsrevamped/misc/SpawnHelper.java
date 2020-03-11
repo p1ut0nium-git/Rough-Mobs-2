@@ -13,6 +13,7 @@ package com.p1ut0nium.roughmobsrevamped.misc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.SereneSeasonsCompat;
@@ -21,6 +22,7 @@ import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,14 +48,15 @@ public class SpawnHelper {
 
 	public static class SpawnEntry {
 		
-		public static final Map<String, Type> TYPE_MAP = ObfuscationReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, 0);
+		public static final Map<String, Type> TYPE_MAP = ObfuscationReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, "byName");
 		public static final String OW_TYPE = "OVERWORLD";
 		public static final String DISABLE_KEY = "!";
 		
 		private boolean valid = true;
 		private String error = "";
 		
-		public Class<? extends LivingEntity> entityClass;
+		//TODO old - public Class<? extends LivingEntity> entityClass;
+		public EntityType<?> entityType;
 		public int prob;
 		public int min;
 		public int max;
@@ -61,7 +64,7 @@ public class SpawnHelper {
 		public Tuple<Biome[], Biome[]> biomes;
 		
 		public SpawnEntry(String entityName, String prob, String min, String max, String type, String... biomes) {
-			// TODO this.entityClass = getEntityClass(entityName);
+			this.entityType = getEntityType(entityName);
 			this.prob = getInteger(prob);
 			this.min = getInteger(min);
 			this.max = getInteger(max);
@@ -74,15 +77,13 @@ public class SpawnHelper {
 			List<Biome> listAdd = new ArrayList<Biome>();
 			List<Biome> listRemove = new ArrayList<Biome>();
 			
-			for (String biomeId : biomes) 
-			{
+			for (String biomeId : biomes) {
 				List<Biome> list = biomeId.startsWith(DISABLE_KEY) ? listRemove : listAdd;
 				if (biomeId.startsWith(DISABLE_KEY))
 					biomeId = biomeId.substring(1);
 				
 				Type type = TYPE_MAP.get(biomeId);
-				if (biomeId.equals(OW_TYPE))
-				{
+				if (biomeId.equals(OW_TYPE)) {
 					/* TODO Biome stuff
 					for (Biome biome : SpawnHelper.getOverworldBiomes())
 					{
@@ -90,23 +91,18 @@ public class SpawnHelper {
 					}
 					*/
 				}
-				else if (type != null) 
-				{
+				else if (type != null) {
 					list.addAll(BiomeDictionary.getBiomes(type));
 				}
-				else
-				{
+				else {
 					// TODO Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(biomeId));
 					Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeId));
-					if (biome != null) 
-					{
+					if (biome != null) {
 						list.add(biome);
 					}
-					else
-					{
+					else {
 						int id = getInteger(biomeId);
-						if (id >= 0) 
-						{
+						if (id >= 0) {
 							/* TODO Biome stuff
 							biome = Biome.getBiomeForId(id);
 							if (biome != null)
@@ -122,8 +118,7 @@ public class SpawnHelper {
 				}
 			}
 			
-			if (biomes.length == 0) 
-			{
+			if (biomes.length == 0) {
 				// TODO biomes
 				for (Biome biome : ForgeRegistries.BIOMES) 
 					listAdd.add(biome);
@@ -136,8 +131,7 @@ public class SpawnHelper {
 
 		private EntityClassification getType(String type) {
 
-			switch(type.toUpperCase()) 
-			{
+			switch(type.toUpperCase()) {
 				case "AMBIENT": return EntityClassification.AMBIENT;
 				case "CREATURE": return EntityClassification.CREATURE;
 				case "MONSTER": return EntityClassification.MONSTER;
@@ -151,39 +145,41 @@ public class SpawnHelper {
 
 		private int getInteger(String str) {
 			
-			try 
-			{
+			try {
 				return Integer.parseInt(str);
 			}
-			catch(NumberFormatException e)
-			{
+			catch(NumberFormatException e) {
 				this.valid = false;
 				error = prob + " is not a valid number!";
 				return -1;
 			}
 		}
 		
-		/* TODO get entity class
+		public static List<String> getRegNames(List<EntityType> entityType) {
+			
+			List<String> regNames = new ArrayList<String>();
+			
+			for(EntityType clazz : entityType) {
+				regNames.add(EntityType.getKey(clazz).toString());
+			}
+			return regNames;
+		}
 
-		@SuppressWarnings("unchecked")
-		private Class<? extends LivingEntity> getEntityClass(String entityName) {
+		private EntityType<?> getEntityType(String entityName) {
 			
-			Class<? extends Entity> clazz = EntityList.getClass(new ResourceLocation(entityName));
-			
-			if (clazz != null) 
-			{
-				try 
-				{
-					return (Class<? extends LivingEntity>)clazz;
+			ResourceLocation loc = new ResourceLocation(entityName);
+			EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(loc);
+
+			if (entityType != null) {
+				try {
+					return (EntityType)entityType;
 				}
-				catch(Exception e) 
-				{
+				catch(Exception e) {
 					this.valid = false;
 					error = entityName + " is not a valid living entity!";
 				}
 			}
-			else
-			{
+			else {
 				this.valid = false;
 				error = entityName + " is not a valid entity!";
 			}
@@ -191,7 +187,7 @@ public class SpawnHelper {
 			return null;
 		}
 		
-		*/
+
 		
 		public boolean isValid() {
 			return valid;
@@ -246,11 +242,9 @@ public class SpawnHelper {
 
 	private static void fillEntries(String[] options) {
 		
-		for (String option : options) 
-		{
+		for (String option : options) {
 			String[] parts = option.split(";");
-			if (parts.length >= 5) 
-			{
+			if (parts.length >= 5) {
 				String[] biomes = new String[parts.length - 5];
 				for (int i = 0; i < biomes.length; i++)
 					biomes[i] = parts[5+i];
@@ -262,8 +256,7 @@ public class SpawnHelper {
 				else
 					RoughMobsRevamped.LOGGER.error("Spawn Entries: " + entry.getError());
 			}
-			else
-			{
+			else {
 				RoughMobsRevamped.LOGGER.error("Spawn Entries: Entry \"" + option + "\" needs at least 5 values!");
 			}
 		}

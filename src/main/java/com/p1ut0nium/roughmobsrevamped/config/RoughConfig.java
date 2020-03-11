@@ -65,8 +65,35 @@ public class RoughConfig {
 	public static boolean disableBabyZombieEquipment;
 	
 	// Features Config
-	public static boolean featuresEnabled;
-	public static List<? extends String> entityNames;
+	public static boolean spiderFeaturesEnabled;
+	public static boolean spiderSlownessCreateWeb;
+	public static int spiderRiderChance;
+	public static int spiderRiderChanceRandom;
+	public static int spiderSlownessChance;
+	public static int spiderSlownessDuration;
+	public static float spiderIgnoreFallDamage;
+	public static List<String> spiderEntities;
+	public static List<String> spiderRiderEntities;
+	
+	public static boolean zombieFeaturesEnabled;
+	public static boolean zombieBabyBurn;
+	public static boolean zombieHelmetBurn;
+	public static int zombieHorseChance;
+	public static int zombieHorseMinY;
+	public static int zombieHungerChance;
+	public static int zombieHungerDuration;
+	public static int zombieLeapChance;
+	public static int zombieChampionChance;
+	public static float zombieLeapHeight;
+	public static List<String> zombieEntities;
+	public static List<String> zombieBreakBlocks;
+	public static List<String> zombieChampionNames;
+	
+	public static boolean horseFeaturesEnabled;
+	public static boolean hostileHorseBurn;
+	public static boolean hostileHorseCanDespawn;
+	public static int hostileHorseRiderChance;
+	public static List<String> hostileHorseEntities;
 	
 	// Fog Config
 	public static boolean bossFogEnabled;

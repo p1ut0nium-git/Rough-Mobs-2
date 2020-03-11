@@ -12,6 +12,7 @@ package com.p1ut0nium.roughmobsrevamped.features;
 
 import java.util.List;
 
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
@@ -24,10 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.monster.HuskEntity;
 import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.monster.ZombiePigmanEntity;
-import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -36,7 +34,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 public class ZombieFeatures extends EntityFeatures {
 	
 	private static final String BOSS_MINION = Constants.unique("bossMinion");
-	private CompoundNBT nbt = new CompoundNBT();
 	
 	private float leapHeight; 
 	private int leapChance;
@@ -53,7 +50,7 @@ public class ZombieFeatures extends EntityFeatures {
 	private EquipmentApplier equipApplier;
 	private BossApplier bossApplier;
 
-	private String[] breakBlocks;
+	private List<String> breakBlocks;
 	private List<Block> allowedBreakBlocks;
 	
 	public ZombieFeatures() {
@@ -62,7 +59,6 @@ public class ZombieFeatures extends EntityFeatures {
 	
 	@Override
 	public void preInit() {
-		nbt.putBoolean(BOSS_MINION, true);
 		equipApplier = new EquipmentApplier(
 				name, 
 				Constants.CHANCE_PER_WEAPON_DEFAULT, 
@@ -82,13 +78,11 @@ public class ZombieFeatures extends EntityFeatures {
 					for (int i = 0; i < 4; i++) 
 					{
 						ZombieEntity zombieMinion = new ZombieEntity(entity.getEntityWorld());
-						zombieMinion.setPosition(entity.posX + Math.random() - Math.random(), entity.posY + Math.random(), entity.posZ + Math.random() - Math.random());
-						zombieMinion.onInitialSpawn(zombieMinion.world, entity.getEntityWorld().getDifficultyForLocation(entity.getPosition()), SpawnReason.MOB_SUMMONED, null, nbt);
-						zombieMinion.setChild(true);
-						
-						// TODO Not needed - move this to code samples
 						CompoundNBT nbtMinion = zombieMinion.getPersistentData();
-						System.out.println("Zombie is a boss minion? " + nbtMinion.getBoolean(BOSS_MINION));
+						nbtMinion.putBoolean(BOSS_MINION, true);
+						zombieMinion.setPosition(entity.posX + Math.random() - Math.random(), entity.posY + Math.random(), entity.posZ + Math.random() - Math.random());
+						zombieMinion.onInitialSpawn(zombieMinion.world, entity.getEntityWorld().getDifficultyForLocation(entity.getPosition()), SpawnReason.MOB_SUMMONED, null, nbtMinion);
+						zombieMinion.setChild(true);
 
 						entity.world.addEntity(zombieMinion);
 					}
@@ -100,27 +94,24 @@ public class ZombieFeatures extends EntityFeatures {
 	@Override
 	public void initConfig() {
 		super.initConfig();
+
+		leapChance = RoughConfig.zombieLeapChance;
+		leapHeight = RoughConfig.zombieLeapHeight;
 		
-		/* TODO Config
-		leapChance = RoughConfig.getInteger(name, "LeapChance", 5, 0, MAX, "Chance (1 in X) for a %s to leap to the target\nSet to 0 to disable this feature");
-		leapHeight = RoughConfig.getFloat(name, "LeapHeight", 0.2F, 0, MAX, "Amount of blocks the %s jumps on leap attack");
+		hungerDuration = RoughConfig.zombieHungerDuration * 20;
+		hungerChance = RoughConfig.zombieHungerChance;
 		
-		hungerDuration = RoughConfig.getInteger(name, "HungerDuration", 200, 1, MAX, "Duration in ticks of the applied hunger effect (20 ticks = 1 second)");
-		hungerChance = RoughConfig.getInteger(name, "HungerChance", 1, 0, MAX, "Chance (1 in X) for a %s to apply the hunger effect on attack\nSet to 0 to disable this feature");
+		horseChance = RoughConfig.zombieHorseChance;
+		horseMinY = RoughConfig.zombieHorseMinY;
 		
-		horseChance = RoughConfig.getInteger(name, "HorseChance", 10, 0, MAX, "Chance (1 in X) that a %s spawns riding a %s horse\nSet to 0 to disable this feature");
-		horseMinY = RoughConfig.getInteger(name, "HorseMinY", 63, 0, MAX, "Minimal Y position above %s horses may spawn");
+		babyBurn = RoughConfig.zombieBabyBurn;
+		helmetBurn = RoughConfig.zombieHelmetBurn;
 		
-		babyBurn = RoughConfig.getBoolean(name, "BabyBurn", true, "Set this to false to prevent baby %ss from burning in sunlight");
-		helmetBurn = RoughConfig.getBoolean(name, "HelmetBurn", false, "Set this to true to make all %ss burn in sunlight even if they wear a helmet");
-		
-		breakBlocks = RoughConfig.getStringArray(name, "BreakBlocks", Constants.DEFAULT_DESTROY_BLOCKS, "Blocks which can be destroyed by %ss if they have no attack target\nDelete all lines to disable this feature");
-		*/
+		breakBlocks = RoughConfig.zombieBreakBlocks;
 
 		boolean isBoss = false;
 		boolean useDefaultValues = false;
 		equipApplier.initConfig(isBoss, useDefaultValues);
-
 		bossApplier.initConfig();
 	}
 
@@ -128,7 +119,7 @@ public class ZombieFeatures extends EntityFeatures {
 	public void postInit() {
 		equipApplier.createPools();
 		bossApplier.postInit();
-		//TODO allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
+		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
 	}
 	
 	/* TODO Add AI
@@ -169,7 +160,7 @@ public class ZombieFeatures extends EntityFeatures {
 		}
 
 		// Attempt to spawn zombie on a horse
-		//TODO MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
+		 MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
 	}
 	
 	@Override

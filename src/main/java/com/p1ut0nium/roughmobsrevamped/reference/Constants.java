@@ -76,6 +76,11 @@ public class Constants {
 			EntityType.ZOMBIE_PIGMAN
 	};
 	
+	public static final EntityType[] SPIDERS = {
+			EntityType.SPIDER,
+			EntityType.CAVE_SPIDER,
+	};
+	
 	public static final EntityType[] HOSTILE_HORSES = {
 			EntityType.ZOMBIE_HORSE,
 			EntityType.SKELETON_HORSE
@@ -274,11 +279,11 @@ public class Constants {
 	        "blaze;30;1;5;MONSTER;8",
 	        "magma_cube;30;1;3;MONSTER;8"
 	};
-	public static final String[] DEFAULT_SPIDER_RIDERS = {
-			"zombie",
-			"skeleton",
-			"witch",
-			"cave_spider"
+	public static final EntityType[] DEFAULT_SPIDER_RIDERS = {
+			EntityType.ZOMBIE,
+			EntityType.SKELETON,
+			EntityType.WITCH,
+			EntityType.CAVE_SPIDER
 	};
 	public static final String[] DEFAULT_WITCH_BUFFS = {
 			"strength;1",

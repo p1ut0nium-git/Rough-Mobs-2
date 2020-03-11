@@ -19,6 +19,7 @@ public class ConfigHelper {
 	private static ModConfig featuresConfig;
 	private static ModConfig fogConfig;
 
+	// Mod Compatibility
 	public static void bakeModCompat(final ModConfig config) {
 		modCompatConfig = config;
 
@@ -31,6 +32,7 @@ public class ConfigHelper {
 		RoughConfig.seasonWhiteList = ConfigHolder.MODCOMPAT.seasonWhiteList.get();
 	}
 	
+	// Spawn Conditions
 	public static void bakeSpawnConditions(final ModConfig config) {
 		spawnConditionsConfig = config;
 
@@ -40,6 +42,7 @@ public class ConfigHelper {
 		RoughConfig.minDistFromSpawn = ConfigHolder.SPAWNCONDITIONS.minDistFromSpawn.get();
 	}
 	
+	// Equipment
 	public static void bakeEquipment(final ModConfig config) {
 		equipmentConfig = config;
 
@@ -64,13 +67,42 @@ public class ConfigHelper {
 		RoughConfig.equipArmorEnchants = ConfigHolder.EQUIPMENT.equipArmorEnchants.get();
 	}
 	
+	// Features
 	public static void bakeFeatures(final ModConfig config) {
 		featuresConfig = config;
 		
-		RoughConfig.featuresEnabled = ConfigHolder.FEATURES.featuresEnabled.get();
-		RoughConfig.entityNames = ConfigHolder.FEATURES.entityNames.get();
+		RoughConfig.horseFeaturesEnabled = ConfigHolder.FEATURES.horseFeaturesEnabled.get();
+		RoughConfig.hostileHorseEntities = ConfigHolder.FEATURES.hostileHorseEntities.get();
+		RoughConfig.hostileHorseBurn = ConfigHolder.FEATURES.hostileHorseBurn.get();
+		RoughConfig.hostileHorseCanDespawn = ConfigHolder.FEATURES.hostileHorseCanDespawn.get();
+		RoughConfig.hostileHorseRiderChance = ConfigHolder.FEATURES.hostileHorseRiderChance.get();
+		
+		RoughConfig.spiderFeaturesEnabled = ConfigHolder.FEATURES.spiderFeaturesEnabled.get();
+		RoughConfig.spiderEntities = ConfigHolder.FEATURES.spiderEntities.get();
+		RoughConfig.spiderIgnoreFallDamage = ConfigHolder.FEATURES.spiderIgnoreFallDamage.get().floatValue();
+		RoughConfig.spiderRiderChance = ConfigHolder.FEATURES.spiderRiderChance.get();
+		RoughConfig.spiderRiderChanceRandom = ConfigHolder.FEATURES.spiderRiderChanceRandom.get();
+		RoughConfig.spiderRiderEntities = ConfigHolder.FEATURES.spiderRiderEntities.get();
+		RoughConfig.spiderSlownessChance = ConfigHolder.FEATURES.spiderSlownessChance.get();
+		RoughConfig.spiderSlownessCreateWeb = ConfigHolder.FEATURES.spiderSlownessCreateWeb.get();
+		RoughConfig.spiderSlownessDuration = ConfigHolder.FEATURES.spiderSlownessDuration.get();
+		
+		RoughConfig.zombieFeaturesEnabled = ConfigHolder.FEATURES.zombieFeaturesEnabled.get();
+		RoughConfig.zombieEntities = ConfigHolder.FEATURES.zombieEntities.get();
+		RoughConfig.zombieBabyBurn = ConfigHolder.FEATURES.zombieBabyBurn.get();
+		RoughConfig.zombieHelmetBurn = ConfigHolder.FEATURES.zombieHelmetBurn.get();
+		RoughConfig.zombieHorseChance = ConfigHolder.FEATURES.zombieHorseChance.get();
+		RoughConfig.zombieHorseMinY = ConfigHolder.FEATURES.zombieHorseMinY.get();
+		RoughConfig.zombieHungerChance = ConfigHolder.FEATURES.zombieHungerChance.get();
+		RoughConfig.zombieHungerDuration = ConfigHolder.FEATURES.zombieHungerDuration.get();
+		RoughConfig.zombieLeapChance = ConfigHolder.FEATURES.zombieLeapChance.get();
+		RoughConfig.zombieChampionChance = ConfigHolder.FEATURES.zombieChampionChance.get();
+		RoughConfig.zombieLeapHeight = ConfigHolder.FEATURES.zombieLeapHeight.get().floatValue();
+		RoughConfig.zombieBreakBlocks = ConfigHolder.FEATURES.zombieBreakBlocks.get();
+		RoughConfig.zombieChampionNames = ConfigHolder.FEATURES.zombieChampionNames.get();
 	}
 	
+	// Fog
 	public static void bakeFog(final ModConfig config) {
 		fogConfig = config;
 

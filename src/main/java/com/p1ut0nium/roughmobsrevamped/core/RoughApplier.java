@@ -13,24 +13,23 @@ package com.p1ut0nium.roughmobsrevamped.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.features.EntityFeatures;
+import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
+import com.p1ut0nium.roughmobsrevamped.features.SpiderFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
 import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
-import com.p1ut0nium.roughmobsrevamped.misc.TargetHelper;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,13 +58,14 @@ public class RoughApplier {
 		MinecraftForge.EVENT_BUS.register(this);
 		
 		FEATURES.add(new ZombieFeatures());
+		FEATURES.add(new HostileHorseFeatures());
+		FEATURES.add(new SpiderFeatures());
+		
 		/* TODO
 		FEATURES.add(new SkeletonFeatures());
-		FEATURES.add(new HostileHorseFeatures());
 		FEATURES.add(new CreeperFeatures());
 		FEATURES.add(new SlimeFeatures());
 		FEATURES.add(new EndermanFeatures());
-		FEATURES.add(new SpiderFeatures());
 		FEATURES.add(new WitchFeatures().addPotionHandler(FEATURES));
 		FEATURES.add(new SilverfishFeatures());
 		FEATURES.add(new ZombiePigmanFeatures());
@@ -95,7 +95,7 @@ public class RoughApplier {
 		
 		//AttributeHelper.initAttributeOption();
 		
-		//SpawnHelper.initSpawnOption();
+		// SpawnHelper.initSpawnOption();
 		// TODO SpawnHelper.addEntries();
 		
 		//BossHelper.initGlobalBossConfig();
@@ -168,6 +168,7 @@ public class RoughApplier {
 		}
 	}
 	
+	// TODO move to a listener class
 	@SubscribeEvent
 	public void onEntityHurt(LivingAttackEvent event) {
 		if (event.getEntity() instanceof PlayerEntity) {
@@ -293,6 +294,7 @@ public class RoughApplier {
 	@SubscribeEvent
 	public void onTarget(LivingSetAttackTargetEvent event) {
 		
+		/* TODO 
 		if (!TargetHelper.targetBlockerEnabled() || event.getTarget() == null || !(event.getTarget() instanceof MobEntity) || !(event.getEntityLiving() instanceof MobEntity))
 			return;
 		
@@ -307,5 +309,6 @@ public class RoughApplier {
 			event.getEntityLiving().setRevengeTarget(player);
 			((MobEntity)event.getEntityLiving()).setAttackTarget(player);
 		}
+		*/
 	}
 }

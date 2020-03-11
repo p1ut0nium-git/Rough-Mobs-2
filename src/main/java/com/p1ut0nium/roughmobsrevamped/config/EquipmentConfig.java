@@ -41,14 +41,28 @@ public class EquipmentConfig {
 
 	EquipmentConfig(final ForgeConfigSpec.Builder builder) {
 		
+		// Global Equipment Options
+		
+		builder.comment("Options to control equipment spawning across all mobs that can wear equipment.");
+		builder.push("Global Equipment Options");
+		chanceTimeMultiplier = builder
+				.comment("Should Rough Mobs get more gear as it gets closer to midnight?")
+				.define("Time_Multiplier", true);
+		chanceDistMultiplier = builder
+				.comment("Should Rough Mobs get more gear based upon distance from world spawn?")
+				.define("Distance_Multiplier", true);
+		distThreshold = builder
+				.comment("The distance threshold used to calculate the Distance Multiplier.",
+						"A shorter distance here means mobs will have more gear closer to the World Spawn.")
+				.defineInRange("Distance_Threshold", 1000, 0, Short.MAX_VALUE);
+		disableBabyZombieEquipment = builder
+				.comment("Set to true to disable baby zombies getting equipment.")
+				.define("Disable_BabyZombie_Equipment", true);
+		builder.pop();
+		
 		// Zombie Equipment
 		// TODO make this work for both zombies and skeletons without code duplication
 		
-		builder.comment("Add enchanted armor and weapons to a newly spawned zombie. Takes 2-3 values seperated by a semicolon:",
-				"Format: item or enchantment;chance;dimension",
-				"item or enchantment: the item/enchantment id", 
-				"chance: the higher this number the more this item/enchantment gets selected",
-				"dimension: dimension (ID) in which the item/enchantment can be selected (optional! Leave this blank for any dimension)");
 		builder.push("Zombie Equipment Chances");
 		
 		chancePerWeapon = builder
@@ -75,7 +89,11 @@ public class EquipmentConfig {
 				.defineInRange("Drop_Chance", Constants.DROP_CHANCE_DEFAULT, 0F, 1F);
 		builder.pop();
 		
-		builder.comment("Equipment that zombies can spawn with.");
+		builder.comment("Add enchanted armor and weapons to a newly spawned zombie. Takes 2-3 values seperated by a semicolon:",
+				"Format: item or enchantment;chance;dimension",
+				"item or enchantment: the item/enchantment id", 
+				"chance: the higher this number the more this item/enchantment gets selected",
+				"dimension: dimension (ID) in which the item/enchantment can be selected (optional! Leave this blank for any dimension)");
 		builder.push("Zombie Equipment");
 		equipMainhand = builder
 				.define("Mainhand_Weapons", Arrays.asList(Constants.DEFAULT_MAINHAND));
@@ -97,23 +115,5 @@ public class EquipmentConfig {
 		
 		// TODO Skeleton Equipment
 		
-		// Global Equipment Options
-		
-		builder.comment("Options to control equipment spawning across all mobs that can wear equipment.");
-		builder.push("Global Equipment Options");
-		chanceTimeMultiplier = builder
-				.comment("Should Rough Mobs get more gear as it gets closer to midnight?")
-				.define("Time_Multiplier", true);
-		chanceDistMultiplier = builder
-				.comment("Should Rough Mobs get more gear based upon distance from world spawn?")
-				.define("Distance_Multiplier", true);
-		distThreshold = builder
-				.comment("The distance threshold used to calculate the Distance Multiplier.",
-						"A shorter distance here means mobs will have more gear closer to the World Spawn.")
-				.defineInRange("Distance_Threshold", 1000, 0, Short.MAX_VALUE);
-		disableBabyZombieEquipment = builder
-				.comment("Set to true to disable baby zombies getting equipment.")
-				.define("Disable_BabyZombie_Equipment", true);
-		builder.pop();
 	}
 }

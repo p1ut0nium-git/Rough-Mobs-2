@@ -13,15 +13,17 @@ package com.p1ut0nium.roughmobsrevamped.features;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
-import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
-import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class HostileHorseFeatures extends EntityFeatures {
 
@@ -38,12 +40,10 @@ public class HostileHorseFeatures extends EntityFeatures {
 	@Override
 	public void initConfig() {
 		super.initConfig();
-		
-		// TODO Config
-		
-		//horseBurn = RoughConfig.getBoolean(name, "Burn", true, "Set this to false to prevent undead horses from burning in sunlight (as long as they have no rider)");
-		//randomRiderChance = RoughConfig.getInteger(name, "RandomRiderChance", 3, 0, MAX, "Chance (1 in X) that a random skeleton or zombie starts riding unmounted hostile horses around it");
-		//canDespawn = RoughConfig.getBoolean(name, "CanDespawn", true, "Set to false to prevent undead horses summoned through this mod from despawning");
+
+		horseBurn = RoughConfig.hostileHorseBurn;
+		randomRiderChance = RoughConfig.hostileHorseRiderChance;
+		canDespawn = RoughConfig.hostileHorseCanDespawn;
 	}
 	
 	/* TODO AI
@@ -64,19 +64,18 @@ public class HostileHorseFeatures extends EntityFeatures {
 		if (entity instanceof LivingEntity && shouldDespawn(entity))
 			tasks.addTask(1, new RoughAIDespawn((LivingEntity) entity));
 	}
+	*/
 	
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		if (entity instanceof LivingEntity && shouldDespawn(entity))
-			ReflectionHelper.setPrivateValue(LivingEntity.class, (LivingEntity)entity, false, 17);
+			ObfuscationReflectionHelper.setPrivateValue(MobEntity.class, (MobEntity)entity, false, "persistenceRequired");
+			// TODO Deprecated - ObfuscationReflectionHelper.setPrivateValue(LivingEntity.class, (LivingEntity)entity, false, 17);
 	}
-	*/
-	
-	/* TODO getEntityData alternative
+
 	private boolean shouldDespawn(Entity entity) {
-		return canDespawn && entity.getEntityData().getBoolean(ROUGH_HORSE);
+		return canDespawn && entity.getPersistentData().getBoolean(ROUGH_HORSE);
 	}
-	*/
 
 	private List<Class<? extends Entity>> getRiders(Entity entity) {
 

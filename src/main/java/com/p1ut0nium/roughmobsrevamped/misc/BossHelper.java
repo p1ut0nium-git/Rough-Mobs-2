@@ -13,6 +13,7 @@ package com.p1ut0nium.roughmobsrevamped.misc;
 import java.util.List;
 import java.util.Random;
 
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
@@ -25,7 +26,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
@@ -117,10 +117,9 @@ public class BossHelper {
 			boolean isBoss = true;
 			boolean useDefaultValues = true;
 			equipApplier.initConfig(isBoss, useDefaultValues);
-			
-			// TODO Config
-			// bossChance = RoughConfig.getInteger(name, "_BossChance", defaultBossChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a newly spawned " + name + " to become a boss " + name);
-			// bossNames = RoughConfig.getStringArray(name, "_BossNames", defaultBossNames, name + " boss names. Please be more creative than I am... :P");
+
+			bossChance = RoughConfig.zombieChampionChance;
+			bossNames = (RoughConfig.zombieChampionNames).toArray(new String[0]);
 			//TODO bossColors = RoughConfig.getStringArray(name, "_BossColors", Constants.BOSS_COLORS, "(WIP) Color theme for boss particles, etc.\nValues are Red, Green, Blue from 0.0 to 1.0");
 		}
 
@@ -192,14 +191,7 @@ public class BossHelper {
 				}
 				
 				// Add Boss features
-				CompoundNBT nbt = ((LivingEntity)boss).getPersistentData();
-				nbt.putBoolean(BOSS, true);
-				((LivingEntity)boss).writeAdditional(nbt);
-				
-				// TODO Delete this after testing
-				nbt = ((LivingEntity)boss).getPersistentData();
-				System.out.println("Is Zombie Champion a boss? " + nbt.getBoolean(BOSS));
-				
+				((LivingEntity)boss).getPersistentData().putBoolean(BOSS, true);
 				addBossFeatures((LivingEntity)boss);
 				
 				return (LivingEntity)boss;

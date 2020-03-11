@@ -10,10 +10,10 @@
  */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
@@ -38,28 +38,26 @@ public class MountHelper {
 		public static final String RIDER = Constants.unique("isrider");
 		
 		private final String name;
-		private final String[] defaultEntities;
+		private final EntityType[] defaultEntities;
 		private final int defaultChance;
 		
-		private String[] entities;
+		private List<String> entities;
 		private int chance;
 		private int randomRiderChance;
 		
 		private List<EntityType> entries;
 		
-		public Rider(String name, String[] defaultEntities, int defaultChance) {
+		public Rider(String name, EntityType[] defaultSpiderRiders, int defaultChance) {
 			this.name = name;
-			this.defaultEntities = defaultEntities;
+			this.defaultEntities = defaultSpiderRiders;
 			this.defaultChance = defaultChance;
 		}
 		
 		public void initConfigs() {
-			
-			/* TODO Config
-			chance = RoughConfig.getInteger(name, "RiderChance", defaultChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a " + name + " to spawn with another entity riding it\nSet to 0 to disable this feature");
-			entities = RoughConfig.getStringArray(name, "RiderEntities", defaultEntities, "Entities which may ride on " + name + "s");
-			randomRiderChance = RoughConfig.getInteger(name, "RiderChanceRandom", 10, 0, Short.MAX_VALUE, "Chance (1 in X) that a randomly spawned entity from the RiderEntities list can start riding on random " + name + "s\nSet to 0 to disable this feature");
-			*/
+
+			chance = RoughConfig.spiderRiderChance;
+			entities = RoughConfig.spiderRiderEntities;
+			randomRiderChance = RoughConfig.spiderRiderChanceRandom;
 		}
 		
 		public void postInit() {
@@ -73,24 +71,26 @@ public class MountHelper {
 		}
 		*/
 		
-		/* TODO horse stuff
 		public void tryAddRider(LivingEntity mount) {
 			
 			if (chance <= 0 || mount == null || entries.isEmpty() || mount.getPersistentData().getBoolean(RIDER) || RND.nextInt(chance) != 0)
 				return;
 			
-			EntityEntry entry = entries.get(RND.nextInt(entries.size()));
+			EntityType entry = entries.get(RND.nextInt(entries.size()));
 			
-			Entity entity = entry.newInstance(mount.getEntityWorld());
+			// TODO verify this works -  Entity entity = entry.newInstance(mount.getEntityWorld());
+			Entity entity = entry.create(mount.getEntityWorld());
 			entity.setPosition(mount.posX, mount.posY, mount.posZ);
 			entity.hurtResistantTime = 60;
 			entity.getPersistentData().putBoolean(RIDER, true);
 			
 			mount.getEntityWorld().addEntity(entity);
-			if (!entity.isRiding() && !entity.isBeingRidden() && !mount.isRiding() && !mount.isBeingRidden())
+			// TODO - old - if (!entity.isRiding() && !entity.isBeingRidden() && !mount.isRiding() && !mount.isBeingRidden())
+			if (entity.getRidingEntity() == null && !entity.isBeingRidden() && mount.getRidingEntity() == null && !mount.isBeingRidden())
 				entity.startRiding(mount);
 		}
 		
+		/* TOD
 		public boolean isPossibleRider(Entity entity) {
 			
 			for (EntityType entry : entries)
@@ -118,8 +118,7 @@ public class MountHelper {
 		
 		public AbstractHorseEntity createInstance(World world) {
 			
-			switch(this) 
-			{
+			switch(this) {
 				case ZOMBIE: return new ZombieHorseEntity(EntityType.ZOMBIE_HORSE, world);
 				case SKELETON: return new SkeletonHorseEntity(EntityType.SKELETON_HORSE, world);
 				default: return new HorseEntity(EntityType.HORSE, world);
@@ -145,11 +144,9 @@ public class MountHelper {
 		
 		if (rider.posY < minY)
 			return false;
-		
-		/* TODO isRiding?
-		if (!BossHelper.isBoss(rider) && (chance <= 0 || RND.nextInt(chance) != 0 || rider.isRiding() || (rider instanceof ZombieEntity && ((ZombieEntity)rider).isChild())))
+
+		if (!BossHelper.isBoss(rider) && (chance <= 0 || RND.nextInt(chance) != 0 || rider.getRidingEntity() != null || (rider instanceof ZombieEntity && ((ZombieEntity)rider).isChild())))
 			return false;
-		*/
 		
 		if (rider.getPersistentData().getBoolean(Rider.RIDER))
 			return false;

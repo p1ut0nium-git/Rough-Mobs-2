@@ -19,22 +19,17 @@ import java.util.Random;
 import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleType;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraft.entity.EntityType;
 
 public class FeatureHelper {
 	
@@ -130,13 +125,13 @@ public class FeatureHelper {
 		// TODO target.motionY += extraLeap;
 	}
 
-	public static List<Block> getBlocksFromNames(String[] breakBlocks) {
+	public static List<Block> getBlocksFromNames(List<String> breakBlocks) {
 
 		List<Block> blocks = new ArrayList<Block>();
 		
 		for (String name : breakBlocks) 
 		{
-			// TODO Block block = Block.getBlockFromName(name);
+			// TODO Verify this works - old - Block block = Block.getBlockFromName(name);
 			Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(name));
 			if (block == null) 
 				RoughMobsRevamped.LOGGER.error(name + " isn't a valid block!");
@@ -147,20 +142,20 @@ public class FeatureHelper {
 		return blocks;
 	}
 	
-	public static List<EntityType> getEntitiesFromNames(String[] entitieNames) {
+	public static List<EntityType> getEntitiesFromNames(List<String> entities) {
 
-		List<EntityType> entities = new ArrayList<EntityType>();
+		List<EntityType> entityTypes = new ArrayList<EntityType>();
 		
-		for (String name : entitieNames) 
+		for (String name : entities) 
 		{
-			EntityType entity = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
-			if (entity == null) 
+			EntityType entityType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
+			if (entityType == null) 
 				RoughMobsRevamped.LOGGER.error(name + " isn't a valid entity!");
 			else
-				entities.add(entity);
+				entityTypes.add(entityType);
 		}
 		
-		return entities;
+		return entityTypes;
 	}
 	
 	public static Map<Potion, Integer> getPotionsFromNames(String[] potionNames) {

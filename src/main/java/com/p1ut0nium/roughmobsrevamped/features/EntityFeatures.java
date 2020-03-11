@@ -10,8 +10,6 @@
  */
 package com.p1ut0nium.roughmobsrevamped.features;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
@@ -47,7 +45,7 @@ public abstract class EntityFeatures {
 	public boolean isEntity(Entity creature) {;
 		EntityType<?> entityType = creature.getType();
 		ResourceLocation loc = EntityType.getKey(entityType);
-		return RoughConfig.featuresEnabled && loc != null && RoughConfig.entityNames.contains(loc.toString());
+		return RoughConfig.zombieFeaturesEnabled && loc != null && RoughConfig.zombieEntities.contains(loc.toString());
 	}
 	
 	public void initConfig() {
