@@ -138,21 +138,21 @@ public class RoughApplier {
 	 */
 	private void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		
-		boolean isBoss = entity instanceof IChampion;
-		
 		// Loop through the features list and add equipment and AI to the entity
 		for (EntityFeatures features : FEATURES) 
 		{
 			if (features.isEntity(entity))
 			{
 				// Don't attempt to add equipment to a boss. It has already been given equipment in the BossApplier class
-				// Also test if baby zombies should have equipment
-				if (!isBoss || ((LivingEntity)entity).isChild() && !RoughConfig.disableBabyZombieEquipment) {
-				// Test to see if equip stage is disabled or if it is enabled and player has it
-					if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
-						
-						if (!entity.getPersistentData().getBoolean(FEATURES_APPLIED)) 
-							features.addFeatures(event, entity);
+				if (!(entity instanceof IChampion)) {
+					// Also test if baby zombies should have equipment
+					if (!((LivingEntity)entity).isChild() || ((LivingEntity)entity).isChild() && !RoughConfig.disableBabyZombieEquipment) {
+						// Test to see if equip stage is disabled or if it is enabled and player has it
+						if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
+							if (!entity.getPersistentData().getBoolean(FEATURES_APPLIED)) {
+								features.addFeatures(event, entity);
+							}
+						}
 					}
 				}
 				
@@ -203,8 +203,6 @@ public class RoughApplier {
 		// Ignore spawn if on the client side, or if entity is the player.
 		if (event.getWorld().isRemote || event.getEntity() instanceof PlayerEntity)
 			return;
-		
-		System.out.println("Spawning entity");
 		
 		Entity entity = event.getEntity();
 		boolean isBoss = entity instanceof IChampion;
