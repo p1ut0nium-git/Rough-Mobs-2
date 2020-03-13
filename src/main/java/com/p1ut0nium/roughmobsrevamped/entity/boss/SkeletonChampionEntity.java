@@ -33,6 +33,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class SkeletonChampionEntity extends SkeletonEntity implements IChampion {
 
@@ -66,12 +67,8 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
     public void onAddedToWorld() {
     	super.onAddedToWorld();
     	
-        if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition())) {
-        	this.world.addEntity(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
-			// TODO Lighting - this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
-			SoundEvent soundEvent = new SoundEvent(new ResourceLocation("entity.lightning.thunder"));
-			this.world.playSound(this.posX, this.posY, this.posZ, soundEvent, SoundCategory.AMBIENT, 100.0F, 1.0F, true);
-        }
+        if (this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition()))
+        	((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity((ServerWorld)this.world, this.posX, this.posY, this.posZ, true));
     }
 	
     public void livingTick() {

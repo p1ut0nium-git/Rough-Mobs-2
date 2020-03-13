@@ -46,7 +46,7 @@ public class SpawnHelper {
 
 	public static class SpawnEntry {
 		
-		public static final Map<String, Type> TYPE_MAP = ObfuscationReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, "byName");
+		public static final Map<String, Type> TYPE_MAP = ObfuscationReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, "field_194044_a"); // byName - or try field_216337_e 
 		public static final String OW_TYPE = "OVERWORLD";
 		public static final String DISABLE_KEY = "!";
 		

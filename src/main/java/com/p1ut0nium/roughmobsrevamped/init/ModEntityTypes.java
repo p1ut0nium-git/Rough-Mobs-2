@@ -11,7 +11,9 @@
 package com.p1ut0nium.roughmobsrevamped.init;
 
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
+import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombiePigmanChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.client.renderer.entity.HostileBatRenderer;
+import com.p1ut0nium.roughmobsrevamped.entity.boss.HuskChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
@@ -37,6 +39,22 @@ public class ModEntityTypes {
 					EntityType.Builder.<ZombieChampionEntity>create(ZombieChampionEntity::new, EntityClassification.MONSTER)
 					.size(EntityType.ZOMBIE.getWidth(), EntityType.ZOMBIE.getHeight())
 					.build(new ResourceLocation(Constants.MODID, ZOMBIE_CHAMPION_NAME).toString())
+	);
+	
+	// Champion Zombie Pigman
+	public static final String ZOMBIE_PIGMAN_CHAMPION_NAME = "zombie_pigman_champion_entity";
+	public static final RegistryObject<EntityType<ZombiePigmanChampionEntity>> ZOMBIE_PIGMAN_CHAMPION = ENTITY_TYPES.register(ZOMBIE_PIGMAN_CHAMPION_NAME, () ->
+					EntityType.Builder.<ZombiePigmanChampionEntity>create(ZombiePigmanChampionEntity::new, EntityClassification.MONSTER)
+					.size(EntityType.ZOMBIE_PIGMAN.getWidth(), EntityType.ZOMBIE_PIGMAN.getHeight())
+					.build(new ResourceLocation(Constants.MODID, ZOMBIE_PIGMAN_CHAMPION_NAME).toString())
+	);
+	
+	// Champion Husk
+	public static final String HUSK_CHAMPION_NAME = "husk_champion_entity";
+	public static final RegistryObject<EntityType<HuskChampionEntity>> HUSK_CHAMPION = ENTITY_TYPES.register(HUSK_CHAMPION_NAME, () ->
+					EntityType.Builder.<HuskChampionEntity>create(HuskChampionEntity::new, EntityClassification.MONSTER)
+					.size(EntityType.HUSK.getWidth(), EntityType.HUSK.getHeight())
+					.build(new ResourceLocation(Constants.MODID, HUSK_CHAMPION_NAME).toString())
 	);
 	
 	// Champion Skeleton

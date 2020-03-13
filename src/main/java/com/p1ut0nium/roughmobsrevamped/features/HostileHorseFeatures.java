@@ -69,8 +69,7 @@ public class HostileHorseFeatures extends EntityFeatures {
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		if (entity instanceof LivingEntity && shouldDespawn(entity))
-			ObfuscationReflectionHelper.setPrivateValue(MobEntity.class, (MobEntity)entity, false, "persistenceRequired");
-			// TODO Deprecated - ObfuscationReflectionHelper.setPrivateValue(LivingEntity.class, (LivingEntity)entity, false, 17);
+			ObfuscationReflectionHelper.setPrivateValue(MobEntity.class, (MobEntity)entity, false, "field_82179_bU"); // persistenceRequired
 	}
 
 	private boolean shouldDespawn(Entity entity) {

@@ -12,9 +12,11 @@ package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.util.Random;
 
+import com.p1ut0nium.roughmobsrevamped.entity.boss.HuskChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
+import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombiePigmanChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
@@ -131,6 +133,16 @@ public class BossHelper {
 					boss = new ZombieChampionEntity(entity.world);
 					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.addEntity((ZombieChampionEntity) boss);
+					break;
+				case "Zombie Pigman":
+					boss = new ZombiePigmanChampionEntity(entity.world);
+					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					entity.world.addEntity((ZombiePigmanChampionEntity) boss);
+					break;
+				case "Husk":
+					boss = new HuskChampionEntity(entity.world);
+					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					entity.world.addEntity((HuskChampionEntity) boss);
 					break;
 				case "Skeleton":
 					boss = new SkeletonChampionEntity(entity.world);

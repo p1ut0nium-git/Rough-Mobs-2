@@ -14,29 +14,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
-import com.p1ut0nium.roughmobsrevamped.core.RoughApplier;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
 import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
 import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
-import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
-import com.p1ut0nium.roughmobsrevamped.util.Utilities;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	
@@ -80,12 +74,8 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	public void onAddedToWorld() {
     	super.onAddedToWorld();
 
-        if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition())) {
-        	this.world.addEntity(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
-			// TODO - Lighting - this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
-			SoundEvent soundEvent = new SoundEvent(new ResourceLocation("entity.lightning.thunder"));
-			this.world.playSound(this.posX, this.posY, this.posZ, soundEvent, SoundCategory.AMBIENT, 100.0F, 1.0F, true);
-        }
+        if (this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition()))
+        	((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity((ServerWorld)this.world, this.posX, this.posY, this.posZ, true));
     }
 
 	@Override
