@@ -37,27 +37,23 @@ public final class CommonModEvents {
 	// Pre-Initialization
 	@SubscribeEvent
 	public static void onCommonSetup(final FMLCommonSetupEvent event) {
-		RoughMobsRevamped.LOGGER.debug(Constants.MODID + ": Common ModSetupEvent");
 	}
 	
 	@SubscribeEvent
 	public void onPlayerLogIn(PlayerLoggedInEvent event) {
-		RoughMobsRevamped.LOGGER.debug(Constants.MODID + ": Player logged in.");
 	}
 	
 	@SubscribeEvent
-	public void onPlayerSleep(PlayerSleepInBedEvent event) {
-		RoughMobsRevamped.LOGGER.debug(Constants.MODID + ": Player sleep.");
+	public void onPlayerSleep(PlayerSleepInBedEvent event) {;
 	}
 	
 	@SubscribeEvent
 	public void onPlayerFalls(LivingFallEvent event) {
-		RoughMobsRevamped.LOGGER.debug(Constants.MODID + ": Player Falls.");
 	}
 	
 	@SubscribeEvent
 	public void onEntityHurt(LivingAttackEvent event) {
-		RoughMobsRevamped.LOGGER.debug(Constants.MODID + ": LivingAttackEVent");
+		RoughMobsRevamped.LOGGER.debug("LivingAttackEvent");
 		
 		if (event.getEntity() instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) event.getEntity();

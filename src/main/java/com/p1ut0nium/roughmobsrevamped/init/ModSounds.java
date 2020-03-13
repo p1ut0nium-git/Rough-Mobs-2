@@ -31,7 +31,7 @@ public class ModSounds {
 		
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-		RoughMobsRevamped.LOGGER.debug(Constants.MODID + ": Registering sounds...");
+		RoughMobsRevamped.LOGGER.debug("Registering sounds...");
 		
 		ENTITY_BOSS_SPAWN = registerSound("entity.boss.boss_spawn");
 		ENTITY_BOSS_IDLE = registerSound("entity.boss.boss_idle");

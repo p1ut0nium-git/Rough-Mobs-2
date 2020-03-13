@@ -34,7 +34,7 @@ public final class RoughMobsRevamped {
 	
 	public RoughMobsRevamped() {
 		
-		LOGGER.debug("Rough Mobs Revamped starting up...");
+		LOGGER.debug("Starting up...");
 		
 		INSTANCE = this;
 
@@ -45,23 +45,23 @@ public final class RoughMobsRevamped {
         modEventBus.addListener(this::loadComplete);
 
         // Setup config
-        LOGGER.debug(Constants.MODID + ": Initializing Config");
+        LOGGER.debug("Initializing Config");
         RoughConfig.init();
         RoughConfig.register(ModLoadingContext.get());
 
 		// Register entities
-        LOGGER.debug(Constants.MODID + ": Registering entities...");
+        LOGGER.debug("Registering entities...");
 		ModEntityTypes.ENTITY_TYPES.register(modEventBus);
 	}
     
     private void loadComplete(final FMLLoadCompleteEvent event) {
-    	LOGGER.debug(Constants.MODID + ": Load Complete...Registering mod compatibility");
+    	LOGGER.debug("Load Complete...Registering mod compatibility");
     	
 		// Initialize 3rd party mod support
 		CompatHandler.registerGameStages();
 		CompatHandler.registerSereneSeasons();
     	
-		LOGGER.debug(Constants.MODID + ": Initializing RoughApplier");
+		LOGGER.debug("Initializing RoughApplier");
 		
 		// Begin adding features, etc.
 		applier = new RoughApplier();
