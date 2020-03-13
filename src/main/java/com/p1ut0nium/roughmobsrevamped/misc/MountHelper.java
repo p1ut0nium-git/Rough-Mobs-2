@@ -76,7 +76,7 @@ public class MountHelper {
 			if (chance <= 0 || mount == null || entries.isEmpty() || mount.getPersistentData().getBoolean(RIDER) || RND.nextInt(chance) != 0)
 				return;
 			
-			EntityType entry = entries.get(RND.nextInt(entries.size()));
+			EntityType<?> entry = entries.get(RND.nextInt(entries.size()));
 			
 			// TODO verify this works -  Entity entity = entry.newInstance(mount.getEntityWorld());
 			Entity entity = entry.create(mount.getEntityWorld());

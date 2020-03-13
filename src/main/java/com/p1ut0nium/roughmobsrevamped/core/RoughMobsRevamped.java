@@ -13,71 +13,60 @@ package com.p1ut0nium.roughmobsrevamped.core;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.p1ut0nium.roughmobsrevamped.client.ClientModEventSubscriber;
-import com.p1ut0nium.roughmobsrevamped.common.CommonModEventSubscriber;
+import com.p1ut0nium.roughmobsrevamped.client.ClientModEvents;
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
-import com.p1ut0nium.roughmobsrevamped.server.ServerForgeEventSubscriber;
-import com.p1ut0nium.roughmobsrevamped.server.ServerModEventSubscriber;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Constants.MODID)
 public final class RoughMobsRevamped {
 	
-	public static RoughMobsRevamped instance;
+	public static RoughMobsRevamped INSTANCE;
 	public static final Logger LOGGER = LogManager.getLogger(Constants.MODID);
-	
-	// This keeps us from running code on the wrong side
-	// public static final IProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+	public static RoughApplier applier;
 	
 	public RoughMobsRevamped() {
 		
 		LOGGER.debug("Rough Mobs Revamped starting up...");
 		
-		instance = this;
+		INSTANCE = this;
 
         // Register the setup methods for mod loading
 		final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(CommonModEventSubscriber::onCommonSetup);
-        modEventBus.addListener(ClientModEventSubscriber::onClientSetup);
-        modEventBus.addListener(ServerModEventSubscriber::onServerSetup);
+        modEventBus.addListener(CommonModEvents::onCommonSetup);
+        modEventBus.addListener(ClientModEvents::onClientSetup);
         modEventBus.addListener(this::loadComplete);
-		
-        // Register for server and other game events on the Forge Event Bus
-        MinecraftForge.EVENT_BUS.register(new ServerForgeEventSubscriber());
-        MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
-		
+
         // Setup config
+        LOGGER.debug(Constants.MODID + ": Initializing Config");
         RoughConfig.init();
         RoughConfig.register(ModLoadingContext.get());
 
-		// Register entities and sounds.
-		// ModEntityTypes.ENTITY_TYPES.register(modEventBus);
-		// ModSounds.registerSounds();
+		// Register entities
+        LOGGER.debug(Constants.MODID + ": Registering entities...");
+		ModEntityTypes.ENTITY_TYPES.register(modEventBus);
 	}
     
-    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
-    // Event bus for receiving Registry Events)
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-    public static class FutureExpansion {
-    }
-    
     private void loadComplete(final FMLLoadCompleteEvent event) {
-    	System.out.println("Rough Mobs Revamped load complete...");
+    	LOGGER.debug(Constants.MODID + ": Load Complete...Registering mod compatibility");
+    	
+		// Initialize 3rd party mod support
+		CompatHandler.registerGameStages();
+		CompatHandler.registerSereneSeasons();
+    	
+		LOGGER.debug(Constants.MODID + ": Initializing RoughApplier");
+		
+		// Begin adding features, etc.
+		applier = new RoughApplier();
+		applier.preInit();
+		applier.postInit();
 
-    }
-    
-    public void serverStarting(FMLServerStartingEvent event) {
-    	LOGGER.info("Rough Mobs Revamped Server Starting...");
     }
 }

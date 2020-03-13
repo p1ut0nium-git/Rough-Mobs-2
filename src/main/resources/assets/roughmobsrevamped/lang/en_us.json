@@ -1,3 +1,5 @@
 {
-    "entity.roughmobsrevamped.hostile_bat_entity": "Bat"
+    "entity.roughmobsrevamped.hostile_bat_entity": "Bat",
+    "entity.roughmobsrevamped.zombie_champion_entity": "Zombie Champion",
+    "entity.roughmobsrevamped.skeleton_champion_entity": "Skeleton Champion"
 }

@@ -10,6 +10,9 @@
  */
 package com.p1ut0nium.roughmobsrevamped.compat;
 
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
+import com.p1ut0nium.roughmobsrevamped.reference.Constants;
+
 import net.minecraftforge.fml.ModList;
 
 public abstract class CompatHandler {
@@ -19,6 +22,7 @@ public abstract class CompatHandler {
 	
 	public static void registerGameStages() {
 		if (ModList.get().isLoaded("gamestages")) {
+			RoughMobsRevamped.LOGGER.info(Constants.MODID + ": Found Game Stages Mod. Setting Up Compatibility...");
 			isGameStagesLoaded = true;
 			GameStagesCompat.register();
 		} else {
@@ -28,6 +32,7 @@ public abstract class CompatHandler {
 	
 	public static void registerSereneSeasons() {
 		if (ModList.get().isLoaded("sereneseasons")) {
+			RoughMobsRevamped.LOGGER.info(Constants.MODID + ": Found Serene Seasons Mod. Setting Up Compatibility...");
 			isSereneSeasonsLoaded = true;
 			SereneSeasonsCompat.register();
 		} else {

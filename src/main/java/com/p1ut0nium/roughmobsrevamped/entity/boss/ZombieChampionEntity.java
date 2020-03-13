@@ -16,7 +16,9 @@ import java.util.List;
 
 import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.core.RoughApplier;
 import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
+import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
 import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
@@ -59,7 +61,7 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 
 	// TODO private double[] bossColorTheme = {0.0, 1.0, 0.0};
 	
-	public ZombieChampionEntity(EntityType<ZombieChampionEntity> zombie, World worldIn) {
+	public ZombieChampionEntity(EntityType<? extends ZombieEntity> zombie, World worldIn) {
 		super(zombie, worldIn);
         this.experienceValue = 100;
         
@@ -69,11 +71,15 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 		fogWarningMsg = new StringTextComponent("The thick fog reaches out for you... You begin to choke as you move through it.\nPerhaps you should find the source of the poisonous mist, or flee to safety.");
 		fogWarningMsg.getStyle().setColor(TextFormatting.DARK_GREEN);
 	}
+	
+	public ZombieChampionEntity(World worldIn) {
+	    this((EntityType<? extends ZombieEntity>) ModEntityTypes.ZOMBIE_CHAMPION.get(), worldIn);
+	}
 
 	@Override
 	public void onAddedToWorld() {
     	super.onAddedToWorld();
-    	
+
         if (this.world.isRemote && this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition())) {
         	this.world.addEntity(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
 			// TODO - Lighting - this.world.addWeatherEffect(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
@@ -84,13 +90,14 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 
 	@Override
     public void livingTick() {
-	
+
         if (this.world.isRemote) {
             for (int i = 0; i < 2; ++i) {
                 this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
             }
         }
 
+        /* TODO
         if (!this.world.isRemote) {
 
         	// TODO make sure player is not in creative
@@ -191,6 +198,7 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	    		}
 	        }
         }
+        */
 
         super.livingTick();
     }
@@ -206,12 +214,14 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
         // Max out batSwarmTick so no more bats can spawn
         batSwarmTick = BATSWARM_DELAY;
 
+        /* TODO
         // Kill all bat minions when boss dies
         if (!batMinions.isEmpty() ) {
 	        for (HostileBatEntity bat : batMinions) {
 	        	bat.remove();
 	        }
         }
+        */
         
         //TODO Is there a better way of handling this?
         // FogEventHandler.bossDied = true;
@@ -222,7 +232,7 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
 	protected boolean canDespawn() {
 		return false;
 	}
-    
+
     protected SoundEvent getAmbientSound() {
         return ModSounds.ENTITY_BOSS_IDLE;
     }

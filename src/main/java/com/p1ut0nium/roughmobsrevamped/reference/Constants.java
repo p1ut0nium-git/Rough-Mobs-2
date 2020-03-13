@@ -12,23 +12,9 @@ package com.p1ut0nium.roughmobsrevamped.reference;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.HuskEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.monster.ZombiePigmanEntity;
-import net.minecraft.entity.monster.ZombieVillagerEntity;
-import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
-import net.minecraft.entity.passive.horse.ZombieHorseEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.ResourceLocationUtils;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.ForgeRegistry;
 
 public class Constants {
 	public static final String MODID = "roughmobsrevamped";
@@ -59,29 +45,38 @@ public class Constants {
 		return MODID + ":" + id;
 	}
 
-	public static List<String> getRegNames(List<EntityType> entityType) {
+	public static List<String> getRegNames(List<EntityType<? extends Entity>> entityType) {
 		
 		List<String> regNames = new ArrayList<String>();
 		
-		for(EntityType clazz : entityType) {
+		for(EntityType<? extends Entity> clazz : entityType) {
 			regNames.add(EntityType.getKey(clazz).toString());
 		}
 		return regNames;
 	}
 	
-	public static final EntityType[] ZOMBIES = {
+	public static final String[] ZOMBIE_CHAMP_NAMES = {
+			"Zombie King", 
+			"Flesh King", 
+			"Dr. Zomboss", 
+			"Azog", 
+			"Zon-Goku", 
+			"Z0mb3y"
+	};
+	
+	public static final EntityType<?>[] ZOMBIES = {
 			EntityType.ZOMBIE,
 			EntityType.ZOMBIE_VILLAGER,
 			EntityType.HUSK,
 			EntityType.ZOMBIE_PIGMAN
 	};
 	
-	public static final EntityType[] SPIDERS = {
+	public static final EntityType<?>[] SPIDERS = {
 			EntityType.SPIDER,
 			EntityType.CAVE_SPIDER,
 	};
 	
-	public static final EntityType[] HOSTILE_HORSES = {
+	public static final EntityType<?>[] HOSTILE_HORSES = {
 			EntityType.ZOMBIE_HORSE,
 			EntityType.SKELETON_HORSE
 	};
@@ -279,7 +274,7 @@ public class Constants {
 	        "blaze;30;1;5;MONSTER;8",
 	        "magma_cube;30;1;3;MONSTER;8"
 	};
-	public static final EntityType[] DEFAULT_SPIDER_RIDERS = {
+	public static final EntityType<?>[] DEFAULT_SPIDER_RIDERS = {
 			EntityType.ZOMBIE,
 			EntityType.SKELETON,
 			EntityType.WITCH,

@@ -14,8 +14,6 @@ import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 
 public abstract class GameStagesCompat {
 	
-	//public static final GameStagesCompat INSTANCE = new GameStagesCompat();
-	
 	private GameStagesCompat() {}
 	
 	private static boolean registered;

@@ -31,7 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ModEntityTypes {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = new DeferredRegister<>(ForgeRegistries.ENTITIES, Constants.MODID);
 	
-	// Chamption Zombie
+	// Champion Zombie
 	public static final String ZOMBIE_CHAMPION_NAME = "zombie_champion_entity";
 	public static final RegistryObject<EntityType<ZombieChampionEntity>> ZOMBIE_CHAMPION = ENTITY_TYPES.register(ZOMBIE_CHAMPION_NAME, () ->
 					EntityType.Builder.<ZombieChampionEntity>create(ZombieChampionEntity::new, EntityClassification.MONSTER)

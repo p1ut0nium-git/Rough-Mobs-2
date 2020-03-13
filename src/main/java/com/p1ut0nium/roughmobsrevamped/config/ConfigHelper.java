@@ -71,11 +71,14 @@ public class ConfigHelper {
 	public static void bakeFeatures(final ModConfig config) {
 		featuresConfig = config;
 		
-		RoughConfig.horseFeaturesEnabled = ConfigHolder.FEATURES.horseFeaturesEnabled.get();
+		RoughConfig.hostileHorseFeaturesEnabled = ConfigHolder.FEATURES.hostileHorseFeaturesEnabled.get();
 		RoughConfig.hostileHorseEntities = ConfigHolder.FEATURES.hostileHorseEntities.get();
 		RoughConfig.hostileHorseBurn = ConfigHolder.FEATURES.hostileHorseBurn.get();
 		RoughConfig.hostileHorseCanDespawn = ConfigHolder.FEATURES.hostileHorseCanDespawn.get();
 		RoughConfig.hostileHorseRiderChance = ConfigHolder.FEATURES.hostileHorseRiderChance.get();
+		
+		RoughConfig.featuresEnabled.put("hostileHorse", ConfigHolder.FEATURES.hostileHorseFeaturesEnabled.get());
+		RoughConfig.entities.put("hostileHorse", ConfigHolder.FEATURES.hostileHorseEntities.get());
 		
 		RoughConfig.spiderFeaturesEnabled = ConfigHolder.FEATURES.spiderFeaturesEnabled.get();
 		RoughConfig.spiderEntities = ConfigHolder.FEATURES.spiderEntities.get();
@@ -86,6 +89,9 @@ public class ConfigHelper {
 		RoughConfig.spiderSlownessChance = ConfigHolder.FEATURES.spiderSlownessChance.get();
 		RoughConfig.spiderSlownessCreateWeb = ConfigHolder.FEATURES.spiderSlownessCreateWeb.get();
 		RoughConfig.spiderSlownessDuration = ConfigHolder.FEATURES.spiderSlownessDuration.get();
+		
+		RoughConfig.featuresEnabled.put("spider", ConfigHolder.FEATURES.spiderFeaturesEnabled.get());
+		RoughConfig.entities.put("spider", ConfigHolder.FEATURES.spiderEntities.get());
 		
 		RoughConfig.zombieFeaturesEnabled = ConfigHolder.FEATURES.zombieFeaturesEnabled.get();
 		RoughConfig.zombieEntities = ConfigHolder.FEATURES.zombieEntities.get();
@@ -100,6 +106,9 @@ public class ConfigHelper {
 		RoughConfig.zombieLeapHeight = ConfigHolder.FEATURES.zombieLeapHeight.get().floatValue();
 		RoughConfig.zombieBreakBlocks = ConfigHolder.FEATURES.zombieBreakBlocks.get();
 		RoughConfig.zombieChampionNames = ConfigHolder.FEATURES.zombieChampionNames.get();
+		
+		RoughConfig.featuresEnabled.put("zombie", ConfigHolder.FEATURES.zombieFeaturesEnabled.get());
+		RoughConfig.entities.put("zombie", ConfigHolder.FEATURES.zombieEntities.get());
 	}
 	
 	// Fog

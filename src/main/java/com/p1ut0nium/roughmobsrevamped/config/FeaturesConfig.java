@@ -11,6 +11,7 @@
 package com.p1ut0nium.roughmobsrevamped.config;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -26,15 +27,15 @@ public class FeaturesConfig {
 
 	// Spider
 	final BooleanValue spiderFeaturesEnabled;
-	final ConfigValue<List<String>> spiderEntities;
-	final DoubleValue spiderIgnoreFallDamage;
+	final BooleanValue spiderSlownessCreateWeb;
+	final IntValue spiderSlownessChance;
+	final IntValue spiderSlownessDuration;
 	final IntValue spiderRiderChance;
 	final IntValue spiderRiderChanceRandom;
+	final DoubleValue spiderIgnoreFallDamage;
+	final ConfigValue<List<String>> spiderEntities;
 	final ConfigValue<List<String>> spiderRiderEntities;
-	final IntValue spiderSlownessChance;
-	final BooleanValue spiderSlownessCreateWeb;
-	final IntValue spiderSlownessDuration;
-	
+
 	// Zombie
 	final BooleanValue zombieFeaturesEnabled;
 	final BooleanValue zombieBabyBurn;
@@ -51,7 +52,7 @@ public class FeaturesConfig {
 	final ConfigValue<List<String>> zombieChampionNames;
 
 	// Hostile Horse
-	final BooleanValue horseFeaturesEnabled;
+	final BooleanValue hostileHorseFeaturesEnabled;
 	final BooleanValue hostileHorseBurn;
 	final BooleanValue hostileHorseCanDespawn;
 	final IntValue hostileHorseRiderChance;
@@ -62,7 +63,7 @@ public class FeaturesConfig {
 		// Hostile Horse Features
 		
 		builder.push("Hostile Horse Features");
-		horseFeaturesEnabled = builder
+		hostileHorseFeaturesEnabled = builder
 				.comment("Set to false to disable all hostile horse features.")
 				.define("Hostile_Horse_Features_Enabled", true);
 		hostileHorseBurn = builder
@@ -146,7 +147,7 @@ public class FeaturesConfig {
 				.defineInRange("Zombie_LeapChance", 5, 0, Short.MAX_VALUE);
 		zombieLeapHeight = builder
 				.comment("Amount of blocks the zombie jumps on leap attack.")
-				.defineInRange("Zombie_LeapHeight", 0.2F, 0, Short.MAX_VALUE);
+				.defineInRange("Zombie_LeapHeight", 0.2F, 0.0F, Byte.MAX_VALUE);
 		zombieChampionChance = builder
 				.comment("Chance (1 in X) for a newly spawned zombie to become a champion zombie")
 				.defineInRange("Zombie_ChampionChance", 200, 0, Short.MAX_VALUE);
@@ -156,10 +157,10 @@ public class FeaturesConfig {
 		zombieBreakBlocks = builder
 				.comment("Blocks which can be destroyed by zombies if they have no attack target.",
 						"Delete all lines to disable this feature.")
-				.define("Zombie_BreakBlocks", Constants.getRegNames(Arrays.asList(Constants.ZOMBIES)));
+				.define("Zombie_BreakBlocks", Arrays.asList(Constants.DEFAULT_DESTROY_BLOCKS));
 		zombieChampionNames = builder
 				.comment("A list of names to be used by Zombie Champions.")
-				.define("Zombie_ChampionNames", Constants.getRegNames(Arrays.asList(Constants.ZOMBIES)));
+				.define("Zombie_ChampionNames", Arrays.asList(Constants.ZOMBIE_CHAMP_NAMES));
 		builder.pop();
 	}
 	

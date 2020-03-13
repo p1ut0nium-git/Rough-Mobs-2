@@ -10,11 +10,8 @@
  */
 package com.p1ut0nium.roughmobsrevamped.client;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
-import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,17 +23,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
  * Subscribe to events from the MOD EventBus that should be handled on the PHYSICAL CLIENT
  */
 @Mod.EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public final class ClientModEventSubscriber {
-
-	private static final Logger LOGGER = LogManager.getLogger(Constants.MODID + ": Client ModEventSubscriber");
+public final class ClientModEvents {
 	
 	@SubscribeEvent
 	public static void onClientSetup(final FMLClientSetupEvent event) {;
 		
 		// Register Entity Renderers
 		ModEntityTypes.registerRendering();
-		//RendererRegistry.registryEntityRenderers();
-		LOGGER.debug("Registered Entity Renderers");
+
+		RoughMobsRevamped.LOGGER.debug("Registered Entity Renderers");
 	}
 
 }

@@ -10,6 +10,7 @@
  */
 package com.p1ut0nium.roughmobsrevamped.init;
 
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.util.ResourceLocation;
@@ -30,6 +31,8 @@ public class ModSounds {
 		
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		RoughMobsRevamped.LOGGER.debug(Constants.MODID + ": Registering sounds...");
+		
 		ENTITY_BOSS_SPAWN = registerSound("entity.boss.boss_spawn");
 		ENTITY_BOSS_IDLE = registerSound("entity.boss.boss_idle");
 		ENTITY_BOSS_DEATH = registerSound("entity.boss.boss_death");

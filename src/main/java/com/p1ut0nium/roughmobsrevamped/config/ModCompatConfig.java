@@ -57,7 +57,8 @@ final class ModCompatConfig {
 		builder.comment("Config options for enabling/disabling Serene Seasons support.");
 		builder.push("Serene Seasons");
 		seasonWhiteList = builder
-				.comment("Whitelist of all seasons that Rough Mobs can spawn in.")
+				.comment("Whitelist of all seasons that Rough Mobs can spawn in.",
+						"Default Seasons: SUMMER, AUTUMN, WINTER, SPRING")
 				.define("Season_Whitelist", Arrays.asList(Constants.SEASONS), SEASON_VALIDATOR);
 		builder.pop();
 	}

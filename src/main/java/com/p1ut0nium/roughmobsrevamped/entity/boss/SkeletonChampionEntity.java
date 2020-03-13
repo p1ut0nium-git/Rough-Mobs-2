@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.client.FogEventHandler;
-import com.p1ut0nium.roughmobsrevamped.config.FogConfig;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
 import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper;
 import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
@@ -36,31 +36,33 @@ import net.minecraft.world.World;
 
 public class SkeletonChampionEntity extends SkeletonEntity implements IChampion {
 
-	/*
 	// Fog variables
-    private static boolean FOG_DOT_ENABLED = FogConfig.bossFogDoTEnabled.get();
-    private static boolean FOG_WARNING_ENABLED = FogConfig.bossFogDoTWarning.get();
+	private static boolean FOG_DOT_ENABLED = RoughConfig.bossFogDoTEnabled;
+    private static boolean FOG_WARNING_ENABLED = RoughConfig.bossFogDoTWarning;
 	private static int FOG_MAX_DISTANCE = BossHelper.bossFogMaxDistance;
-    private static int FOG_DOT_DELAY = FogConfig.bossFogDoTDelay.get() * 20;
-    private static int FOG_WARNING_TIME = FogConfig.bossFogDoTWarningTime.get() * 20;    
+    private static int FOG_DOT_DELAY = RoughConfig.bossFogDoTDelay* 20;
+    private static int FOG_WARNING_TIME = RoughConfig.bossFogDoTWarningTime * 20;    
     private HashMap<String, Long> playersWarned = new HashMap<>();
     private List<PlayerEntity> playersInFog = new ArrayList<PlayerEntity>();
     private StringTextComponent fogWarningMsg;
 	private static int fog_dot_tick;
-	*/
 
 	//TODO private double[] bossColorTheme = {1.0, 0.0, 0.0};
 
-	public SkeletonChampionEntity(EntityType<SkeletonChampionEntity> skeleton, World worldIn) {
+	public SkeletonChampionEntity(EntityType<? extends SkeletonEntity> skeleton, World worldIn) {
 		super(skeleton, worldIn);
         this.experienceValue = 100;
         
-        //fog_dot_tick = 0;
+        fog_dot_tick = 0;
         
-		//fogWarningMsg = new StringTextComponent("The thick fog reaches out for you... You begin to choke as you move through it.\nPerhaps you should find the source of the poisonous mist, or flee to safety.");
-		//fogWarningMsg.getStyle().setColor(TextFormatting.DARK_GREEN);
+		fogWarningMsg = new StringTextComponent("The thick fog reaches out for you... You begin to choke as you move through it.\nPerhaps you should find the source of the poisonous mist, or flee to safety.");
+		fogWarningMsg.getStyle().setColor(TextFormatting.DARK_GREEN);
 	}
 	
+	public SkeletonChampionEntity(World worldIn) {
+	    this((EntityType<? extends SkeletonEntity>) ModEntityTypes.SKELETON_CHAMPION.get(), worldIn);
+	}
+
     public void onAddedToWorld() {
     	super.onAddedToWorld();
     	
@@ -78,8 +80,8 @@ public class SkeletonChampionEntity extends SkeletonEntity implements IChampion 
                 this.world.addParticle(ParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
             }
         }
-        
-        /*
+
+        /* TODO
         if (!this.world.isRemote) {
 	        
 	        if (FOG_DOT_ENABLED) {

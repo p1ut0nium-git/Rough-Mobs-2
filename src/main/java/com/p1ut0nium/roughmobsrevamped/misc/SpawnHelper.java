@@ -13,7 +13,6 @@ package com.p1ut0nium.roughmobsrevamped.misc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.SereneSeasonsCompat;
@@ -23,7 +22,6 @@ import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -155,11 +153,11 @@ public class SpawnHelper {
 			}
 		}
 		
-		public static List<String> getRegNames(List<EntityType> entityType) {
+		public static List<String> getRegNames(List<EntityType<?>> entityType) {
 			
 			List<String> regNames = new ArrayList<String>();
 			
-			for(EntityType clazz : entityType) {
+			for(EntityType<?> clazz : entityType) {
 				regNames.add(EntityType.getKey(clazz).toString());
 			}
 			return regNames;
@@ -172,7 +170,7 @@ public class SpawnHelper {
 
 			if (entityType != null) {
 				try {
-					return (EntityType)entityType;
+					return (EntityType<?>)entityType;
 				}
 				catch(Exception e) {
 					this.valid = false;

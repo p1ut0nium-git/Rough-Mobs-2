@@ -66,17 +66,17 @@ public class ZombieFeatures extends EntityFeatures {
 				Constants.CHANCE_PER_ENCHANT_DEFAULT, 
 				Constants.ENCHANT_MULTIPLIER_DEFAULT, 
 				Constants.DROP_CHANCE_DEFAULT);
-		bossApplier = new BossApplier(name, 
-				200, 
+		bossApplier = new BossApplier(
+				name, 
+				RoughConfig.zombieChampionChance, 
 				1F, 
 				0.2F, 
-				new String[]{"Zombie King", "Flesh King", "Dr. Zomboss", "Azog", "Zon-Goku", "Amy", "Z0mb3y"}) {
-			
+				RoughConfig.zombieChampionNames.toArray(new String[0])) {
+
 			@Override
 			public void addBossFeatures(LivingEntity entity) {
 				if (SpawnHelper.disableBabyZombies() == false) {
-					for (int i = 0; i < 4; i++) 
-					{
+					for (int i = 0; i < 4; i++) {
 						ZombieEntity zombieMinion = new ZombieEntity(entity.getEntityWorld());
 						CompoundNBT nbtMinion = zombieMinion.getPersistentData();
 						nbtMinion.putBoolean(BOSS_MINION, true);
@@ -160,7 +160,7 @@ public class ZombieFeatures extends EntityFeatures {
 		}
 
 		// Attempt to spawn zombie on a horse
-		 MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
+		MountHelper.tryMountHorse(entity, HorseType.ZOMBIE, horseChance, horseMinY);
 	}
 	
 	@Override

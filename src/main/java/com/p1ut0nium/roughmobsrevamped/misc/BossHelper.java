@@ -10,24 +10,18 @@
  */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
-import java.util.List;
 import java.util.Random;
 
-import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
-import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 
 public class BossHelper {
 	
@@ -92,22 +86,20 @@ public class BossHelper {
 		private EquipmentApplier equipApplier;
 			
 		private final String name;
-		private final int defaultBossChance;
+		private final int defaultChampionChance;
 		private final float defaultEnchMultiplier;
 		private final float defaultDropChance;
-		private final String[] defaultBossNames;
-			
-		private int bossChance;
-		private String[] bossNames;
+		private final String[] defaultChampionNames;
+
 		// TODO private String[] bossColors;
 			
-		public BossApplier(String name, int defaultBossChance, float defaultEnchMultiplier, float defaultDropChance, String[] defaultBossNames) {
+		public BossApplier(String name, int defaultChampionChance, float defaultEnchMultiplier, float defaultDropChance, String[] championNames) {
 				
 			this.name = name;
-			this.defaultBossChance = defaultBossChance;
+			this.defaultChampionChance = defaultChampionChance;
 			this.defaultEnchMultiplier = defaultEnchMultiplier;
 			this.defaultDropChance = defaultDropChance;
-			this.defaultBossNames = defaultBossNames;
+			this.defaultChampionNames = championNames;
 
 			equipApplier = new EquipmentApplier(name + " boss", 1, 1, 1, this.defaultEnchMultiplier, this.defaultDropChance);
 		}	
@@ -117,9 +109,6 @@ public class BossHelper {
 			boolean isBoss = true;
 			boolean useDefaultValues = true;
 			equipApplier.initConfig(isBoss, useDefaultValues);
-
-			bossChance = RoughConfig.zombieChampionChance;
-			bossNames = (RoughConfig.zombieChampionNames).toArray(new String[0]);
 			//TODO bossColors = RoughConfig.getStringArray(name, "_BossColors", Constants.BOSS_COLORS, "(WIP) Color theme for boss particles, etc.\nValues are Red, Green, Blue from 0.0 to 1.0");
 		}
 
@@ -127,25 +116,24 @@ public class BossHelper {
 			equipApplier.createPools();
 		}
 			
-		@SuppressWarnings("unchecked")
 		public LivingEntity trySetBoss(LivingEntity entity) {
 				
-			if (bossChance <= 0 || RND.nextInt(bossChance) != 0 || (entity instanceof ZombieEntity && ((ZombieEntity)entity).isChild()))
+			if (defaultChampionChance <= 0 || RND.nextInt(defaultChampionChance) != 0 || (entity instanceof ZombieEntity && ((ZombieEntity)entity).isChild()))
 				return null;
 				
 			// Despawn normal skeletons and zombies and replace with BossSkeleton or BossZombie respectively
 			IChampion boss = null;
-				
-			String entityTypeName = entity.getScoreboardName();
+
+			String entityTypeName = entity.getDisplayName().getUnformattedComponentText();
 				
 			switch (entityTypeName) {
 				case "Zombie":
-					boss = new ZombieChampionEntity((EntityType<ZombieChampionEntity>) boss, entity.world);
+					boss = new ZombieChampionEntity(entity.world);
 					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
-					entity.world.addEntity((ZombieChampionEntity) boss);				
+					entity.world.addEntity((ZombieChampionEntity) boss);
 					break;
 				case "Skeleton":
-					boss = new SkeletonChampionEntity((EntityType<SkeletonChampionEntity>) boss, entity.world);
+					boss = new SkeletonChampionEntity(entity.world);
 					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.addEntity((SkeletonChampionEntity) boss);
 					break;				
@@ -168,11 +156,12 @@ public class BossHelper {
 				equipApplier.equipEntity((LivingEntity)boss, isBoss);
 				
 				// Set Bosses name
-				StringTextComponent bossName = new StringTextComponent(bossNames[RND.nextInt(bossNames.length)]);
+				StringTextComponent bossName = new StringTextComponent(defaultChampionNames[RND.nextInt(defaultChampionNames.length)]);
 				((LivingEntity)boss).setCustomName(bossName);
 				
 				// Add chat message warning of new boss
 				// TODO - move to network packets?
+				/*
 				if (bossWarning) {
 					StringTextComponent bossWarningMsg = new StringTextComponent(bossName + ", a powerful " + entityTypeName + " warlord, has joined the battlefield.");
 					bossWarningMsg.getStyle().setColor(TextFormatting.RED);
@@ -189,6 +178,7 @@ public class BossHelper {
 				if (bossWarningSound) {
 					((LivingEntity)boss).playSound(ModSounds.ENTITY_BOSS_SPAWN, (bossWarningDist / 16), 0.5F);
 				}
+				*/
 				
 				// Add Boss features
 				((LivingEntity)boss).getPersistentData().putBoolean(BOSS, true);

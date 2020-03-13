@@ -19,17 +19,16 @@ import sereneseasons.api.season.SeasonHelper;
 
 public abstract class SereneSeasonsCompat {
 	
-	//public static final SereneSeasonsCompat INSTANCE = new SereneSeasonsCompat();
-	
 	private SereneSeasonsCompat() {}
 	
 	private static boolean registered;
-	private static List<? extends String> seasonWhiteList;
+	private static List<String> seasonWhiteList;
 	
 	public static void register() {
 		if (registered)
 			return;
 		registered = true;
+		preInit();
 	}
 	
 	public static void preInit() {
@@ -38,10 +37,7 @@ public abstract class SereneSeasonsCompat {
 		
 		// Get season white list from config and convert to an array of strings
 		seasonWhiteList = RoughConfig.seasonWhiteList;
-		
-		// TODO - may be able to delete this
-		// Object[] whiteListConfig = ModCompatConfig.seasonWhiteList.get().toArray();
-		// seasonWhiteList = Arrays.copyOf(whiteListConfig, whiteListConfig.length, String[].class);
+
 	}
 	
 	private static boolean hasDefaultConfig() {
@@ -54,7 +50,7 @@ public abstract class SereneSeasonsCompat {
 		return null;
 	}
 	
-	public static List<? extends String> getSeasonWhitelist() {
+	public static List<String> getSeasonWhitelist() {
 		return seasonWhiteList;
 	}
 }

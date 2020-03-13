@@ -15,6 +15,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
@@ -28,6 +29,9 @@ import net.minecraftforge.fml.loading.FMLPaths;
 @Mod.EventBusSubscriber
 public class RoughConfig {
 	
+	public static HashMap<String, Boolean> featuresEnabled = new HashMap<>();
+	public static HashMap<String, List<String>> entities = new HashMap<>();
+	
 	// Mod Compat Config
 	public static boolean useAllStages;
 	public static boolean useEquipmentStage;
@@ -38,8 +42,8 @@ public class RoughConfig {
 	public static List<String> seasonWhiteList;
 	
 	// Spawn Conditions Config
-	public static int minPlayerLevel;
 	public static boolean mustBeUnderground;
+	public static int minPlayerLevel;
 	public static int maxSpawnHeight;
 	public static int minDistFromSpawn;
 	
@@ -89,7 +93,7 @@ public class RoughConfig {
 	public static List<String> zombieBreakBlocks;
 	public static List<String> zombieChampionNames;
 	
-	public static boolean horseFeaturesEnabled;
+	public static boolean hostileHorseFeaturesEnabled;
 	public static boolean hostileHorseBurn;
 	public static boolean hostileHorseCanDespawn;
 	public static int hostileHorseRiderChance;
@@ -110,6 +114,7 @@ public class RoughConfig {
 	public static int bossFogDoTWarningTime;
 	public static int bossFogDoTDamage;
 
+	// Setup config directory
 	public static void init() {
 		
 		Path configPath = FMLPaths.CONFIGDIR.get();
@@ -124,11 +129,20 @@ public class RoughConfig {
 		}
 	}
 	
+	// Register all config files
     public static void register(final ModLoadingContext context) {
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.MODCOMPAT_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.MOD_COMPAT_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SPAWNCONDITIONS_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.SPAWN_CONDITIONS_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.EQUIPMENT_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.EQUIPMENT_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.FEATURES_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.FEATURES_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.FOG_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.FOG_CONFIG_FILENAME);
+    }
+    
+    public static boolean isFeatureEnabled(String entityName) {
+    	return featuresEnabled.containsKey(entityName);
+    }
+    
+    public static List<String> getEntities(String entityName) {
+    	return entities.get(entityName);
     }
 }

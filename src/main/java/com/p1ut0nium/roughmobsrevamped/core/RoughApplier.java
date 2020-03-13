@@ -21,24 +21,20 @@ import com.p1ut0nium.roughmobsrevamped.features.EntityFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.SpiderFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
-import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
-import com.p1ut0nium.roughmobsrevamped.util.DamageSourceFog;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -139,10 +135,8 @@ public class RoughApplier {
 	private void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		
 		// Loop through the features list and add equipment and AI to the entity
-		for (EntityFeatures features : FEATURES) 
-		{
-			if (features.isEntity(entity))
-			{
+		for (EntityFeatures features : FEATURES) {
+			if (features.isEntity(entity)) {
 				// Don't attempt to add equipment to a boss. It has already been given equipment in the BossApplier class
 				if (!(entity instanceof IChampion)) {
 					// Also test if baby zombies should have equipment
@@ -166,28 +160,6 @@ public class RoughApplier {
 				}
 			}
 		}
-	}
-	
-	// TODO move to a listener class
-	@SubscribeEvent
-	public void onEntityHurt(LivingAttackEvent event) {
-		if (event.getEntity() instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) event.getEntity();
-			if (!player.isCreative()) {
-				if (event.getSource().equals(DamageSourceFog.POISONOUS_FOG)) {
-					
-					if (RoughConfig.bossFogPlayerCough)
-						playHurtSound(player);
-				
-					player.setHealth(player.getHealth() - RoughConfig.bossFogDoTDamage);
-					event.setCanceled(true);
-				}
-			}
-		}
-	}
-	
-	private void playHurtSound(PlayerEntity player) {
-		player.world.playSound(null, player.getPosition(), ModSounds.ENTITY_PLAYER_COUGH, SoundCategory.PLAYERS, 1.0F, (float)Math.max(0.75, Math.random()));
 	}
 	
 	/*
@@ -291,10 +263,10 @@ public class RoughApplier {
 		}
 	}
 	
+	/* TODO
 	@SubscribeEvent
 	public void onTarget(LivingSetAttackTargetEvent event) {
-		
-		/* TODO 
+
 		if (!TargetHelper.targetBlockerEnabled() || event.getTarget() == null || !(event.getTarget() instanceof MobEntity) || !(event.getEntityLiving() instanceof MobEntity))
 			return;
 		
@@ -309,6 +281,6 @@ public class RoughApplier {
 			event.getEntityLiving().setRevengeTarget(player);
 			((MobEntity)event.getEntityLiving()).setAttackTarget(player);
 		}
-		*/
 	}
+	*/
 }
