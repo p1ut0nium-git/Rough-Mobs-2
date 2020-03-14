@@ -33,19 +33,12 @@ public class Constants {
 	public static final String PLAYER_BOSS_STAGE = "playerHasBossStage";
 	public static final String PLAYER_ENCHANT_STAGE = "playerHasEnchantStage";
 	
-	
 	public static final String MOD_CONFIG_DIRECTORY = "roughmobsrevamped";
 	public static final String MOD_COMPAT_CONFIG_FILENAME = "modcompat.toml";
 	public static final String SPAWN_CONDITIONS_CONFIG_FILENAME = "spawnconditions.toml";
 	public static final String EQUIPMENT_CONFIG_FILENAME = "equipment.toml";
 	public static final String FEATURES_CONFIG_FILENAME = "features.toml";
 	public static final String FOG_CONFIG_FILENAME = "fog.toml";
-	
-	public static final int SEA_LEVEL = 62;
-	
-	public static final int ENTITY_BOSSZOMBIE = 300;
-	public static final int ENTITY_BOSSSKELETON = 301;
-	public static final int ENTITY_HOSTILEBAT = 302;
 
 	public static String unique(String id) {
 		return MODID + ":" + id;
