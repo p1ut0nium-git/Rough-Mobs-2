@@ -23,6 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
@@ -30,7 +31,6 @@ import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.world.World;
-import net.minecraft.entity.MobEntity;
 
 public class MountHelper {
 	
@@ -41,30 +41,30 @@ public class MountHelper {
 		public static final String RIDER = Constants.unique("isrider");
 		
 		private final String name;
-		private final EntityType<?>[] defaultEntities;
+		private final List<String> defaultRiders;
 		private final int defaultChance;
 		
-		private List<String> entities;
+		private List<String> riderEntities;
 		private int chance;
 		private int randomRiderChance;
 		
-		private List<EntityType<?>> entries;
+		private List<EntityType<?>> riderList;
 		
-		public Rider(String name, EntityType<?>[] defaultSpiderRiders, int defaultChance) {
+		public Rider(String name, List<String> defaultRiders, int defaultChance) {
 			this.name = name;
-			this.defaultEntities = defaultSpiderRiders;
+			this.defaultRiders = defaultRiders;
 			this.defaultChance = defaultChance;
 		}
 		
 		public void initConfigs() {
 
 			chance = RoughConfig.spiderRiderChance;
-			entities = RoughConfig.spiderRiderEntities;
+			riderEntities = RoughConfig.spiderRiderEntities;
 			randomRiderChance = RoughConfig.spiderRiderChanceRandom;
 		}
 		
 		public void postInit() {
-			entries = FeatureHelper.getEntitiesFromNames(entities);
+			riderList = FeatureHelper.getEntitiesFromNames(riderEntities);
 		}
 		
 		public void addAI(LivingEntity mount) {
@@ -74,27 +74,27 @@ public class MountHelper {
 		
 		public void tryAddRider(LivingEntity mount) {
 			
-			if (chance <= 0 || mount == null || entries.isEmpty() || mount.getPersistentData().getBoolean(RIDER) || RND.nextInt(chance) != 0)
+			if (chance <= 0 || mount == null || riderList.isEmpty() || mount.getPersistentData().getBoolean(RIDER) || RND.nextInt(chance) != 0)
 				return;
 			
-			EntityType<?> entry = entries.get(RND.nextInt(entries.size()));
+			EntityType<?> riderType = riderList.get(RND.nextInt(riderList.size()));
 			
-			// TODO verify this works -  Entity entity = entry.newInstance(mount.getEntityWorld());
-			Entity entity = entry.create(mount.getEntityWorld());
-			entity.setPosition(mount.posX, mount.posY, mount.posZ);
-			entity.hurtResistantTime = 60;
-			entity.getPersistentData().putBoolean(RIDER, true);
+			// TODO verify riderType.create works - 1.12.2 version -> Entity entity = entry.newInstance(mount.getEntityWorld());
+			MobEntity rider = (MobEntity) riderType.create(mount.getEntityWorld());
+			rider.setPosition(mount.posX, mount.posY, mount.posZ);
+			rider.hurtResistantTime = 60;
+			rider.getPersistentData().putBoolean(RIDER, true);
 			
-			mount.getEntityWorld().addEntity(entity);
-			// TODO - old - if (!entity.isRiding() && !entity.isBeingRidden() && !mount.isRiding() && !mount.isBeingRidden())
-			if (!entity.isPassenger() && !entity.isBeingRidden() && !mount.isPassenger() && !mount.isBeingRidden())
-				entity.startRiding(mount);
+			mount.getEntityWorld().addEntity(rider);
+			
+			if (!rider.isPassenger() && !rider.isBeingRidden() && !mount.isPassenger() && !mount.isBeingRidden())
+				rider.startRiding(mount);
 		}
 		
-		public boolean isPossibleRider(Entity entity) {
+		public boolean isPossibleRider(MobEntity entity) {
 			
-			for (EntityType<?> entry : entries)
-				if (entry == entity.getType())
+			for (EntityType<?> entityType : riderList)
+				if (entityType == entity.getType())
 					return true;
 			
 			return false;
@@ -102,12 +102,12 @@ public class MountHelper {
 		
 		public List<EntityType<?>> getPossibleRiders() {
 			
-			List<EntityType<?>> list = new ArrayList<EntityType<?>>();
+			List<EntityType<?>> possibleRidersList = new ArrayList<EntityType<?>>();
 			
-			for (EntityType<?> entry : entries)
-				list.add(entry);
+			for (EntityType<?> entityType : riderList)
+				possibleRidersList.add(entityType);
 			
-			return list;
+			return possibleRidersList;
 		}
 	}
 	

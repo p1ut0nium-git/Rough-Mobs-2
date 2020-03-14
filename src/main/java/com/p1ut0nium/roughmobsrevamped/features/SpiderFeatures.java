@@ -18,6 +18,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -40,7 +41,7 @@ public class SpiderFeatures extends EntityFeatures {
 	
 	@Override
 	public void preInit() {
-		rider = new Rider(name, Constants.DEFAULT_SPIDER_RIDERS, 10);
+		rider = new Rider(name, RoughConfig.spiderRiderEntities, 10);
 	}
 	
 	@Override
@@ -60,19 +61,17 @@ public class SpiderFeatures extends EntityFeatures {
 	public void postInit() {
 		rider.postInit();
 	}
-	
-	/* TODO AI
+
 	@Override
-	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
-		if (entity instanceof EntityLiving)
-			rider.addAI((EntityLiving) entity);
-	}
-	*/
-	
-	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	public void addAI(EntityJoinWorldEvent event, Entity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
 		if (entity instanceof LivingEntity)
-			rider.tryAddRider((LivingEntity) entity);
+			rider.addAI((LivingEntity) entity);
+	}
+	
+	@Override
+	public void addFeatures(EntityJoinWorldEvent event, Entity spider) {
+		if (spider instanceof LivingEntity)
+			rider.tryAddRider((LivingEntity) spider);
 	}
 	
 	@Override
