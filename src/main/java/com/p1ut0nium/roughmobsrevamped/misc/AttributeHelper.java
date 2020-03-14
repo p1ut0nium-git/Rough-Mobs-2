@@ -126,7 +126,6 @@ public class AttributeHelper {
 	
 	public static void addAttributes(LivingEntity entity) {
 		
-		// TODO if (entity.getEntityData().getBoolean(KEY_ATTRIBUTES))
 		if (entity.getPersistentData().getBoolean(KEY_ATTRIBUTES))
 			return;
 		
@@ -154,8 +153,7 @@ public class AttributeHelper {
 			
 			i++;
 		}
-		
-		// TODO entity.getEntityData().setBoolean(KEY_ATTRIBUTES, true);
+
 		entity.getPersistentData().putBoolean(KEY_ATTRIBUTES, true);
 	}
 

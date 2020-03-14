@@ -28,6 +28,12 @@ public class Constants {
 	public static final String ROUGHMOBSABILS = "roughmobsabils";
 	public static final String ROUGHMOBSENCHANT = "roughmobsenchant";
 	
+	public static final String PLAYER_ABILITIES_STAGE = "playerHasAbilitiesStage";
+	public static final String PLAYER_EQUIPMENT_STAGE = "playerHasEquipmentStage";
+	public static final String PLAYER_BOSS_STAGE = "playerHasBossStage";
+	public static final String PLAYER_ENCHANT_STAGE = "playerHasEnchantStage";
+	
+	
 	public static final String MOD_CONFIG_DIRECTORY = "roughmobsrevamped";
 	public static final String MOD_COMPAT_CONFIG_FILENAME = "modcompat.toml";
 	public static final String SPAWN_CONDITIONS_CONFIG_FILENAME = "spawnconditions.toml";

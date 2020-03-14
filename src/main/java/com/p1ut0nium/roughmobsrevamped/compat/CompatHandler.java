@@ -17,34 +17,39 @@ import net.minecraftforge.fml.ModList;
 
 public abstract class CompatHandler {
 	
-	private static Boolean isGameStagesLoaded;
-	private static Boolean isSereneSeasonsLoaded;
+	private static boolean isGameStagesLoaded;
+	private static boolean isSereneSeasonsLoaded;
 	
-	public static void registerGameStages() {
-		if (ModList.get().isLoaded("gamestages")) {
-			RoughMobsRevamped.LOGGER.info(Constants.MODID + ": Found Game Stages Mod. Setting Up Compatibility...");
-			isGameStagesLoaded = true;
-			GameStagesCompat.register();
-		} else {
-			isGameStagesLoaded = false;
-		}
+	public static void registerModCompatibility() {
+		isGameStagesLoaded = registerGameStages();
+		isSereneSeasonsLoaded = registerSereneSeasons();
 	}
 	
-	public static void registerSereneSeasons() {
-		if (ModList.get().isLoaded("sereneseasons")) {
-			RoughMobsRevamped.LOGGER.info(Constants.MODID + ": Found Serene Seasons Mod. Setting Up Compatibility...");
-			isSereneSeasonsLoaded = true;
-			SereneSeasonsCompat.register();
-		} else {
-			isSereneSeasonsLoaded = false;
+	private static boolean registerGameStages() {
+		if (ModList.get().isLoaded("gamestages")) {
+			RoughMobsRevamped.LOGGER.info(Constants.MODID + ": Found Game Stages. Setting Up Compatibility...");
+			GameStagesCompat.register();
+			return true;
 		}
+		
+		return false;
+	}
+	
+	private static boolean registerSereneSeasons() {
+		if (ModList.get().isLoaded("sereneseasons")) {
+			RoughMobsRevamped.LOGGER.info(Constants.MODID + ": Found Serene Seasons. Setting Up Compatibility...");
+			SereneSeasonsCompat.register();
+			return true;
+		}
+		
+		return false;
 	}
 
-	public static Boolean isGameStagesLoaded() {
+	public static boolean isGameStagesLoaded() {
 		return isGameStagesLoaded;
 	}
 
-	public static Boolean isSereneSeasonsLoaded() {
+	public static boolean isSereneSeasonsLoaded() {
 		return isSereneSeasonsLoaded;
 	}
 }

@@ -32,16 +32,10 @@ public abstract class SereneSeasonsCompat {
 	}
 	
 	public static void preInit() {
-		if (!hasDefaultConfig())
-			return;
 		
 		// Get season white list from config and convert to an array of strings
 		seasonWhiteList = RoughConfig.seasonWhiteList;
 
-	}
-	
-	private static boolean hasDefaultConfig() {
-		return true;
 	}
 	
 	public static String getSeason(World world) {

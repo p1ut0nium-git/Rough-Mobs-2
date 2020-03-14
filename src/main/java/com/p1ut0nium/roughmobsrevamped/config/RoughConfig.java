@@ -137,12 +137,4 @@ public class RoughConfig {
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.FEATURES_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.FEATURES_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.FOG_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.FOG_CONFIG_FILENAME);
     }
-    
-    public static boolean isFeatureEnabled(String entityName) {
-    	return featuresEnabled.containsKey(entityName);
-    }
-    
-    public static List<String> getEntities(String entityName) {
-    	return entities.get(entityName);
-    }
 }

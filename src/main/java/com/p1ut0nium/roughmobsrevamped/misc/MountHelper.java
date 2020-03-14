@@ -10,10 +10,12 @@
  */
 package com.p1ut0nium.roughmobsrevamped.misc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAISearchForRiderGoal;
 import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
@@ -28,6 +30,7 @@ import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.world.World;
+import net.minecraft.entity.MobEntity;
 
 public class MountHelper {
 	
@@ -38,16 +41,16 @@ public class MountHelper {
 		public static final String RIDER = Constants.unique("isrider");
 		
 		private final String name;
-		private final EntityType[] defaultEntities;
+		private final EntityType<?>[] defaultEntities;
 		private final int defaultChance;
 		
 		private List<String> entities;
 		private int chance;
 		private int randomRiderChance;
 		
-		private List<EntityType> entries;
+		private List<EntityType<?>> entries;
 		
-		public Rider(String name, EntityType[] defaultSpiderRiders, int defaultChance) {
+		public Rider(String name, EntityType<?>[] defaultSpiderRiders, int defaultChance) {
 			this.name = name;
 			this.defaultEntities = defaultSpiderRiders;
 			this.defaultChance = defaultChance;
@@ -64,12 +67,10 @@ public class MountHelper {
 			entries = FeatureHelper.getEntitiesFromNames(entities);
 		}
 		
-		/* TODO AI
 		public void addAI(LivingEntity mount) {
 			if (randomRiderChance > 0)
-				mount.tasks.addTask(1, new RoughAISearchForRider(mount, getPossibleRiders(), 32, randomRiderChance));
+				((MobEntity)mount).goalSelector.addGoal(1, new RoughAISearchForRiderGoal(mount, getPossibleRiders(), 32, randomRiderChance));
 		}
-		*/
 		
 		public void tryAddRider(LivingEntity mount) {
 			
@@ -86,31 +87,28 @@ public class MountHelper {
 			
 			mount.getEntityWorld().addEntity(entity);
 			// TODO - old - if (!entity.isRiding() && !entity.isBeingRidden() && !mount.isRiding() && !mount.isBeingRidden())
-			if (entity.getRidingEntity() == null && !entity.isBeingRidden() && mount.getRidingEntity() == null && !mount.isBeingRidden())
+			if (!entity.isPassenger() && !entity.isBeingRidden() && !mount.isPassenger() && !mount.isBeingRidden())
 				entity.startRiding(mount);
 		}
 		
-		/* TOD
 		public boolean isPossibleRider(Entity entity) {
 			
-			for (EntityType entry : entries)
-				if (entry.getEntityClass() == entity.getClass())
+			for (EntityType<?> entry : entries)
+				if (entry == entity.getType())
 					return true;
 			
 			return false;
 		}
 		
-		@SuppressWarnings("rawtypes")
-		public List<Class<? extends Entity>> getPossibleRiders() {
+		public List<EntityType<?>> getPossibleRiders() {
 			
-			List<Class<? extends Entity>> list = new ArrayList<Class<? extends Entity>>();
+			List<EntityType<?>> list = new ArrayList<EntityType<?>>();
 			
-			for (EntityType entry : entries)
-				list.add(entry.getClass());
+			for (EntityType<?> entry : entries)
+				list.add(entry);
 			
 			return list;
 		}
-		*/
 	}
 	
 	public enum HorseType {
@@ -145,7 +143,7 @@ public class MountHelper {
 		if (rider.posY < minY)
 			return false;
 
-		if (!BossHelper.isBoss(rider) && (chance <= 0 || RND.nextInt(chance) != 0 || rider.getRidingEntity() != null || (rider instanceof ZombieEntity && ((ZombieEntity)rider).isChild())))
+		if (!BossHelper.isBoss(rider) && (chance <= 0 || RND.nextInt(chance) != 0 || rider.isPassenger() || (rider instanceof ZombieEntity && ((ZombieEntity)rider).isChild())))
 			return false;
 		
 		if (rider.getPersistentData().getBoolean(Rider.RIDER))

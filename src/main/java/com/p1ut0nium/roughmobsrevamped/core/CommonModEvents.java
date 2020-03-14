@@ -35,9 +35,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public final class CommonModEvents {
 
 	// Pre-Initialization
+	
 	@SubscribeEvent
 	public static void onCommonSetup(final FMLCommonSetupEvent event) {
 	}
+	
+	// Player Events
 	
 	@SubscribeEvent
 	public void onPlayerLogIn(PlayerLoggedInEvent event) {
@@ -54,8 +57,8 @@ public final class CommonModEvents {
 	@SubscribeEvent
 	public void onEntityHurt(LivingAttackEvent event) {
 		RoughMobsRevamped.LOGGER.debug("LivingAttackEvent");
-		
-		if (event.getEntity() instanceof PlayerEntity) {
+
+		if (!event.getEntity().world.isRemote && event.getEntity() instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) event.getEntity();
 			if (!player.isCreative()) {
 				if (event.getSource().equals(DamageSourceFog.POISONOUS_FOG)) {
@@ -73,6 +76,8 @@ public final class CommonModEvents {
 	private void playHurtSound(PlayerEntity player) {
 		player.world.playSound(null, player.getPosition(), ModSounds.ENTITY_PLAYER_COUGH, SoundCategory.PLAYERS, 1.0F, (float)Math.max(0.75, Math.random()));
 	}
+	
+	// Config Events
 	
 	@SubscribeEvent
 	public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {

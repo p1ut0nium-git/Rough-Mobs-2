@@ -149,7 +149,7 @@ public class FeaturesConfig {
 				.comment("Amount of blocks the zombie jumps on leap attack.")
 				.defineInRange("Zombie_LeapHeight", 0.2F, 0.0F, Byte.MAX_VALUE);
 		zombieChampionChance = builder
-				.comment("Chance (1 in X) for a newly spawned zombie to become a champion zombie")
+				.comment("Chance (1 in X) for a newly spawned zombie to become a Zombie Champion")
 				.defineInRange("Zombie_ChampionChance", 200, 0, Short.MAX_VALUE);
 		zombieEntities = builder
 				.comment("Entities which count as Zombies.")

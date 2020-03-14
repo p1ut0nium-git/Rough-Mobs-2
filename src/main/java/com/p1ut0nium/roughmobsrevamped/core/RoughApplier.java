@@ -28,6 +28,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -43,12 +44,6 @@ public class RoughApplier {
 	public static final String FEATURES_APPLIED = Constants.unique("featuresApplied");
 	
 	public static final List<EntityFeatures> FEATURES = new ArrayList<EntityFeatures>();
-	
-	private static boolean gameStagesEnabled;
-	private static boolean playerHasAbilsStage;
-	private static boolean abilsStageEnabled;
-	private static boolean equipStageEnabled;
-	private static boolean playerHasEquipStage;
 	
 	public RoughApplier() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -74,17 +69,14 @@ public class RoughApplier {
 		*/
 	}
 	
-	public void preInit() {
+	public void init() {
 		
 		for (EntityFeatures features : FEATURES) 
 			features.preInit();
-
+		
 		// TODO RoughConfig.loadFeatures();
 		for (EntityFeatures features : FEATURES) 
-			features.initConfig();
-	}		
-	
-	public void postInit() {
+			features.initConfig();	
 		
 		for (EntityFeatures features : FEATURES) 
 			features.postInit();
@@ -100,39 +92,20 @@ public class RoughApplier {
 		
 		// TODO RoughConfig.saveFeatures();
 	}
-	
-	/*
-	 * Test if Game Stages is loaded, if any stages are enabled, and if the player has the stages
-	 */
-	private void getGameStages(PlayerEntity player) {
 
-		gameStagesEnabled = CompatHandler.isGameStagesLoaded();
-		abilsStageEnabled = GameStagesCompat.useAbilitiesStage();
-		equipStageEnabled = GameStagesCompat.useEquipmentStage();
-		
-		// Test to see if player has these stages unlocked.
-		if (gameStagesEnabled) {
-			playerHasEquipStage = GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP);
-			playerHasAbilsStage = GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS);
-		} else {
-			playerHasEquipStage = playerHasAbilsStage = false;
-		}
-	}
-	
-	private void addAttributes(Entity entity) {
-		// Test to see if abilities stage is disabled or if it is enabled and player has it
-		if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
-			
-			if (entity instanceof LivingEntity)
-				AttributeHelper.addAttributes((LivingEntity)entity);
-		}
+	/*
+	 * Add custom attributes (health, damage, etc.)
+	 */
+	private static void addAttributes(Entity entity) {
+		if (entity instanceof LivingEntity)
+			AttributeHelper.addAttributes((LivingEntity)entity);
 	}
 	
 	/*
 	 * Add equipment and enchantments, and AI
 	 * Also try to create bosses
 	 */
-	private void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	private static void addFeatures(EntityJoinWorldEvent event, MobEntity entity) {
 		
 		// Loop through the features list and add equipment and AI to the entity
 		for (EntityFeatures features : FEATURES) {
@@ -141,23 +114,23 @@ public class RoughApplier {
 				if (!(entity instanceof IChampion)) {
 					// Also test if baby zombies should have equipment
 					if (!((LivingEntity)entity).isChild() || ((LivingEntity)entity).isChild() && !RoughConfig.disableBabyZombieEquipment) {
-						// Test to see if equip stage is disabled or if it is enabled and player has it
-						if (equipStageEnabled == false || equipStageEnabled && playerHasEquipStage) {
-							if (!entity.getPersistentData().getBoolean(FEATURES_APPLIED)) {
-								features.addFeatures(event, entity);
-							}
+						if (!entity.getPersistentData().getBoolean(FEATURES_APPLIED)) {
+							features.addFeatures(event, entity);
 						}
 					}
 				}
-				
-				// Test to see if abilities stage is disabled or if it is enabled and player has it
-				if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
-
-					/* TODO AI
-					if (entity instanceof LivingEntity)
-						features.addAI(event, entity, ((LivingEntity)entity).tasks, ((LivingEntity)entity).targetTasks);
-					*/
-				}
+			}
+		}
+	}
+	
+	/*
+	 * Add custom AI goals to entity
+	 */
+	private static void addAI(EntityJoinWorldEvent event, MobEntity entity) {
+		for (EntityFeatures features : FEATURES) {
+			if (features.isEntity(entity)) {
+				if (entity instanceof MobEntity)
+					features.addAI(event, entity, entity.goalSelector, entity.targetSelector);
 			}
 		}
 	}
@@ -177,7 +150,11 @@ public class RoughApplier {
 		if (event.getWorld().isRemote || event.getEntity() instanceof PlayerEntity)
 			return;
 		
-		Entity entity = event.getEntity();
+		MobEntity entity = null;
+		
+		if (event.getEntity() instanceof MobEntity)
+			entity = (MobEntity) event.getEntity();
+		
 		boolean isBoss = entity instanceof IChampion;
 		boolean canSpawn = SpawnHelper.checkSpawnConditions(event);
 		
@@ -192,11 +169,20 @@ public class RoughApplier {
 		if (!isBoss && !canSpawn)
 			return;
 		
-		getGameStages(entity.world.getClosestPlayer(entity, -1.0D));
-		// TODO addAttributes(entity);
-		addFeatures(event, entity);
+		PlayerEntity closestPlayer = entity.world.getClosestPlayer(entity, -1.0D);
+		GameStagesCompat.syncPlayerGameStages(closestPlayer);
+		
+		// If the Abilities Game Stage isn't enabled, or it is and player has the Abilities stage, then add attributes and AI to mob
+		if (!GameStagesCompat.useAbilitiesStage() || GameStagesCompat.useAbilitiesStage() && GameStagesCompat.players.get(closestPlayer).get(Constants.PLAYER_ABILITIES_STAGE)) {
+			// TODO addAttributes(entity);
+			addAI(event, entity);
+		}
+		
+		// If the Equipment Game Stage isn't enabled, or it is and player has the Equipment stage, then add equipment and other features to mob
+		if (!GameStagesCompat.useEquipmentStage() || GameStagesCompat.useEquipmentStage() && GameStagesCompat.players.get(closestPlayer).get(Constants.PLAYER_EQUIPMENT_STAGE))
+			addFeatures(event, entity);
 
-		entity.getPersistentData().putBoolean(FEATURES_APPLIED, true);
+		entity.getPersistentData().putBoolean(RoughApplier.FEATURES_APPLIED, true);
 	}
 	
 	@SubscribeEvent

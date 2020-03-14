@@ -10,7 +10,13 @@
  */
 package com.p1ut0nium.roughmobsrevamped.compat;
 
+import java.util.HashMap;
+
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.reference.Constants;
+
+import net.darkhax.gamestages.GameStageHelper;
+import net.minecraft.entity.player.PlayerEntity;
 
 public abstract class GameStagesCompat {
 	
@@ -24,6 +30,9 @@ public abstract class GameStagesCompat {
 	private static Boolean useEnchantStage;
 	private static Boolean useAbilitiesStage;
 
+	private static HashMap<String, Boolean> playerStages = new HashMap<>();
+	public static HashMap<PlayerEntity, HashMap<String, Boolean>> players = new HashMap<>();
+
 	public static void register() {
 		if (registered)
 			return;
@@ -32,29 +41,36 @@ public abstract class GameStagesCompat {
 	}
 	
 	public static void preInit() {
-		if (!hasDefaultConfig())
-			return;
 	
 		useAllStages = RoughConfig.useAllStages;
-		useEquipmentStage = RoughConfig.useEquipmentStage;
-		useBossStage = RoughConfig.useBossStage;
-		useAbilitiesStage = RoughConfig.useAbilitiesStage;
-		useEnchantStage = RoughConfig.useEnchantStage;
-		
+
 		// If useAllStages is true, then all other stages should also be set to true
 		if (useAllStages) {
 			useEquipmentStage = useBossStage = useAbilitiesStage = useEnchantStage = true;
 		}
+		else {
+			useEquipmentStage = RoughConfig.useEquipmentStage;
+			useBossStage = RoughConfig.useBossStage;
+			useAbilitiesStage = RoughConfig.useAbilitiesStage;
+			useEnchantStage = RoughConfig.useEnchantStage;
+		}
 	}
 	
-	public static void initConfig() {	
-	}
-	
-	public static void postInit() {
-	}
-	
-	private static boolean hasDefaultConfig() {
-		return true;
+	public static void syncPlayerGameStages(PlayerEntity player) {
+		
+		if (registered) {
+			
+			GameStageHelper.syncPlayer(player);
+			
+			// put stuff into inner map
+			playerStages.put(Constants.PLAYER_EQUIPMENT_STAGE, GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSEQUIP));
+			playerStages.put(Constants.PLAYER_ABILITIES_STAGE, GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSABILS));
+			playerStages.put(Constants.PLAYER_BOSS_STAGE, GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS));
+			playerStages.put(Constants.PLAYER_ENCHANT_STAGE, GameStageHelper.hasAnyOf(player, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT));
+			
+			// put players into outer map
+			players.put(player, playerStages);
+		}
 	}
 	
 	public static Boolean useEquipmentStage() {

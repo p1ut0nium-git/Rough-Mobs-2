@@ -22,6 +22,7 @@ import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -60,8 +61,8 @@ public abstract class EntityFeatures {
 		if (!hasDefaultConfig())
 			return;
 		
-		featuresEnabled = RoughConfig.isFeatureEnabled(name);
-		entityNames = RoughConfig.getEntities(name);
+		featuresEnabled = RoughConfig.featuresEnabled.get(name);
+		entityNames = RoughConfig.entities.get(name);
 	}
 	
 	private boolean hasDefaultConfig() {
@@ -72,10 +73,8 @@ public abstract class EntityFeatures {
 	}
 	
 	public boolean bossesEnabled(Entity entity) {
-
-		boolean bossStageEnabled = GameStagesCompat.useBossStage();	
 		
-		if (bossStageEnabled) {
+		if (GameStagesCompat.useBossStage()) {
 			PlayerEntity playerClosest = entity.world.getClosestPlayer(entity, -1.0D);
 			return (GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS));
 		}
@@ -87,8 +86,10 @@ public abstract class EntityFeatures {
 	public void preInit() {
 	}
 
-	public void postInit() {
-		
+	public void postInit() {	
+	}
+	
+	public void addAI(EntityJoinWorldEvent event, Entity entity, GoalSelector goalSelector, GoalSelector targeSelector) {
 	}
 
 	public void onAttack(Entity attacker, Entity immediateAttacker, Entity target, LivingAttackEvent event) {

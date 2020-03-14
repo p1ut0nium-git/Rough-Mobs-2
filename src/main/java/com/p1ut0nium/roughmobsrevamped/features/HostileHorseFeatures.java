@@ -14,13 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAIDespawnGoal;
+import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAISearchForRiderGoal;
+import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAISunlightBurnGoal;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -46,12 +49,11 @@ public class HostileHorseFeatures extends EntityFeatures {
 		canDespawn = RoughConfig.hostileHorseCanDespawn;
 	}
 	
-	/* TODO AI
 	@Override
-	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
+	public void addAI(EntityJoinWorldEvent event, Entity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
 		
 		if (horseBurn && !entity.isImmuneToFire() && entity instanceof LivingEntity)
-			tasks.addTask(0, new RoughAISunlightBurn((LivingEntity) entity, false) {
+			goalSelector.addGoal(0, new RoughAISunlightBurnGoal((LivingEntity) entity, false) {
 				@Override
 				public boolean shouldExecute() {
 					return super.shouldExecute() && !entity.isBeingRidden();
@@ -59,12 +61,11 @@ public class HostileHorseFeatures extends EntityFeatures {
 			});
 		
 		if (entity instanceof LivingEntity && randomRiderChance > 0)
-			tasks.addTask(1, new RoughAISearchForRider((LivingEntity) entity, getRiders(entity), 32, randomRiderChance));
+			goalSelector.addGoal(1, new RoughAISearchForRiderGoal((LivingEntity) entity, getRiders(entity), 32, randomRiderChance));
 		
 		if (entity instanceof LivingEntity && shouldDespawn(entity))
-			tasks.addTask(1, new RoughAIDespawn((LivingEntity) entity));
+			goalSelector.addGoal(1, new RoughAIDespawnGoal((LivingEntity) entity));
 	}
-	*/
 	
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
@@ -76,14 +77,14 @@ public class HostileHorseFeatures extends EntityFeatures {
 		return canDespawn && entity.getPersistentData().getBoolean(ROUGH_HORSE);
 	}
 
-	private List<Class<? extends Entity>> getRiders(Entity entity) {
+	private List<EntityType<?>> getRiders(Entity entity) {
 
-		List<Class<? extends Entity>> riders = new ArrayList<>();
+		List<EntityType<?>> riders = new ArrayList<>();
 		
 		if (entity instanceof SkeletonHorseEntity)
-			riders.add(AbstractSkeletonEntity.class);
+			riders.add(EntityType.SKELETON);
 		else
-			riders.add(ZombieEntity.class);
+			riders.add(EntityType.ZOMBIE);
 		
 		return riders;
 	}

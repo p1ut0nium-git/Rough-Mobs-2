@@ -13,6 +13,9 @@ package com.p1ut0nium.roughmobsrevamped.features;
 import java.util.List;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAIBreakBlocksGoal;
+import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAILeapAtTargetChancedGoal;
+import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAISunlightBurnGoal;
 import com.p1ut0nium.roughmobsrevamped.misc.BossHelper.BossApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.EquipHelper.EquipmentApplier;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
@@ -24,7 +27,9 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
@@ -121,27 +126,24 @@ public class ZombieFeatures extends EntityFeatures {
 		bossApplier.postInit();
 		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
 	}
-	
-	/* TODO Add AI
-	@Override
-	public void addAI(EntityJoinWorldEvent event, Entity entity, EntityAITasks tasks, EntityAITasks targetTasks) {
+
+	public void addAI(EntityJoinWorldEvent event, Entity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
 		
 		if (!(entity instanceof LivingEntity))
 			return;
 		
 		if (leapChance > 0)
-			tasks.addTask(1, new RoughAILeapAtTargetChanced((LivingEntity) entity, leapHeight, leapChance));
+			goalSelector.addGoal(1, new RoughAILeapAtTargetChancedGoal((MobEntity) entity, leapHeight, leapChance));
 		
 		if (babyBurn && entity instanceof ZombieEntity && ((ZombieEntity)entity).isChild() && !entity.isImmuneToFire())
-			tasks.addTask(0, new RoughAISunlightBurn((LivingEntity) entity, false));
+			goalSelector.addGoal(0, new RoughAISunlightBurnGoal((LivingEntity) entity, false));
 		
 		if (helmetBurn)
-			tasks.addTask(0, new RoughAISunlightBurn((LivingEntity) entity, true));
+			goalSelector.addGoal(0, new RoughAISunlightBurnGoal((LivingEntity) entity, true));
 		
 		if (allowedBreakBlocks.size() > 0)
-			tasks.addTask(1, new RoughAIBreakBlocks((LivingEntity) entity, 8, allowedBreakBlocks));
+			goalSelector.addGoal(1, new RoughAIBreakBlocksGoal((LivingEntity) entity, 8, allowedBreakBlocks));
 	}
-	*/
 	
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
