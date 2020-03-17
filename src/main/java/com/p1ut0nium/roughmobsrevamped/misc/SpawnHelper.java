@@ -251,11 +251,11 @@ public class SpawnHelper {
 				if (entry.isValid())
 					ENTRIES.add(entry);
 				else
-					RoughMobs.logError("Spawn Entries: " + entry.getError());
+					RoughMobs.logger.error("Spawn Entries: " + entry.getError());
 			}
 			else
 			{
-				RoughMobs.logError("Spawn Entries: Entry \"" + option + "\" needs at least 5 values!");
+				RoughMobs.logger.error("Spawn Entries: Entry \"" + option + "\" needs at least 5 values!");
 			}
 		}
 	}

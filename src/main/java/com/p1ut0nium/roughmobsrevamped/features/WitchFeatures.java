@@ -3,6 +3,7 @@ package com.p1ut0nium.roughmobsrevamped.features;
 import java.util.List;
 import java.util.Map;
 
+import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAIMobBuff;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
@@ -13,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -91,6 +93,11 @@ public class WitchFeatures extends EntityFeatures {
 		
 		@Override
 		public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+			
+			if (entity instanceof EntityPlayer) {
+				RoughMobs.logger.debug("Entity is player...skipping addFeatures");
+				return;
+			}
 
 			if (features.lingeringChance <= 0 || !(entity instanceof EntityPotion) || !(((EntityPotion)entity).getThrower() instanceof EntityWitch))
 				return;

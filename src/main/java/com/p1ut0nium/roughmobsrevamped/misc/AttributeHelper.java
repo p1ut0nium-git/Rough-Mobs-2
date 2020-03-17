@@ -134,7 +134,7 @@ public class AttributeHelper {
 					entity.setHealth(entity.getMaxHealth());
 			}
 			else
-				RoughMobs.logError("Error on attribute modification: \"" + attribute.attribute + "\" is not a valid attribute. Affected Entity: " + entity);
+				RoughMobs.logger.error("Error on attribute modification: \"" + attribute.attribute + "\" is not a valid attribute. Affected Entity: " + entity);
 			
 			i++;
 		}
@@ -163,7 +163,7 @@ public class AttributeHelper {
 						
 						if (child < 0 || child > 2)
 						{
-							RoughMobs.logError("Error on attribute initialization: child is not between 0 and 2: " + line);
+							RoughMobs.logger.error("Error on attribute initialization: child is not between 0 and 2: " + line);
 							continue;
 						}
 						
@@ -171,14 +171,14 @@ public class AttributeHelper {
 					}
 					catch(NumberFormatException e) 
 					{
-						RoughMobs.logError("Error on attribute initialization: Invalid numbers: " + line);
+						RoughMobs.logger.error("Error on attribute initialization: Invalid numbers: " + line);
 					}
 				}
 				else
-					RoughMobs.logError("Error on attribute initialization: Entity " + pars[0] + " does not exist");
+					RoughMobs.logger.error("Error on attribute initialization: Entity " + pars[0] + " does not exist");
 			}
 			else
-				RoughMobs.logError("Error on attribute initialization: Wrong amount of arguments: " + line);
+				RoughMobs.logger.error("Error on attribute initialization: Wrong amount of arguments: " + line);
 		}
 	}
 

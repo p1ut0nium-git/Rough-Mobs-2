@@ -20,7 +20,6 @@ import com.p1ut0nium.roughmobsrevamped.proxy.IProxy;
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
 import com.p1ut0nium.roughmobsrevamped.util.handlers.RegistryHandler;
 
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -32,7 +31,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.MODVERSION, updateJSON = Constants.MODUPDATE, acceptableRemoteVersions="*")
 public class RoughMobs {
 	
-	@SidedProxy(clientSide = "com.p1ut0nium.roughmobsrevamped.proxy.ClientProxy", serverSide = "com.p1ut0nium.roughmobsrevamped.proxy.ServerProxy")
+	@SidedProxy(clientSide = Constants.CLIENTPROXY, serverSide = Constants.SERVERPROXY)
 	public static IProxy proxy;
 	
 	@Instance(Constants.MODID)
@@ -70,10 +69,5 @@ public class RoughMobs {
 	public void postInit(FMLPostInitializationEvent event) {
 		applier.postInit();
 		proxy.postInit(event);
-	}
-	
-	// Deprecated?
-	public static void logError(String format, Object... data) {
-		FMLLog.bigWarning("[" + Constants.MODNAME + "]: " + format, data);
 	}
 }

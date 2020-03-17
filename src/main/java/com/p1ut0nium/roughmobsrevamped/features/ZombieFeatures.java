@@ -1,6 +1,8 @@
 package com.p1ut0nium.roughmobsrevamped.features;
 
 import java.util.List;
+
+import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAILeapAtTargetChanced;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAIBreakBlocks;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISunlightBurn;
@@ -22,6 +24,7 @@ import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -61,7 +64,7 @@ public class ZombieFeatures extends EntityFeatures {
 		bossApplier = new BossApplier(name, 200, 1F, 0.2F, new String[]{"Zombie King", "Flesh King", "Dr. Zomboss", "Azog", "Zon-Goku", "Amy", "Z0mb3y"}) {
 			
 			@Override
-			public void addBossFeatures(EntityLiving entity) {
+			public void addBossFeatures(Entity entity) {
 				if (SpawnHelper.disableBabyZombies() == false) {
 					for (int i = 0; i < 4; i++) 
 					{
@@ -140,11 +143,16 @@ public class ZombieFeatures extends EntityFeatures {
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
 		
+		if (entity instanceof EntityPlayer) {
+			RoughMobs.logger.debug("Entity is player...skipping addFeatures");
+			return;
+		}
+		
 		if (!(entity instanceof EntityLiving) || entity.getEntityData().getBoolean(BOSS_MINION))
 			return;
 
 		if (super.bossesEnabled(entity)) {
-			Entity boss = bossApplier.trySetBoss((EntityLiving) entity);
+			Entity boss = bossApplier.trySetBoss(entity);
 			if (boss != null) {
 				entity = boss;
 				event.setCanceled(true);

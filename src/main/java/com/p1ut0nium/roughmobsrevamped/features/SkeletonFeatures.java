@@ -1,5 +1,6 @@
 package com.p1ut0nium.roughmobsrevamped.features;
 
+import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAIWeaponSwitch;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISunlightBurn;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
@@ -17,6 +18,7 @@ import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityStray;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -45,7 +47,7 @@ public class SkeletonFeatures extends EntityFeatures {
 		equipApplier = new EquipmentApplier(name, 1, 4, 8, 0.5f, 0.085F);
 		bossApplier = new BossApplier(name, 200, 1F, 0.2F, new String[]{"Lich King", "Skeleton Lord", "Stallord", "Skeletron", "Skeletron Prime", "Krosis", "Wolnir", "Stalmaster"}) {
 			@Override
-			public void addBossFeatures(EntityLiving entity) {}
+			public void addBossFeatures(Entity entity) {}
 		};
 	}
 	
@@ -102,12 +104,16 @@ public class SkeletonFeatures extends EntityFeatures {
 	
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {	
+		if (entity instanceof EntityPlayer) {
+			RoughMobs.logger.debug("Entity is player...skipping addFeatures");
+			return;
+		}
 		if (entity instanceof EntitySkeleton && entity.getEntityWorld().provider.getDimension() == -1)
 			changeToWither(event, (EntitySkeleton)entity);
 		else if (entity instanceof EntityLiving) {
 			
 			if (super.bossesEnabled(entity)) {
-				Entity boss = bossApplier.trySetBoss((EntityLiving) entity);
+				Entity boss = bossApplier.trySetBoss(entity);
 				if (boss != null) {
 					entity = boss;
 					event.setCanceled(true);

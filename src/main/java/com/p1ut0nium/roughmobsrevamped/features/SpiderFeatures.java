@@ -1,5 +1,6 @@
 package com.p1ut0nium.roughmobsrevamped.features;
 
+import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.misc.FeatureHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.MountHelper.Rider;
@@ -11,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -64,6 +66,10 @@ public class SpiderFeatures extends EntityFeatures {
 	
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+		if (entity instanceof EntityPlayer) {
+			RoughMobs.logger.debug("Entity is player...skipping addFeatures");
+			return;
+		}
 		if (entity instanceof EntityLivingBase)
 			rider.tryAddRider((EntityLivingBase) entity);
 	}

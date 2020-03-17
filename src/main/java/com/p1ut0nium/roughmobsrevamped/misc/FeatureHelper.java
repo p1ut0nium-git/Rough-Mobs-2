@@ -125,7 +125,7 @@ public class FeatureHelper {
 		{
 			Block block = Block.getBlockFromName(name);
 			if (block == null) 
-				RoughMobs.logError(name + " isn't a valid block!");
+				RoughMobs.logger.error(name + " isn't a valid block!");
 			else
 				blocks.add(block);
 		}
@@ -141,7 +141,7 @@ public class FeatureHelper {
 		{
 			EntityEntry entity = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
 			if (entity == null) 
-				RoughMobs.logError(name + " isn't a valid entity!");
+				RoughMobs.logger.error(name + " isn't a valid entity!");
 			else
 				entities.add(entity);
 		}
@@ -162,7 +162,7 @@ public class FeatureHelper {
 			
 			Potion potion = Potion.getPotionFromResourceLocation(parts[0]);
 			if (potion == null) 
-				RoughMobs.logError(parts[0] + " isn't a valid potion effect!");
+				RoughMobs.logger.error(parts[0] + " isn't a valid potion effect!");
 			else
 			{
 				try
@@ -171,7 +171,7 @@ public class FeatureHelper {
 				}
 				catch(NumberFormatException e)
 				{
-					RoughMobs.logError(parts[1] + " isn't a valid number!");
+					RoughMobs.logger.error(parts[1] + " isn't a valid number!");
 				}
 			}
 		}

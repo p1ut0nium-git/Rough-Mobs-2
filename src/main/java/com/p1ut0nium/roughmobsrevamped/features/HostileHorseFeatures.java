@@ -3,6 +3,7 @@ package com.p1ut0nium.roughmobsrevamped.features;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAIDespawn;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISearchForRider;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISunlightBurn;
@@ -17,6 +18,7 @@ import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
 import net.minecraft.entity.passive.EntityZombieHorse;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -62,6 +64,10 @@ public class HostileHorseFeatures extends EntityFeatures {
 	
 	@Override
 	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+		if (entity instanceof EntityPlayer) {
+			RoughMobs.logger.debug("Entity is player...skipping addFeatures");
+			return;
+		}
 		if (entity instanceof EntityLiving && shouldDespawn(entity))
 			ReflectionHelper.setPrivateValue(EntityLiving.class, (EntityLiving)entity, false, 17);
 	}

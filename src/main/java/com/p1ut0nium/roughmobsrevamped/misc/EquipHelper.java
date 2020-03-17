@@ -138,8 +138,13 @@ public class EquipHelper {
 		
 		public void equipEntity(EntityLiving entity, boolean isBoss) {
 			
-			if (entity == null || entity.getEntityData().getBoolean(KEY_APPLIED))
+			if (entity == null || entity.getEntityData().getBoolean(KEY_APPLIED) || !(entity instanceof EntityLiving))
 				return;
+			
+			if (entity.getClass().equals(EntityPlayer.class)) {
+				RoughMobs.logger.debug("Entity is player...skipping equipEntity");
+				return;
+			}
 			
 			// Get nearest player to the spawned mob
 			EntityPlayer playerClosest = entity.world.getClosestPlayerToEntity(entity, -1.0D);
@@ -255,11 +260,11 @@ public class EquipHelper {
 			
 			List<String> errorItems = pool.addItemsFromNames(arrayItems);
 			if (!errorItems.isEmpty()) 
-				RoughMobs.logError(Constants.MODNAME + ": error on creating the " + name + " item pool! " + String.join(", ", errorItems));
+				RoughMobs.logger.error(Constants.MODNAME + ": error on creating the " + name + " item pool! " + String.join(", ", errorItems));
 			
 			List<String> errorEnchants = pool.addEnchantmentsFromNames(arrayEnchants);
 			if (!errorEnchants.isEmpty()) 
-				RoughMobs.logError(Constants.MODNAME + ": error on creating the " + name + " enchantment pool! " + String.join(", ", errorEnchants));
+				RoughMobs.logger.error(Constants.MODNAME + ": error on creating the " + name + " enchantment pool! " + String.join(", ", errorEnchants));
 			
 			return pool;
 		}
@@ -417,7 +422,7 @@ public class EquipHelper {
 						((ItemStack)key).setTagCompound(JsonToNBT.getTagFromJson((String) data[2]));
 					} 
 					catch (NBTException e) {
-						RoughMobs.logError("NBT Tag invalid: %s", e.toString());
+						RoughMobs.logger.error("NBT Tag invalid: %s", e.toString());
 						e.printStackTrace();
 					}
 				}

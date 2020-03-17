@@ -45,7 +45,7 @@ public class SilverfishFeatures extends EntityFeatures {
 				} 
 				catch (Exception e) 
 				{
-					RoughMobs.logError("Couldn't create an entity from default constructor: " + target.getName());
+					RoughMobs.logger.error("Couldn't create an entity from default constructor: " + target.getName());
 				}
 			}
 		}

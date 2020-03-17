@@ -118,6 +118,7 @@ public class BossHelper {
 		
 		public void initConfig() {
 
+			// TODO - add boss equipment to config
 			equipApplier.initConfig(Constants.DEFAULT_BOSS_MAINHAND, 
 									Constants.DEFAULT_BOSS_OFFHAND, 
 									Constants.DEFAULT_BOSS_HELMETS, 
@@ -137,7 +138,7 @@ public class BossHelper {
 			equipApplier.createPools();
 		}
 		
-		public EntityLiving trySetBoss(EntityLiving entity) {
+		public EntityLiving trySetBoss(Entity entity) {
 			
 			if (bossChance <= 0 || RND.nextInt(bossChance) != 0 || (entity instanceof EntityZombie && ((EntityZombie)entity).isChild()))
 				return null;
@@ -209,7 +210,7 @@ public class BossHelper {
 			return null;
 		}
 		
-		public abstract void addBossFeatures(EntityLiving boss);
+		public abstract void addBossFeatures(Entity boss);
 	}
 
 	public static boolean isBoss(Entity entity) {

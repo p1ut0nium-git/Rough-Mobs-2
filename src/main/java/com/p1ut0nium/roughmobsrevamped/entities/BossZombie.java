@@ -2,6 +2,7 @@ package com.p1ut0nium.roughmobsrevamped.entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -124,14 +125,13 @@ public class BossZombie extends EntityZombie implements IBoss {
 	    		// Test to see if playersInRange actually contains players
 	    		if (Helpers.containsInstance(playersInRange, EntityPlayer.class)) {
 
-					// For each player in range
-					for (EntityPlayer player : playersInRange) {
+	    			// Add new player to list of players in the fog
+					for (Iterator<EntityPlayer> playersInRangeIterator = playersInRange.iterator(); playersInRangeIterator.hasNext(); ) {
+						EntityPlayer player = playersInRangeIterator.next();
 						
-						// Add new player to list of players in the fog
 						if (!playersInFog.contains(player)) {
 							playersInFog.add(player);
-							
-							// If fog warning is enabled...
+						
 							if (FOG_WARNING_ENABLED) {
 								// Warn players on first entering the fog and add them to the players warned list
 								if (!playersWarned.containsKey(player.getName())) {
@@ -148,13 +148,15 @@ public class BossZombie extends EntityZombie implements IBoss {
 					}
 					
 					// For each player marked as "in the fog"
-					for (EntityPlayer playerInFog : playersInFog) {
+					for (Iterator<EntityPlayer> playersInFogIterator = playersInFog.iterator(); playersInFogIterator.hasNext(); ) {
+						EntityPlayer playerInFog = playersInFogIterator.next();
 						
 						// Remove them from the "in fog" list if they are no longer in range
 						if (!Helpers.containsPlayer(playersInRange, playerInFog)) {
-							playersInFog.remove(playerInFog);
+							playersInFogIterator.remove();
 						}
 					}
+
 
 					// Reset fog DoT delay
 					if (fog_dot_tick == FOG_DOT_DELAY) {

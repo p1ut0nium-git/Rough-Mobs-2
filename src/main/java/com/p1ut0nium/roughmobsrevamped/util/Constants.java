@@ -11,15 +11,15 @@ public class Constants {
 	public static final String MODID = "roughmobsrevamped";
 	public static final String MODNAME = "Rough Mobs Revamped";
 	public static final String MODVERSION = "@VERSION@";
-	public static final String MODUPDATE = "https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/blob/1.12.2/update.json";
+	public static final String MODUPDATE = "https://api.npoint.io/af6b89034329926a1008";
+	public static final String CLIENTPROXY = "com.p1ut0nium.roughmobsrevamped.proxy.ClientProxy";
+	public static final String SERVERPROXY = "com.p1ut0nium.roughmobsrevamped.proxy.ServerProxy";
 	
 	public static final String ROUGHMOBSALL = "roughmobsall";
 	public static final String ROUGHMOBSEQUIP = "roughmobsequip";
 	public static final String ROUGHMOBSBOSS = "roughmobsboss";
 	public static final String ROUGHMOBSABILS = "roughmobsabils";
 	public static final String ROUGHMOBSENCHANT = "roughmobsenchant";
-	
-	public static final int SEA_LEVEL = 62;
 	
 	public static final int ENTITY_BOSSZOMBIE = 300;
 	public static final int ENTITY_BOSSSKELETON = 301;

@@ -75,7 +75,7 @@ public class TargetHelper {
 						if (clazz == null)
 						{
 							if (listType == "targetblock")
-							RoughMobs.logError(listType + ": \"" + split[1] + "\" is not a valid entity!");
+							RoughMobs.logger.error(listType + ": \"" + split[1] + "\" is not a valid entity!");
 							success = false;
 							break;
 						}
@@ -90,7 +90,7 @@ public class TargetHelper {
 						AttackerList.add(new TargetEntry(entities[1], entities[0]));
 			}
 			else
-				RoughMobs.logError(listType + ": each option needs at least 2 arguments! (" + option + ")");
+				RoughMobs.logger.error(listType + ": each option needs at least 2 arguments! (" + option + ")");
 		}
 	}
 

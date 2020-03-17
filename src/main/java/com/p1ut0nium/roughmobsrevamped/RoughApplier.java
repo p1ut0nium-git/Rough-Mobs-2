@@ -39,6 +39,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -126,7 +127,7 @@ public class RoughApplier {
 		}
 	}
 	
-	private void addAttributes(Entity entity) {
+	private void addAttributes(EntityLiving entity) {
 		// Test to see if abilities stage is disabled or if it is enabled and player has it
 		if (abilsStageEnabled == false || abilsStageEnabled && playerHasAbilsStage) {
 			
@@ -139,9 +140,14 @@ public class RoughApplier {
 	 * Add equipment and enchantments, and AI
 	 * Also try to create bosses
 	 */
-	private void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	private void addFeatures(EntityJoinWorldEvent event, EntityLiving entity) {
 		
 		boolean isBoss = entity instanceof IBoss;
+		
+		if (entity.getClass().equals(EntityPlayer.class)) {
+			RoughMobs.logger.debug("Entity is player...skipping addFeatures");
+			return;
+		}
 		
 		// Loop through the features list and add equipment and AI to the entity
 		for (EntityFeatures features : FEATURES) 
@@ -207,7 +213,7 @@ public class RoughApplier {
 		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)
 			return;
 		
-		Entity entity = event.getEntity();
+		EntityLiving entity = (EntityLiving) event.getEntity();
 		boolean isBoss = entity instanceof IBoss;
 		boolean canSpawn = SpawnHelper.checkSpawnConditions(event);
 		

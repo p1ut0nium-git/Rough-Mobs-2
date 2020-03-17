@@ -1,6 +1,8 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+    "2.3.15": "Attempt to fix random gear swapping on player from other mods",
+    "2.3.14": "Crash fix for issue #20",
     "2.3.13": "Added enable/disable bat swarm config; Fixed bat swarm and DoT fog damage not being applied properly from config; Bosses can no longer despawn; Fixed fog color/density on player respawn; Added fog DoT player coughing; Added fog warning message time delay config",
     "2.3.12": "Added better logging for attribute erros (see issue #10); Added fully customizable poisonous boss fog; Added more bat swarm config options (health, damage, and attack range)",
     "2.3.11": "Crash fix for BossZombie.setPosition is abstract",
@@ -30,7 +32,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.3.13",
-    "1.12.2-recommended": "2.3.13"
+    "1.12.2-latest": "2.3.14",
+    "1.12.2-recommended": "2.3.14"
   }
 }
