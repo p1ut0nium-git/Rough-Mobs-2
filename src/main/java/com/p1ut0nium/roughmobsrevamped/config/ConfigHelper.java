@@ -17,6 +17,7 @@ public class ConfigHelper {
 	private static ModConfig spawnConditionsConfig;
 	private static ModConfig equipmentConfig;
 	private static ModConfig featuresConfig;
+	private static ModConfig attributesConfig;
 	private static ModConfig fogConfig;
 
 	// Mod Compatibility
@@ -109,6 +110,22 @@ public class ConfigHelper {
 		
 		RoughConfig.featuresEnabled.put("zombie", ConfigHolder.FEATURES.zombieFeaturesEnabled.get());
 		RoughConfig.entities.put("zombie", ConfigHolder.FEATURES.zombieEntities.get());
+		
+		RoughConfig.zombiePigmanFeaturesEnabled = ConfigHolder.FEATURES.zombiePigmanFeaturesEnabled.get();
+		RoughConfig.zombiePigmanAggressiveTouch = ConfigHolder.FEATURES.zombiePigmanAggressiveTouch.get();
+		RoughConfig.zombiePigmanAlwaysAggressive = ConfigHolder.FEATURES.zombiePigmanAlwaysAggressive.get();
+		RoughConfig.zombiePigmanAggressiveRange = ConfigHolder.FEATURES.zombiePigmanAggressiveRange.get();
+		RoughConfig.zombiePigmanAggressiveBlockRange = ConfigHolder.FEATURES.zombiePigmanAggressiveBlockRange.get();
+		RoughConfig.zombiePigmanAggressiveBlockChance = ConfigHolder.FEATURES.zombiePigmanAggressiveBlockChance.get();
+		RoughConfig.zombiePigmanEntities = ConfigHolder.FEATURES.zombiePigmanEntities.get();
+		
+		RoughConfig.featuresEnabled.put("zombie_pigman", ConfigHolder.FEATURES.zombiePigmanFeaturesEnabled.get());
+		RoughConfig.entities.put("zombie_pigman", ConfigHolder.FEATURES.zombiePigmanEntities.get());
+	}
+	
+	// Attributes
+	public static void bakeAttributes(final ModConfig config) {
+		RoughConfig.attributes = ConfigHolder.ATTRIBUTES.options.get();
 	}
 	
 	// Fog

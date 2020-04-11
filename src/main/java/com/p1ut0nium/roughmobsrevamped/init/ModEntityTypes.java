@@ -34,7 +34,7 @@ public class ModEntityTypes {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = new DeferredRegister<>(ForgeRegistries.ENTITIES, Constants.MODID);
 	
 	// Champion Zombie
-	public static final String ZOMBIE_CHAMPION_NAME = "zombie_champion_entity";
+	public static final String ZOMBIE_CHAMPION_NAME = "zombie_champion";
 	public static final RegistryObject<EntityType<ZombieChampionEntity>> ZOMBIE_CHAMPION = ENTITY_TYPES.register(ZOMBIE_CHAMPION_NAME, () ->
 					EntityType.Builder.<ZombieChampionEntity>create(ZombieChampionEntity::new, EntityClassification.MONSTER)
 					.size(EntityType.ZOMBIE.getWidth(), EntityType.ZOMBIE.getHeight())
@@ -42,7 +42,7 @@ public class ModEntityTypes {
 	);
 	
 	// Champion Zombie Pigman
-	public static final String ZOMBIE_PIGMAN_CHAMPION_NAME = "zombie_pigman_champion_entity";
+	public static final String ZOMBIE_PIGMAN_CHAMPION_NAME = "zombie_pigman_champion";
 	public static final RegistryObject<EntityType<ZombiePigmanChampionEntity>> ZOMBIE_PIGMAN_CHAMPION = ENTITY_TYPES.register(ZOMBIE_PIGMAN_CHAMPION_NAME, () ->
 					EntityType.Builder.<ZombiePigmanChampionEntity>create(ZombiePigmanChampionEntity::new, EntityClassification.MONSTER)
 					.size(EntityType.ZOMBIE_PIGMAN.getWidth(), EntityType.ZOMBIE_PIGMAN.getHeight())
@@ -50,7 +50,7 @@ public class ModEntityTypes {
 	);
 	
 	// Champion Husk
-	public static final String HUSK_CHAMPION_NAME = "husk_champion_entity";
+	public static final String HUSK_CHAMPION_NAME = "husk_champion";
 	public static final RegistryObject<EntityType<HuskChampionEntity>> HUSK_CHAMPION = ENTITY_TYPES.register(HUSK_CHAMPION_NAME, () ->
 					EntityType.Builder.<HuskChampionEntity>create(HuskChampionEntity::new, EntityClassification.MONSTER)
 					.size(EntityType.HUSK.getWidth(), EntityType.HUSK.getHeight())
@@ -58,7 +58,7 @@ public class ModEntityTypes {
 	);
 	
 	// Champion Skeleton
-	public static final String SKELETON_CHAMPION_NAME = "skeleton_champion_entity";
+	public static final String SKELETON_CHAMPION_NAME = "skeleton_champion";
 	public static final RegistryObject<EntityType<SkeletonChampionEntity>> SKELETON_CHAMPION = ENTITY_TYPES.register(SKELETON_CHAMPION_NAME, () ->
 					EntityType.Builder.<SkeletonChampionEntity>create(SkeletonChampionEntity::new, EntityClassification.MONSTER)
 					.size(EntityType.SKELETON.getWidth(), EntityType.SKELETON.getHeight())
@@ -66,7 +66,7 @@ public class ModEntityTypes {
 	);
 	
 	// Hostile Bat
-	public static final String HOSTILE_BAT_NAME = "hostile_bat_entity";
+	public static final String HOSTILE_BAT_NAME = "hostile_bat";
 	public static final RegistryObject<EntityType<HostileBatEntity>> HOSTILE_BAT = ENTITY_TYPES.register(HOSTILE_BAT_NAME, () ->
 					EntityType.Builder.<HostileBatEntity>create(HostileBatEntity::new, EntityClassification.MONSTER)
 					.size(EntityType.BAT.getWidth(), EntityType.BAT.getHeight())

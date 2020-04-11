@@ -50,6 +50,15 @@ public class FeaturesConfig {
 	final ConfigValue<List<String>> zombieEntities;
 	final ConfigValue<List<String>> zombieBreakBlocks;
 	final ConfigValue<List<String>> zombieChampionNames;
+	
+	//Zombie Pigman
+	final BooleanValue zombiePigmanFeaturesEnabled;
+	final BooleanValue zombiePigmanAggressiveTouch;
+	final BooleanValue zombiePigmanAlwaysAggressive;
+	final IntValue zombiePigmanAggressiveRange;
+	final IntValue zombiePigmanAggressiveBlockRange;
+	final IntValue zombiePigmanAggressiveBlockChance;
+	final ConfigValue<List<String>> zombiePigmanEntities;
 
 	// Hostile Horse
 	final BooleanValue hostileHorseFeaturesEnabled;
@@ -161,6 +170,32 @@ public class FeaturesConfig {
 		zombieChampionNames = builder
 				.comment("A list of names to be used by Zombie Champions.")
 				.define("Zombie_ChampionNames", Arrays.asList(Constants.ZOMBIE_CHAMP_NAMES));
+		builder.pop();
+	
+		// Zombie Pigman Features
+	
+		builder.push("Zombie Pigman Features");
+		zombiePigmanFeaturesEnabled = builder
+				.comment("Enable this to use all Zombie Pigman features.")
+				.define("ZombiePigman_FeaturesEnabled", true);
+		zombiePigmanAggressiveTouch = builder
+				.comment("Set to false to prevent zombie pigman from getting aggressive if the player touches its hitbox.")
+				.define("ZombiePigman_AggressiveTouch", false);
+		zombiePigmanAlwaysAggressive = builder
+				.comment("Set to true for zombie pigmen to always be aggressive.")
+				.define("ZombiePigman_AlwaysAggressive", false);
+		zombiePigmanAggressiveRange = builder
+				.comment("The range at which zombie pigmen will be aggressive to the player..")
+				.defineInRange("ZombiePigman_AggressiveRange", 10, 0, Short.MAX_VALUE);
+		zombiePigmanAggressiveBlockRange = builder
+				.comment("Block radius in which zombie pigman get aggressive if the player breaks blocks.")
+				.defineInRange("ZombiePigman_AggressiveBlockRange", 20, 1, Short.MAX_VALUE);
+		zombiePigmanAggressiveBlockChance = builder
+				.comment("Chance (1 in X) that a zombie pigman gets aggressive if the player breaks nearby blocks.")
+				.defineInRange("ZombiePigman_AggressiveBlockChance", 10, 0, Short.MAX_VALUE);
+		zombiePigmanEntities = builder
+				.comment("Entities which count as Zombie Pigmen.")
+				.define("ZombiePigman_Entities", Constants.getRegNames(Arrays.asList(Constants.ZOMBIE_PIGMEN)));
 		builder.pop();
 	}
 	

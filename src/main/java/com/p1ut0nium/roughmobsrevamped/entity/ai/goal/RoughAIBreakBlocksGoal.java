@@ -101,7 +101,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 	@Override
 	public void tick() {
 		
-		this.breaker.getNavigator().setPath(breaker.getNavigator().tryMoveToXYZ(x, y, z, speedIn)(target), 1);
+		//TODO this.breaker.getNavigator().setPath(breaker.getNavigator().tryMoveToXYZ(x, y, z, speedIn)(target), 1);
 		
 		Entity breakerEntity = breaker;
 		while (breakerEntity.isPassenger()) {
@@ -204,6 +204,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 	
 	private void banishTarget() {
 		
+		/* TODO
 		if (breaker.getEntityData().(BANS) == null)
 			breaker.getEntityData().setTag(BANS, new ListNBT());
 		
@@ -214,10 +215,12 @@ public class RoughAIBreakBlocksGoal extends Goal {
 		
 		this.target = null;
 		resetTask();
+		*/
 	}
 
 	private boolean isBanned(BlockPos pos) {
 		
+		/* TODO
 		long l = pos.toLong();
 		ListNBT list = (ListNBT) breaker.getPersistentData().getString(BANS);
 		
@@ -229,6 +232,8 @@ public class RoughAIBreakBlocksGoal extends Goal {
 			if (list.getCompound(i).getLong(LONG_POS) == l)
 				return true;
 		}
+		
+		*/
 
 		return false;
 	}

@@ -79,7 +79,7 @@ public class ZombieFeatures extends EntityFeatures {
 				RoughConfig.zombieChampionNames.toArray(new String[0])) {
 
 			@Override
-			public void addBossFeatures(LivingEntity entity) {
+			public void addBossFeatures(MobEntity entity) {
 				if (SpawnHelper.disableBabyZombies() == false) {
 					for (int i = 0; i < 4; i++) {
 						ZombieEntity zombieMinion = new ZombieEntity(entity.getEntityWorld());
@@ -127,38 +127,38 @@ public class ZombieFeatures extends EntityFeatures {
 		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
 	}
 
-	public void addAI(EntityJoinWorldEvent event, Entity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
+	public void addAI(EntityJoinWorldEvent event, MobEntity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
 		
-		if (!(entity instanceof LivingEntity))
+		if (!(entity instanceof MobEntity))
 			return;
 		
 		if (leapChance > 0)
-			goalSelector.addGoal(1, new RoughAILeapAtTargetChancedGoal((MobEntity) entity, leapHeight, leapChance));
+			goalSelector.addGoal(1, new RoughAILeapAtTargetChancedGoal(entity, leapHeight, leapChance));
 		
 		if (babyBurn && entity instanceof ZombieEntity && ((ZombieEntity)entity).isChild() && !entity.isImmuneToFire())
-			goalSelector.addGoal(0, new RoughAISunlightBurnGoal((LivingEntity) entity, false));
+			goalSelector.addGoal(0, new RoughAISunlightBurnGoal(entity, false));
 		
 		if (helmetBurn)
-			goalSelector.addGoal(0, new RoughAISunlightBurnGoal((LivingEntity) entity, true));
+			goalSelector.addGoal(0, new RoughAISunlightBurnGoal(entity, true));
 		
 		if (allowedBreakBlocks.size() > 0)
-			goalSelector.addGoal(1, new RoughAIBreakBlocksGoal((LivingEntity) entity, 8, allowedBreakBlocks));
+			goalSelector.addGoal(1, new RoughAIBreakBlocksGoal(entity, 8, allowedBreakBlocks));
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	public void addFeatures(EntityJoinWorldEvent event, MobEntity entity) {
 		
-		if (!(entity instanceof LivingEntity) || (entity.getPersistentData()).getBoolean(BOSS_MINION))
+		if (!(entity instanceof MobEntity) || (entity.getPersistentData()).getBoolean(BOSS_MINION))
 			return;
 
 		if (super.bossesEnabled(entity)) {
-			Entity boss = bossApplier.trySetBoss((LivingEntity) entity);
+			MobEntity boss = bossApplier.trySetBoss(entity);
 			if (boss != null) {
-				entity = boss;
+				entity =  boss;
 				event.setCanceled(true);
 			}
 			else
-				equipApplier.equipEntity((LivingEntity) entity);
+				equipApplier.equipEntity(entity);
 		}
 
 		// Attempt to spawn zombie on a horse

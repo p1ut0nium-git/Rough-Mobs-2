@@ -132,17 +132,17 @@ public class EquipHelper {
 			this.poolBoots = poolBoots;
 		}
 		
-		public void equipEntity(LivingEntity entity) {
+		public void equipEntity(MobEntity entity) {
 			equipEntity(entity, false);
 		}
 		
-		public void equipEntity(LivingEntity entity, boolean isBoss) {
+		public void equipEntity(MobEntity boss, boolean isBoss) {
 			
-			if (entity == null || (entity.getPersistentData()).getBoolean(KEY_APPLIED))
+			if (boss == null || (boss.getPersistentData()).getBoolean(KEY_APPLIED) || !(boss instanceof MobEntity))
 				return;
 			
 			// Get nearest player to the spawned mob
-			PlayerEntity playerClosest = entity.world.getClosestPlayer(entity, -1.0D);
+			PlayerEntity playerClosest = boss.world.getClosestPlayer(boss, -1.0D);
 			
 			// Get all Game Stage related info
 			enchantStageEnabled = GameStagesCompat.useEnchantStage();			
@@ -175,17 +175,17 @@ public class EquipHelper {
 				int chance = i <= 1 ? chancePerWeapon : chancePerArmor;
 				
 				// Test for each weapon and each piece of armor, or if entity should have complete armor set
-				if (getChance(entity, chance) || (completeArmorSet && i > 1)) {
-					ItemStack stack = pool.getRandom(entity, enchChance, enchMultiplier);
+				if (getChance(boss, chance) || (completeArmorSet && i > 1)) {
+					ItemStack stack = pool.getRandom(boss, enchChance, enchMultiplier);
 					
 					if (stack != null) {
-						entity.setItemStackToSlot(slot, stack);
-						((MobEntity)entity).setDropChance(slot, dropChance);
+						boss.setItemStackToSlot(slot, stack);
+						((MobEntity)boss).setDropChance(slot, dropChance);
 					}
 				}
 			}
 			
-			(entity.getPersistentData()).putBoolean(KEY_APPLIED, true);
+			(boss.getPersistentData()).putBoolean(KEY_APPLIED, true);
 		}
 
 		public void initConfig(boolean isBoss, boolean useDefaultValues) {

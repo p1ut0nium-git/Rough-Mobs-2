@@ -22,6 +22,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -118,7 +119,7 @@ public class BossHelper {
 			equipApplier.createPools();
 		}
 			
-		public LivingEntity trySetBoss(LivingEntity entity) {
+		public MobEntity trySetBoss(MobEntity entity) {
 				
 			if (defaultChampionChance <= 0 || RND.nextInt(defaultChampionChance) != 0 || (entity instanceof ZombieEntity && ((ZombieEntity)entity).isChild()))
 				return null;
@@ -131,22 +132,22 @@ public class BossHelper {
 			switch (entityTypeName) {
 				case "Zombie":
 					boss = new ZombieChampionEntity(entity.world);
-					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.addEntity((ZombieChampionEntity) boss);
 					break;
 				case "Zombie Pigman":
 					boss = new ZombiePigmanChampionEntity(entity.world);
-					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.addEntity((ZombiePigmanChampionEntity) boss);
 					break;
 				case "Husk":
 					boss = new HuskChampionEntity(entity.world);
-					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.addEntity((HuskChampionEntity) boss);
 					break;
 				case "Skeleton":
 					boss = new SkeletonChampionEntity(entity.world);
-					((LivingEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
 					entity.world.addEntity((SkeletonChampionEntity) boss);
 					break;				
 			}
@@ -165,11 +166,11 @@ public class BossHelper {
 				
 				// Add equipment
 				boolean isBoss = true;
-				equipApplier.equipEntity((LivingEntity)boss, isBoss);
+				equipApplier.equipEntity((MobEntity)boss, isBoss);
 				
 				// Set Bosses name
 				StringTextComponent bossName = new StringTextComponent(defaultChampionNames[RND.nextInt(defaultChampionNames.length)]);
-				((LivingEntity)boss).setCustomName(bossName);
+				((MobEntity)boss).setCustomName(bossName);
 				
 				// Add chat message warning of new boss
 				// TODO - move to network packets?
@@ -193,19 +194,19 @@ public class BossHelper {
 				*/
 				
 				// Add Boss features
-				((LivingEntity)boss).getPersistentData().putBoolean(BOSS, true);
-				addBossFeatures((LivingEntity)boss);
+				((MobEntity)boss).getPersistentData().putBoolean(BOSS, true);
+				addBossFeatures((MobEntity)boss);
 				
-				return (LivingEntity)boss;
+				return (MobEntity)boss;
 			}
 
 			return null;
 		}
 			
-		public abstract void addBossFeatures(LivingEntity boss);
+		public abstract void addBossFeatures(MobEntity boss);
 	}
 
-	public static boolean isBoss(Entity entity) {
+	public static boolean isBoss(MobEntity entity) {
 		return entity.getPersistentData() != null && (entity.getPersistentData()).getBoolean(BOSS);
 	}
 }

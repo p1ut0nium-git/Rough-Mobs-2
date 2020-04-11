@@ -95,6 +95,9 @@ public final class CommonModEvents {
 		} else if (config.getSpec() == ConfigHolder.FEATURES_SPEC) {
 			ConfigHelper.bakeFeatures(config);
 			RoughMobsRevamped.LOGGER.debug("Baked features config");
+		} else if (config.getSpec() == ConfigHolder.ATTRIBUTES_SPEC) {
+			ConfigHelper.bakeAttributes(config);
+			RoughMobsRevamped.LOGGER.debug("Bake attributes config");
 		} else if (config.getSpec() == ConfigHolder.FOG_SPEC) {
 			ConfigHelper.bakeFog(config);
 			RoughMobsRevamped.LOGGER.debug("Baked fog config");

@@ -27,6 +27,9 @@ public class ConfigHolder {
 	public static final ForgeConfigSpec FEATURES_SPEC;
 	static final FeaturesConfig FEATURES;
 	
+	public static final ForgeConfigSpec ATTRIBUTES_SPEC;
+	static final AttributesConfig ATTRIBUTES;
+	
 	public static final ForgeConfigSpec FOG_SPEC;
 	static final FogConfig FOG;
 	
@@ -50,6 +53,11 @@ public class ConfigHolder {
 			final Pair<FeaturesConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(FeaturesConfig::new);
 			FEATURES = specPair.getLeft();
 			FEATURES_SPEC = specPair.getRight();
+		}
+		{
+			final Pair<AttributesConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(AttributesConfig::new);
+			ATTRIBUTES = specPair.getLeft();
+			ATTRIBUTES_SPEC = specPair.getRight();
 		}
 		{
 			final Pair<FogConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(FogConfig::new);

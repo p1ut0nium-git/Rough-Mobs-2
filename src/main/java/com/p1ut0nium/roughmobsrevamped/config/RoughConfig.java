@@ -21,6 +21,8 @@ import java.util.List;
 import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -93,11 +95,22 @@ public class RoughConfig {
 	public static List<String> zombieBreakBlocks;
 	public static List<String> zombieChampionNames;
 	
+	public static boolean zombiePigmanFeaturesEnabled;
+	public static boolean zombiePigmanAggressiveTouch;
+	public static boolean zombiePigmanAlwaysAggressive;
+	public static int zombiePigmanAggressiveRange;
+	public static int zombiePigmanAggressiveBlockRange;
+	public static int zombiePigmanAggressiveBlockChance;
+	public static List<String> zombiePigmanEntities;
+	
 	public static boolean hostileHorseFeaturesEnabled;
 	public static boolean hostileHorseBurn;
 	public static boolean hostileHorseCanDespawn;
 	public static int hostileHorseRiderChance;
 	public static List<String> hostileHorseEntities;
+	
+	// Attributes Config
+	public static List<String> attributes;
 	
 	// Fog Config
 	public static boolean bossFogEnabled;
@@ -135,6 +148,7 @@ public class RoughConfig {
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SPAWNCONDITIONS_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.SPAWN_CONDITIONS_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.EQUIPMENT_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.EQUIPMENT_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.FEATURES_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.FEATURES_CONFIG_FILENAME);
+        context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.ATTRIBUTES_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.ATTRIBUTES_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.FOG_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.FOG_CONFIG_FILENAME);
     }
 }

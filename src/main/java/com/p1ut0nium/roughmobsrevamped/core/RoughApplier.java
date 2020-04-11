@@ -11,9 +11,10 @@
 package com.p1ut0nium.roughmobsrevamped.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
-import com.p1ut0nium.roughmobsrevamped.compat.CompatHandler;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
@@ -21,14 +22,16 @@ import com.p1ut0nium.roughmobsrevamped.features.EntityFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.SpiderFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.ZombieFeatures;
+import com.p1ut0nium.roughmobsrevamped.features.ZombiePigmanFeatures;
 import com.p1ut0nium.roughmobsrevamped.misc.AttributeHelper;
 import com.p1ut0nium.roughmobsrevamped.misc.SpawnHelper;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
-import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -49,6 +52,7 @@ public class RoughApplier {
 		MinecraftForge.EVENT_BUS.register(this);
 		
 		FEATURES.add(new ZombieFeatures());
+		FEATURES.add(new ZombiePigmanFeatures());
 		FEATURES.add(new HostileHorseFeatures());
 		FEATURES.add(new SpiderFeatures());
 		
@@ -59,7 +63,6 @@ public class RoughApplier {
 		FEATURES.add(new EndermanFeatures());
 		FEATURES.add(new WitchFeatures().addPotionHandler(FEATURES));
 		FEATURES.add(new SilverfishFeatures());
-		FEATURES.add(new ZombiePigmanFeatures());
 		FEATURES.add(new BlazeFeatures());
 		FEATURES.add(new GhastFeatures());
 		FEATURES.add(new MagmaCubeFeatures());
@@ -81,7 +84,7 @@ public class RoughApplier {
 		for (EntityFeatures features : FEATURES) 
 			features.postInit();
 		
-		//AttributeHelper.initAttributeOption();
+		AttributeHelper.initAttributeOption();
 		
 		// SpawnHelper.initSpawnOption();
 		// TODO SpawnHelper.addEntries();
@@ -96,20 +99,29 @@ public class RoughApplier {
 	/*
 	 * Add custom attributes (health, damage, etc.)
 	 */
-	private static void addAttributes(Entity entity) {
-		if (entity instanceof LivingEntity)
-			AttributeHelper.addAttributes((LivingEntity)entity);
+	private static void addAttributes(MonsterEntity entity) {
+		if (entity instanceof MonsterEntity) {
+			AttributeHelper.addAttributes(entity);
+		}
 	}
 	
 	/*
 	 * Add equipment and enchantments, and AI
 	 * Also try to create bosses
 	 */
-	private static void addFeatures(EntityJoinWorldEvent event, MobEntity entity) {
+	private static void addFeatures(EntityJoinWorldEvent event, MonsterEntity entity) {
 		
-		// Loop through the features list and add equipment and AI to the entity
+		if (entity.getClass().equals(PlayerEntity.class)) {
+			RoughMobsRevamped.LOGGER.debug("Entity is player...skipping addFeatures");
+			return;
+		} else if (!(entity instanceof MonsterEntity)) {
+			RoughMobsRevamped.LOGGER.debug("Entity " + entity + " is not a monster...skipping addFeatures");
+			return;
+		}
+		
+		// Loop through the list of Mobs with Features and add equipment to the entity based upon which mob type it is
 		for (EntityFeatures features : FEATURES) {
-			if (features.isEntity(entity)) {
+			if (features.isEntityType(entity)) {
 				// Don't attempt to add equipment to a boss. It has already been given equipment in the BossApplier class
 				if (!(entity instanceof IChampion)) {
 					// Also test if baby zombies should have equipment
@@ -119,6 +131,8 @@ public class RoughApplier {
 						}
 					}
 				}
+				// Exit for loop once the correct mob type has been found and features added
+				return;
 			}
 		}
 	}
@@ -126,11 +140,12 @@ public class RoughApplier {
 	/*
 	 * Add custom AI goals to entity
 	 */
-	private static void addAI(EntityJoinWorldEvent event, MobEntity entity) {
+	private static void addAI(EntityJoinWorldEvent event, MonsterEntity entity) {
 		for (EntityFeatures features : FEATURES) {
-			if (features.isEntity(entity)) {
-				if (entity instanceof MobEntity)
+			if (features.isEntityType(entity)) {
+				if (entity instanceof MonsterEntity)
 					features.addAI(event, entity, entity.goalSelector, entity.targetSelector);
+				return;
 			}
 		}
 	}
@@ -147,13 +162,14 @@ public class RoughApplier {
 		*/
 		
 		// Ignore spawn if on the client side, or if entity is the player.
-		if (event.getWorld().isRemote || event.getEntity() instanceof PlayerEntity)
+		if (event.getWorld().isRemote || event.getEntity() instanceof PlayerEntity || !(event.getEntity() instanceof MonsterEntity))
 			return;
 		
-		MobEntity entity = null;
+		MonsterEntity entity = null;
 		
-		if (event.getEntity() instanceof MobEntity)
-			entity = (MobEntity) event.getEntity();
+		if (event.getEntity() instanceof MonsterEntity) {
+			entity = (MonsterEntity) event.getEntity();
+		}
 		
 		boolean isBoss = entity instanceof IChampion;
 		boolean canSpawn = SpawnHelper.checkSpawnConditions(event);
@@ -174,7 +190,7 @@ public class RoughApplier {
 		
 		// If the Abilities Game Stage isn't enabled, or it is and player has the Abilities stage, then add attributes and AI to mob
 		if (!GameStagesCompat.useAbilitiesStage() || GameStagesCompat.useAbilitiesStage() && GameStagesCompat.players.get(closestPlayer).get(Constants.PLAYER_ABILITIES_STAGE)) {
-			// TODO addAttributes(entity);
+			addAttributes(entity);
 			addAI(event, entity);
 		}
 		
@@ -196,12 +212,12 @@ public class RoughApplier {
 			return;
 
 		for (EntityFeatures features : FEATURES) {
-			if (trueSource instanceof LivingEntity && features.isEntity((LivingEntity)trueSource) && !(target instanceof PlayerEntity && ((PlayerEntity)target).isCreative())) {
-				features.onAttack((LivingEntity)trueSource, immediateSource, target, event);
+			if (trueSource instanceof MonsterEntity && features.isEntityType((MonsterEntity)trueSource) && !(target instanceof PlayerEntity && ((PlayerEntity)target).isCreative())) {
+				features.onAttack((MonsterEntity)trueSource, immediateSource, target, event);
 			}
 			
-			if (target instanceof LivingEntity && features.isEntity((LivingEntity)target) && !(trueSource instanceof PlayerEntity && ((PlayerEntity)trueSource).isCreative())) {
-				features.onDefend((LivingEntity)target, trueSource, immediateSource, event);
+			if (target instanceof MonsterEntity && features.isEntityType((MonsterEntity)target) && !(trueSource instanceof PlayerEntity && ((PlayerEntity)trueSource).isCreative())) {
+				features.onDefend((MonsterEntity)target, trueSource, immediateSource, event);
 			}
 		}
 	}
@@ -211,12 +227,13 @@ public class RoughApplier {
 		
 		Entity deadEntity = event.getEntity();
 		
-		if (deadEntity == null || deadEntity.world.isRemote || !(deadEntity instanceof LivingEntity))
+		if (deadEntity == null || deadEntity.world.isRemote || !(deadEntity instanceof MonsterEntity))
 			return;
-		
+
 		for (EntityFeatures features : FEATURES) {
-			if (features.isEntity((LivingEntity)deadEntity)) {
-				features.onDeath((LivingEntity)deadEntity, event.getSource());
+			if (features.isEntityType((MonsterEntity)deadEntity)) {
+				features.onDeath((MonsterEntity)deadEntity, event.getSource());
+				return;
 			}
 		}
 	}
@@ -226,12 +243,13 @@ public class RoughApplier {
 		
 		Entity entity = event.getEntity();
 		
-		if (entity == null || entity.world.isRemote || !(entity instanceof LivingEntity))
+		if (entity == null || entity.world.isRemote || !(entity instanceof MonsterEntity))
 			return;
-		
+ 
 		for (EntityFeatures features : FEATURES) {
-			if (features.isEntity((LivingEntity)entity)) {
-				features.onFall((LivingEntity)entity, event);
+			if (features.isEntityType((MonsterEntity)entity)) {
+				features.onFall((MonsterEntity)entity, event);
+				return;
 			}
 		}
 	}

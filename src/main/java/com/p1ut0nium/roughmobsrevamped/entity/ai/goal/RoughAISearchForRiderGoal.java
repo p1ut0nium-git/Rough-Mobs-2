@@ -76,7 +76,7 @@ public class RoughAISearchForRiderGoal extends Goal {
 	@Override
 	public void tick() {
 		
-		this.mountSearcher.getNavigator().setPath(mountSearcher.getNavigator().getPathToEntityLiving(entity), 1);
+		//TODO this.mountSearcher.getNavigator().setPath(mountSearcher.getNavigator().getPathToEntityLiving(entity), 1);
 		
 		if (this.entity.getDistanceSq(this.mountSearcher) <= 2 && this.mountSearcher != this.entity)
 		{

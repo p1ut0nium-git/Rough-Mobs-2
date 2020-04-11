@@ -12,14 +12,15 @@ package com.p1ut0nium.roughmobsrevamped.misc;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
-import com.google.common.collect.ArrayListMultimap;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -32,7 +33,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class AttributeHelper {
 	
-	private static Multimap<Class<? extends Entity>, AttributeEntry> map;
+	private static Multimap<EntityType<?>, AttributeEntry> map;
 
 	public static final String KEY_ATTRIBUTES = Constants.unique("attributesApplied");
 	
@@ -40,12 +41,12 @@ public class AttributeHelper {
 		
 		private UUID uuid;
 		private String attribute;
-		private int operator;
+		private Operation operator;
 		private double value;
 		private int dimension;
 		private int child;
 		
-		public AttributeEntry(UUID uuid, String attribute, int operator2, double value, int dimension, int child) {
+		public AttributeEntry(UUID uuid, String attribute, Operation operator2, double value, int dimension, int child) {
 			this.uuid = uuid;
 			this.attribute = attribute;
 			this.operator = operator2;
@@ -62,7 +63,7 @@ public class AttributeHelper {
 			return attribute;
 		}
 		
-		public int getOperator() {
+		public Operation getOperator() {
 			return operator;
 		}
 		
@@ -88,20 +89,7 @@ public class AttributeHelper {
 	}
 
 	public static void initAttributeOption() {
-		
-		/* TODO Config
-		RoughConfig.getConfig().addCustomCategoryComment("attributes", "Add attribute modifiers to entities to change their stats. Takes 4-6 values seperated by a semicolon:\n"
-																		+ "Format: entity;attribute;operator;value;dimension;child\n"
-																		+ "entity:\t\tentity name\n"
-																		+ "attribute:\tattribute name (Possible attributes: " + getAttributesString() + ")\n"
-																		+ "operator:\t\toperator type (0 = add, 1 = multiply and add)\n"
-																		+ "value:\t\tvalue which will be used for the calculation\n"
-																		+ "dimension:\tdimension (ID) in which the entity should get the boost (optional! Leave this blank or use a \"/\" for any dimension)\n"
-																		+ "child:\t0 = the modifier doesn't care if the entity is a child or not, 1 = adults only, 2 = childs only (optional! Leave this blank for 0)");
-		
-		String[] options = RoughConfig.getStringArray("attributes", "Modifier", Constants.ATTRIBUTE_DEFAULT, "Attributes:");
-		fillMap(options);
-		*/
+		fillMap(RoughConfig.attributes);
 	}
 	
 	public static boolean applyAttributeModifier(LivingEntity entity, IAttribute attribute, String name, Operation operator, double amount) {
@@ -129,7 +117,7 @@ public class AttributeHelper {
 		if (entity.getPersistentData().getBoolean(KEY_ATTRIBUTES))
 			return;
 		
-		Collection<AttributeEntry> attributes = map.get(entity.getClass());
+		Collection<AttributeEntry> attributes = map.get(entity.getType());
 		
 		int i = 0;
 		for (AttributeEntry attribute : attributes) 
@@ -140,13 +128,11 @@ public class AttributeHelper {
 			IAttributeInstance instance = entity.getAttributes().getAttributeInstanceByName(attribute.attribute);
 			if (instance != null) 
 			{
-				/* TODO Operator
 				AttributeModifier modifier = new AttributeModifier(attribute.getUuid(), Constants.unique("mod" + i), attribute.getValue(), attribute.getOperator());
 				instance.applyModifier(modifier);
 				
 				if (instance.getAttribute() == SharedMonsterAttributes.MAX_HEALTH)
 					entity.setHealth(entity.getMaxHealth());
-				*/
 			}
 			else
 				RoughMobsRevamped.LOGGER.error("Error on attribute modification: \"" + attribute.attribute + "\" is not a valid attribute. Affected Entity: " + entity);
@@ -157,22 +143,22 @@ public class AttributeHelper {
 		entity.getPersistentData().putBoolean(KEY_ATTRIBUTES, true);
 	}
 
-	private static void fillMap(String[] options) {	
+	private static void fillMap(List<String> attributes) {	
 		map = ArrayListMultimap.create();
 		
-		for (String line : options) 
+		for (String line : attributes) 
 		{
 			String[] pars = line.split(";");
 			
 			if (pars.length >= 4) 
-			{
-				/* TODO getClass using resource location
-				Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(pars[0]));
-				if (entityClass != null) 
+			{		
+				// OLD Class<? extends Entity> entityType = EntityList.getClass(new ResourceLocation(pars[0]));
+				EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(pars[0]));
+				if (entityType != null) 
 				{
 					try 
 					{
-						int operator = Integer.parseInt(pars[2]);
+						Operation operator = Operation.values()[Integer.parseInt(pars[2])];
 						double value = Double.parseDouble(pars[3]);
 						int dimension = pars.length >= 5 && !pars[4].equals("/") ? Integer.parseInt(pars[4]) : Integer.MIN_VALUE;
 						int child = pars.length >= 6 ? Integer.parseInt(pars[5]) : 0;
@@ -183,7 +169,7 @@ public class AttributeHelper {
 							continue;
 						}
 						
-						map.put(entityClass, new AttributeEntry(UUID.randomUUID(), pars[1], operator, value, dimension, child));
+						map.put(entityType, new AttributeEntry(UUID.randomUUID(), pars[1], operator, value, dimension, child));
 					}
 					catch(NumberFormatException e) 
 					{
@@ -192,14 +178,13 @@ public class AttributeHelper {
 				}
 				else
 					RoughMobsRevamped.LOGGER.error("Error on attribute initialization: Entity " + pars[0] + " does not exist");
-				*/
 			}
 			else
 				RoughMobsRevamped.LOGGER.error("Error on attribute initialization: Wrong amount of arguments: " + line);
 		}
 	}
 
-	private static String getAttributesString() {
+	public static String getAttributesString() {
 		
 		String attributes = "";
 		
@@ -218,6 +203,5 @@ public class AttributeHelper {
 		catch(Exception e) {}
 		
 		return attributes.length() > 2 ? attributes.substring(2) : "";	
-	    //return "generic.maxHealth, generic.followRange, generic.knockbackResistance, generic.movementSpeed, generic.flyingSpeed, generic.attackDamage, generic.attackSpeed, generic.armor, generic.armorToughness, generic.luck";
 	}
 }

@@ -18,6 +18,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -63,13 +64,13 @@ public class SpiderFeatures extends EntityFeatures {
 	}
 
 	@Override
-	public void addAI(EntityJoinWorldEvent event, Entity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
-		if (entity instanceof LivingEntity)
-			rider.addAI((LivingEntity) entity);
+	public void addAI(EntityJoinWorldEvent event, MobEntity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
+		if (entity instanceof MobEntity)
+			rider.addAI(entity);
 	}
 	
 	@Override
-	public void addFeatures(EntityJoinWorldEvent event, Entity spider) {
+	public void addFeatures(EntityJoinWorldEvent event, MobEntity spider) {
 		if (spider instanceof LivingEntity)
 			rider.tryAddRider((LivingEntity) spider);
 	}

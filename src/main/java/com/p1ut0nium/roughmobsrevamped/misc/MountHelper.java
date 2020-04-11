@@ -138,7 +138,7 @@ public class MountHelper {
 		return horse;
 	}
 	
-	public static boolean tryMountHorse(Entity rider, HorseType type, int chance, int minY) {
+	public static boolean tryMountHorse(MobEntity rider, HorseType type, int chance, int minY) {
 		
 		if (rider.posY < minY)
 			return false;

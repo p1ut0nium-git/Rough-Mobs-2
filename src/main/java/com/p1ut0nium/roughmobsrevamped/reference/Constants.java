@@ -13,6 +13,8 @@ package com.p1ut0nium.roughmobsrevamped.reference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 
@@ -20,7 +22,7 @@ public class Constants {
 	public static final String MODID = "roughmobsrevamped";
 	public static final String MODNAME = "Rough Mobs Revamped";
 	public static final String MODVERSION = "@VERSION@";
-	public static final String MODUPDATE = "https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/blob/1.12.2/update.json";
+	public static final String MODUPDATE = "https://api.npoint.io/0d4e5ab77e46896ac842";
 
 	public static final String ROUGHMOBSALL = "roughmobsall";
 	public static final String ROUGHMOBSEQUIP = "roughmobsequip";
@@ -38,6 +40,7 @@ public class Constants {
 	public static final String SPAWN_CONDITIONS_CONFIG_FILENAME = "spawnconditions.toml";
 	public static final String EQUIPMENT_CONFIG_FILENAME = "equipment.toml";
 	public static final String FEATURES_CONFIG_FILENAME = "features.toml";
+	public static final String ATTRIBUTES_CONFIG_FILENAME = "attributes.toml";
 	public static final String FOG_CONFIG_FILENAME = "fog.toml";
 
 	public static String unique(String id) {
@@ -50,6 +53,7 @@ public class Constants {
 		
 		for(EntityType<? extends Entity> clazz : entityType) {
 			regNames.add(EntityType.getKey(clazz).toString());
+			System.out.println("Reg Names: " + EntityType.getKey(clazz).toString());
 		}
 		return regNames;
 	}
@@ -67,7 +71,13 @@ public class Constants {
 			EntityType.ZOMBIE,
 			EntityType.ZOMBIE_VILLAGER,
 			EntityType.HUSK,
-			EntityType.ZOMBIE_PIGMAN
+			EntityType.ZOMBIE_PIGMAN,
+			ModEntityTypes.ZOMBIE_CHAMPION.get()
+	};
+	
+	public static final EntityType<?>[] ZOMBIE_PIGMEN = {
+			EntityType.ZOMBIE_PIGMAN,
+			ModEntityTypes.ZOMBIE_PIGMAN_CHAMPION.get()
 	};
 	
 	public static final EntityType<?>[] SPIDERS = {

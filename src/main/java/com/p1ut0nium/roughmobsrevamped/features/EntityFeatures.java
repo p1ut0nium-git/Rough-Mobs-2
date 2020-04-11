@@ -22,7 +22,9 @@ import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -49,8 +51,8 @@ public abstract class EntityFeatures {
 		this.entityTypes = Arrays.asList(entityTypes);
 	}
 
-	public boolean isEntity(Entity creature) {;
-		EntityType<?> entityType = creature.getType();
+	public boolean isEntityType(MonsterEntity mobEntity) {;
+		EntityType<?> entityType = mobEntity.getType();
 		ResourceLocation loc = EntityType.getKey(entityType);
 
 		return featuresEnabled && loc != null && entityNames.contains(loc.toString());
@@ -69,10 +71,10 @@ public abstract class EntityFeatures {
 		return true;
 	}
 	
-	public void addFeatures(EntityJoinWorldEvent event, Entity entity) {
+	public void addFeatures(EntityJoinWorldEvent event, MobEntity entity) {
 	}
 	
-	public boolean bossesEnabled(Entity entity) {
+	public boolean bossesEnabled(MobEntity entity) {
 		
 		if (GameStagesCompat.useBossStage()) {
 			PlayerEntity playerClosest = entity.world.getClosestPlayer(entity, -1.0D);
@@ -89,7 +91,7 @@ public abstract class EntityFeatures {
 	public void postInit() {	
 	}
 	
-	public void addAI(EntityJoinWorldEvent event, Entity entity, GoalSelector goalSelector, GoalSelector targeSelector) {
+	public void addAI(EntityJoinWorldEvent event, MobEntity entity, GoalSelector goalSelector, GoalSelector targeSelector) {
 	}
 
 	public void onAttack(Entity attacker, Entity immediateAttacker, Entity target, LivingAttackEvent event) {
