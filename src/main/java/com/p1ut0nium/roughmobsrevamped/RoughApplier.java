@@ -39,7 +39,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -210,7 +209,7 @@ public class RoughApplier {
 		}
 		
 		// Ignore spawn if on the client side, or if entity is the player.
-		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer)
+		if (event.getWorld().isRemote || event.getEntity() instanceof EntityPlayer || !(event.getEntity() instanceof EntityLiving))
 			return;
 		
 		EntityLiving entity = (EntityLiving) event.getEntity();
