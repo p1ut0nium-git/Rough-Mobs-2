@@ -20,6 +20,7 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.14.4, originally by Lellson. Th
 * Boss mob spawn warning sound effect (toggleable)
 * Mobs spawn with more equipment as you get further from world spawn (toggleable)
 * Mobs spawn with more equipment as it gets closer to midnight (toggleable)
+* Blazes - toggle destroy blocks on death explosion; set push attacker damage amount
 
 #### _Planned_
 
