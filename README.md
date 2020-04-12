@@ -36,6 +36,10 @@ This is a revamp of Rough Mobs 2 for Minecraft 1.14.4, originally by Lellson. Th
 * Additional mob abilities & AI
 * Horde AI
 * Skeleton boss fireball attack
+* Boss summons configurable minion types
+* Bosses have actual boss bar?
+* Boss ranks (lieutenant, captain, etc.)
+* Bloodmoon mod support
 
 <br/>   
 
