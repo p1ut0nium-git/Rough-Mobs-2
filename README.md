@@ -25,6 +25,7 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Boss zombies use Bat Swarm attack (configurable range, damage, health, and attack delay)
 * Mobs can attack other mobs (configurable)
 * Disable baby zombie spawns (toggleable)
+* Blazes - toggle destroy blocks on death explosion; set push attacker damage amount
 
 ***Planned***
 
@@ -40,6 +41,10 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Additional mob abilities & AI
 * Horde AI
 * Skeleton boss fireball attack
+* Boss summons configurable minion types
+* Bosses have actual boss bar?
+* Boss ranks (lieutenant, captain, etc.)
+* Bloodmoon mod support
 
 ***In Development***
 
@@ -54,17 +59,11 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
  
 ## FAQ
 
-**Can you update to Minecraft version 1.14, 1.15, etc.?**  
-I'm working on it.
-
 **Can you add a feature?**  
 I might. Feel free to make a request.  
 
 **Can you fix this bug?**  
 Please report all issues on my GitHub Issue Tracker.  
-
-**What version of Forge is this compiled against?**   
-The 1.12.2 version is compiled against Forge version 14.23.5.2768  
 
 **How do I use Game Stages?**  
 Required: GameStages mod. You can enable each stage you want to use in the config, or simply enable the GameStages_All option to enable all of them at the same time. Now, you must give the player the enabled stages at runtime(via quests, achievements, etc.) in order for rough mobs to spawn near them. The names of each stage to be used in game are found in the config file's gamestages comment section. Adding a game stage can be tested with: /gamestage add @p roughmobsequip  
