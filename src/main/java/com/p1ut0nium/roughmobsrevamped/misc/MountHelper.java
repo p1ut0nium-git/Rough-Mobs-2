@@ -81,7 +81,7 @@ public class MountHelper {
 			
 			// TODO verify riderType.create works - 1.12.2 version -> Entity entity = entry.newInstance(mount.getEntityWorld());
 			MobEntity rider = (MobEntity) riderType.create(mount.getEntityWorld());
-			rider.setPosition(mount.posX, mount.posY, mount.posZ);
+			rider.setPosition(mount.getPosX(), mount.getPosY(), mount.getPosZ());
 			rider.hurtResistantTime = 60;
 			rider.getPersistentData().putBoolean(RIDER, true);
 			
@@ -127,7 +127,7 @@ public class MountHelper {
 	public static AbstractHorseEntity createHorse(World world, Entity owner, HorseType type) {
 		
 		AbstractHorseEntity horse = type.createInstance(world);
-		horse.setPosition(owner.posX, owner.posY, owner.posZ);
+		horse.setPosition(owner.getPosX(), owner.getPosY(), owner.getPosZ());
 		horse.onInitialSpawn(world, world.getDifficultyForLocation(owner.getPosition()), SpawnReason.MOB_SUMMONED, (ILivingEntityData)null, null);
 		horse.hurtResistantTime = 60;
         horse.setHorseTamed(true);
@@ -140,7 +140,7 @@ public class MountHelper {
 	
 	public static boolean tryMountHorse(MobEntity rider, HorseType type, int chance, int minY) {
 		
-		if (rider.posY < minY)
+		if (rider.getPosY() < minY)
 			return false;
 
 		if (!BossHelper.isBoss(rider) && (chance <= 0 || RND.nextInt(chance) != 0 || rider.isPassenger() || (rider instanceof ZombieEntity && ((ZombieEntity)rider).isChild())))

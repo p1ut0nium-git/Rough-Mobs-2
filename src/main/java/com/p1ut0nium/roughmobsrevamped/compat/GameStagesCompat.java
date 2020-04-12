@@ -17,6 +17,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public abstract class GameStagesCompat {
 	
@@ -56,7 +57,7 @@ public abstract class GameStagesCompat {
 		}
 	}
 	
-	public static void syncPlayerGameStages(PlayerEntity player) {
+	public static void syncPlayerGameStages(ServerPlayerEntity player) {
 		
 		if (registered) {
 			

@@ -132,22 +132,22 @@ public class BossHelper {
 			switch (entityTypeName) {
 				case "Zombie":
 					boss = new ZombieChampionEntity(entity.world);
-					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 					entity.world.addEntity((ZombieChampionEntity) boss);
 					break;
 				case "Zombie Pigman":
 					boss = new ZombiePigmanChampionEntity(entity.world);
-					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 					entity.world.addEntity((ZombiePigmanChampionEntity) boss);
 					break;
 				case "Husk":
 					boss = new HuskChampionEntity(entity.world);
-					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 					entity.world.addEntity((HuskChampionEntity) boss);
 					break;
 				case "Skeleton":
 					boss = new SkeletonChampionEntity(entity.world);
-					((MobEntity)boss).setPosition(entity.posX, entity.posY, entity.posZ);
+					((MobEntity)boss).setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 					entity.world.addEntity((SkeletonChampionEntity) boss);
 					break;				
 			}

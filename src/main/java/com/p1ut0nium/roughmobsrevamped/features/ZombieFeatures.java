@@ -85,7 +85,7 @@ public class ZombieFeatures extends EntityFeatures {
 						ZombieEntity zombieMinion = new ZombieEntity(entity.getEntityWorld());
 						CompoundNBT nbtMinion = zombieMinion.getPersistentData();
 						nbtMinion.putBoolean(BOSS_MINION, true);
-						zombieMinion.setPosition(entity.posX + Math.random() - Math.random(), entity.posY + Math.random(), entity.posZ + Math.random() - Math.random());
+						zombieMinion.setPosition(entity.getPosX() + Math.random() - Math.random(), entity.getPosY() + Math.random(), entity.getPosZ() + Math.random() - Math.random());
 						zombieMinion.onInitialSpawn(zombieMinion.world, entity.getEntityWorld().getDifficultyForLocation(entity.getPosition()), SpawnReason.MOB_SUMMONED, null, nbtMinion);
 						zombieMinion.setChild(true);
 

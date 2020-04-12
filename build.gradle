@@ -86,14 +86,14 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:" + minecraft_version + "-" + forge_version
+    minecraft 'net.minecraftforge:forge:1.15.2-31.1.41'
 
 	compile "net.darkhax.gamestages:GameStages-${minecraft_version}:${gameStages_version}"
 	compile "net.darkhax.bookshelf:Bookshelf-${minecraft_version}:${bookshelf_version}"
 	compile "serene-seasons:SereneSeasons-${minecraft_version}:${sereneSeasons_version}:universal"
 }
 
-// Store properties into Manifest file.
+// Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
         attributes([
@@ -108,7 +108,6 @@ jar {
             "Built-On-Java"			  : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
             "Built-With-Forge"		  : "${forge_version}",
             "Supports-GameStages"	  : "${gameStages_version}",
-			"Signing-Fingerprint"     : project.hasProperty('signSHA1') ? project.findProperty('signSHA1') : "unsigned"
         ])
     }
 }
@@ -135,47 +134,6 @@ publishing {
     }
 }
 
-// Jar signing
-import net.minecraftforge.gradle.common.task.SignJar
-
-task signJar(type: SignJar, dependsOn: jar) {
-	// Skips if the keyStore property is missing.
-	onlyIf {
-		project.hasProperty('keyStore')
-	}
-
-	// findProperty allows us to reference the property without it existing.
-	// Using project.propName would cause the script to fail validation if the property did not exist.
-	keyStore = project.findProperty('keyStore')
-	alias = project.findProperty('keyStoreAlias')
-	storePass = project.findProperty('keyStorePass')
-	keyPass = project.findProperty('keyStoreKeyPass')
-	inputFile = jar.archivePath
-	outputFile = jar.archivePath
-}
-
-// Runs the signJar task automatically when build is run.
-build.dependsOn signJar
-
-// Process resources on build
-processResources {
-	// This will ensure that this task is redone when the versions change.
-	inputs.property 'version', project.version
-
-	// Replace stuff in mods.toml, nothing else
-	from(sourceSets.main.resources.srcDirs) {
-		include 'META-INF/mods.toml'
-
-		// Replace version
-		expand 'version': project.version
-	}
-
-	// Copy everything else except the mods.toml
-	from(sourceSets.main.resources.srcDirs) {
-		exclude 'META-INF/mods.toml'
-	}
-}
-
 // Create deobf dev jars
 task deobfJar(type: Jar) {
     from sourceSets.main.output
@@ -192,8 +150,7 @@ task deobfJar(type: Jar) {
 			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             "Built-On-Java"			  : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
             "Built-With-Forge"		  : "${forge_version}",
-            "Supports-GameStages"	  : "${gameStages_version}",
-			"Signing-Fingerprint"     : project.hasProperty('signSHA1') ? project.findProperty('signSHA1') : "unsigned"
+            "Supports-GameStages"	  : "${gameStages_version}"
         ])
     }
 }

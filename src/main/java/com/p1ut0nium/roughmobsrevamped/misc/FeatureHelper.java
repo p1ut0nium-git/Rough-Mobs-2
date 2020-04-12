@@ -98,7 +98,7 @@ public class FeatureHelper {
 			double moveX = (rnd.nextDouble() - 0.5D) * 2.0D * spread;
 			double moveY = -rnd.nextDouble() * spread;
 			double moveZ = (rnd.nextDouble() - 0.5D) * 2.0D * spread;
-			((ServerWorld) entity.world).spawnParticle(type, entity.posX + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), entity.posY + rnd.nextDouble() * (double)entity.getHeight() - 0.25D, entity.posZ + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), 1, moveX, moveY, moveZ, 0.0D);
+			((ServerWorld) entity.world).spawnParticle(type, entity.getPosX() + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), entity.getPosY() + rnd.nextDouble() * (double)entity.getHeight() - 0.25D, entity.getPosZ() + (rnd.nextDouble() - 0.5D) * (double)entity.getWidth(), 1, moveX, moveY, moveZ, 0.0D);
 		}
 	}
 	
@@ -123,8 +123,8 @@ public class FeatureHelper {
 	
 	public static void knockback(Entity attacker, LivingEntity target, float strength, float extraLeap) {
 		
-		double xRatio = attacker.posX - target.posX;
-		double zRatio = attacker.posZ - target.posZ;
+		double xRatio = attacker.getPosX() - target.getPosX();
+		double zRatio = attacker.getPosZ() - target.getPosZ();
 		target.knockBack(attacker, strength, xRatio, zRatio);
 		target.setMotion(target.getMotion().getX(), target.getMotion().getY() + extraLeap, target.getMotion().getZ());
 		// TODO verify the new code works - target.motionY += extraLeap;

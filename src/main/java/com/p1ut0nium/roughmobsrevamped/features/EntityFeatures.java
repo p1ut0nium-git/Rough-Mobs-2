@@ -26,6 +26,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -78,7 +79,7 @@ public abstract class EntityFeatures {
 		
 		if (GameStagesCompat.useBossStage()) {
 			PlayerEntity playerClosest = entity.world.getClosestPlayer(entity, -1.0D);
-			return (GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS));
+			return (GameStageHelper.hasAnyOf((ServerPlayerEntity) playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSBOSS));
 		}
 		
 		// If boss game stage isn't enabled, then it is ok to spawn bosses

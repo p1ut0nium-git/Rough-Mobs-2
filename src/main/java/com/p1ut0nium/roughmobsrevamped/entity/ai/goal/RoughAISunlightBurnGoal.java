@@ -34,7 +34,7 @@ public class RoughAISunlightBurnGoal extends Goal {
 	public boolean shouldExecute() {
 
         float f = entity.getBrightness();
-        boolean flag = entity.world.isDaytime() && f > 0.5F && entity.world.canBlockSeeSky(new BlockPos(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ));
+        boolean flag = entity.world.isDaytime() && f > 0.5F && entity.world.canBlockSeeSky(new BlockPos(entity.getPosX(), entity.getPosY() + (double)entity.getEyeHeight(), entity.getPosZ()));
         
         if (!flag)
         	return false;

@@ -110,7 +110,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 		
 		++this.idleTime;
 		
-		double distance = this.target.distanceSq(breakerEntity.posX, breakerEntity.posY, breakerEntity.posZ, false);
+		double distance = this.target.distanceSq(breakerEntity.getPosX(), breakerEntity.getPosY(), breakerEntity.getPosZ(), false);
 		
 		if ((int)Math.round(distance) == curDistance)
 			this.idleTime++;
@@ -175,7 +175,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 			{
 				for (int k = -range; k <= range; k++) 
 				{
-					curPos = new BlockPos(breakerEntity.posX + i, breakerEntity.posY + j, breakerEntity.posZ + k);
+					curPos = new BlockPos(breakerEntity.getPosX() + i, breakerEntity.getPosY() + j, breakerEntity.getPosZ() + k);
 					Block block = world.getBlockState(curPos).getBlock();
 					
 					if (block instanceof SpawnerBlock)
@@ -191,7 +191,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 
 		for (BlockPos pos : positions)
 		{
-			distance = pos.distanceSq(breakerEntity.posX, breakerEntity.posY, breakerEntity.posZ, false);
+			distance = pos.distanceSq(breakerEntity.getPosX(), breakerEntity.getPosY(), breakerEntity.getPosZ(), false);
 			if (distance < bestDistance) 
 			{
 				target = pos;

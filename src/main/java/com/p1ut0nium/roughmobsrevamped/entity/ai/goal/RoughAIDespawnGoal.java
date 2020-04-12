@@ -38,9 +38,9 @@ public class RoughAIDespawnGoal extends Goal {
 	public void tick() {
 		
 	    if (player != null) {
-	        double d0 = player.posX - entity.posX;
-	        double d1 = player.posY - entity.posY;
-	        double d2 = player.posZ - entity.posZ;
+	        double d0 = player.getPosX() - entity.getPosX();
+	        double d1 = player.getPosY() - entity.getPosY();
+	        double d2 = player.getPosZ() - entity.getPosZ();
 	        double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
 	        if (d3 > 16384.0D) {

@@ -68,7 +68,7 @@ public class ZombiePigmanFeatures extends EntityFeatures {
 	public void onBlockBreak(PlayerEntity player, BreakEvent event) {
 		
 		for (EntityType<? extends Entity> clazz : entityTypes) {
-			List<Entity> entities = player.world.getEntitiesWithinAABB(clazz, player.getBoundingBox().expand(aggressiveBlockRange, aggressiveBlockRange, aggressiveBlockRange), null);
+			List<? extends Entity> entities = player.world.getEntitiesWithinAABB(clazz, player.getBoundingBox().expand(aggressiveBlockRange, aggressiveBlockRange, aggressiveBlockRange), null);
 			
 			for (Entity entity : entities) {
 				if (aggressiveBlockChance > 0 && entity instanceof MobEntity && player.world.rand.nextInt(aggressiveBlockChance) == 0) {

@@ -69,7 +69,7 @@ public class BlazeFeatures extends EntityFeatures {
 	@Override
 	public void onDeath(LivingEntity deadEntity, DamageSource source) {
 		if (deathExplosionStrength > 0 && !(source.getTrueSource() instanceof FakePlayer)) {;
-			deadEntity.world.createExplosion(deadEntity, deadEntity.posX, deadEntity.posY, deadEntity.posZ, deathExplosionStrength, deathExplosionType);
+			deadEntity.world.createExplosion(deadEntity, deadEntity.getPosX(), deadEntity.getPosY(), deadEntity.getPosZ(), deathExplosionStrength, deathExplosionType);
 		}
 	}
 }

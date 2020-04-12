@@ -34,6 +34,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -187,7 +188,7 @@ public class RoughApplier {
 			return;
 		
 		PlayerEntity closestPlayer = entity.world.getClosestPlayer(entity, -1.0D);
-		GameStagesCompat.syncPlayerGameStages(closestPlayer);
+		GameStagesCompat.syncPlayerGameStages((ServerPlayerEntity) closestPlayer);
 		
 		// If the Abilities Game Stage isn't enabled, or it is and player has the Abilities stage, then add attributes and AI to mob
 		if (!GameStagesCompat.useAbilitiesStage() || GameStagesCompat.useAbilitiesStage() && GameStagesCompat.players.get(closestPlayer).get(Constants.PLAYER_ABILITIES_STAGE)) {

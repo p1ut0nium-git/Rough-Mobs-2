@@ -1,23 +1,25 @@
 /*
- * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * Rough Mobs Revamped for Minecraft Forge 1.15.2
  * 
  * This is a complete revamp of Lellson's Rough Mobs 2
  * 
  * Author: p1ut0nium_94
  * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
- * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.15.2
  * 
  */
 package com.p1ut0nium.roughmobsrevamped.init;
 
-import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
-import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombiePigmanChampionEntity;
-import com.p1ut0nium.roughmobsrevamped.client.renderer.entity.HostileBatRenderer;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.HuskChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.SkeletonChampionEntity;
-import com.p1ut0nium.roughmobsrevamped.entity.monster.HostileBatEntity;
+import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombieChampionEntity;
+import com.p1ut0nium.roughmobsrevamped.entity.boss.ZombiePigmanChampionEntity;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
+import net.minecraft.client.renderer.entity.HuskRenderer;
+import net.minecraft.client.renderer.entity.PigZombieRenderer;
+import net.minecraft.client.renderer.entity.SkeletonRenderer;
+import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -65,16 +67,11 @@ public class ModEntityTypes {
 					.build(new ResourceLocation(Constants.MODID, SKELETON_CHAMPION_NAME).toString())
 	);
 	
-	// Hostile Bat
-	public static final String HOSTILE_BAT_NAME = "hostile_bat";
-	public static final RegistryObject<EntityType<HostileBatEntity>> HOSTILE_BAT = ENTITY_TYPES.register(HOSTILE_BAT_NAME, () ->
-					EntityType.Builder.<HostileBatEntity>create(HostileBatEntity::new, EntityClassification.MONSTER)
-					.size(EntityType.BAT.getWidth(), EntityType.BAT.getHeight())
-					.build(new ResourceLocation(Constants.MODID, HOSTILE_BAT_NAME).toString())
-	);
-	
 	@OnlyIn(Dist.CLIENT)
 	public static void registerRendering() {
-		RenderingRegistry.registerEntityRenderingHandler(HostileBatEntity.class, HostileBatRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.ZOMBIE_CHAMPION.get(), ZombieRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.ZOMBIE_PIGMAN_CHAMPION.get(), PigZombieRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.SKELETON_CHAMPION.get(), SkeletonRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.HUSK_CHAMPION.get(), HuskRenderer::new);
 	}
 }

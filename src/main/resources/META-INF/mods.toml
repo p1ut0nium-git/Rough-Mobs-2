@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[28,)"
+loaderVersion="[31,)"
 
 issueTrackerURL="https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/issues"
 
@@ -7,7 +7,7 @@ issueTrackerURL="https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/issues"
 modId="roughmobsrevamped"
 version="${version}"
 displayName="Rough Mobs Revamped"
-updateJSONURL="https://api.npoint.io/0d4e5ab77e46896ac842"
+updateJSONURL="https://api.npoint.io/0bfdf843f7f634c511c6"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped"
 logoFile="examplemod.png"
 credits="Thanks to Lellson8 for open sourcing his original mod: Rough Mobs 2"
@@ -19,13 +19,13 @@ A continuation of the orginal Rough Mobs 2 mod by Lellson. This mod makes normal
 [[dependencies.roughmobsrevamped]]
 modId="forge" #mandatory
 mandatory=true
-versionRange="[28,)"
+versionRange="[31,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.roughmobsrevamped]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.14.4]"
+versionRange="[1.15.2]"
 ordering="NONE"
 side="BOTH"

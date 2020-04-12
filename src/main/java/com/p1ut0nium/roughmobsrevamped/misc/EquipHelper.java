@@ -29,6 +29,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -149,7 +150,7 @@ public class EquipHelper {
 			
 			// Test to see if player has enchantment stage unlocked
 			if (enchantStageEnabled) {
-				playerHasEnchantStage = GameStageHelper.hasAnyOf(playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT);
+				playerHasEnchantStage = GameStageHelper.hasAnyOf((ServerPlayerEntity) playerClosest, Constants.ROUGHMOBSALL, Constants.ROUGHMOBSENCHANT);
 			} else {
 				playerHasEnchantStage = false;
 			}

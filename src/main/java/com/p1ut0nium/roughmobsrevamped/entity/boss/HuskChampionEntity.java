@@ -16,7 +16,6 @@ import com.p1ut0nium.roughmobsrevamped.init.ModSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.HuskEntity;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -37,9 +36,9 @@ public class HuskChampionEntity extends HuskEntity implements IChampion {
 	@Override
 	public void onAddedToWorld() {
     	super.onAddedToWorld();
-
-        if (this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition()))
-        	((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity((ServerWorld)this.world, this.posX, this.posY, this.posZ, true));
+    	
+        if (this.getPosY() >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition()))
+        	((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity((ServerWorld)this.world, this.getPosX(), this.getPosY(), this.getPosZ(), true));
     }
 
 	@Override
@@ -47,7 +46,7 @@ public class HuskChampionEntity extends HuskEntity implements IChampion {
 
         if (this.world.isRemote) {
             for (int i = 0; i < 2; ++i) {
-                this.world.addParticle(ParticleTypes.WITCH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.posY + this.rand.nextDouble() * (double)this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
+                this.world.addParticle(ParticleTypes.WITCH, this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), this.getPosY() + this.rand.nextDouble() * (double)this.getHeight(), this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double)this.getWidth(), 0.0D, 0.0D, 0.0D);
             }
         }
 
