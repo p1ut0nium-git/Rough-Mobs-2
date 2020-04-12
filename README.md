@@ -46,9 +46,6 @@ This is a revamp of [Rough Mobs 2](https://github.com/Lellson/Rough-Mobs-2 "Roug
 * Boss ranks (lieutenant, captain, etc.)
 * Bloodmoon mod support
 
-***In Development***
-
-* 1.14.4 version
 <br/>   
 
 ## Links
