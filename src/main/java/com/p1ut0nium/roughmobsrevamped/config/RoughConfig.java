@@ -15,14 +15,15 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraft.world.Explosion.Mode;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -35,6 +36,7 @@ public class RoughConfig {
 	public static HashMap<String, List<String>> entities = new HashMap<>();
 	
 	// Mod Compat Config
+	
 	public static boolean useAllStages;
 	public static boolean useEquipmentStage;
 	public static boolean useBossStage;
@@ -44,26 +46,28 @@ public class RoughConfig {
 	public static List<String> seasonWhiteList;
 	
 	// Spawn Conditions Config
+	
 	public static boolean mustBeUnderground;
 	public static int minPlayerLevel;
 	public static int maxSpawnHeight;
 	public static int minDistFromSpawn;
 	
 	// Equipment Config
+	
 	public static int chancePerWeapon;
 	public static int chancePerArmor;
 	public static int chancePerEnchantment;
 	public static float enchantMultiplier;
 	public static float dropChance;
 	
-	public static List<String> equipMainhand;
-	public static List<String> equipOffhand;
-	public static List<String> equipHelmet;
-	public static List<String> equipChestplate;
-	public static List<String> equipLeggings;
-	public static List<String> equipBoots;
-	public static List<String> equipWeaponEnchants;
-	public static List<String> equipArmorEnchants;
+	public static List<? extends String> equipMainhand;
+	public static List<? extends String> equipOffhand;
+	public static List<? extends String> equipHelmet;
+	public static List<? extends String> equipChestplate;
+	public static List<? extends String> equipLeggings;
+	public static List<? extends String> equipBoots;
+	public static List<? extends String> equipWeaponEnchants;
+	public static List<? extends String> equipArmorEnchants;
 	
 	public static boolean chanceTimeMultiplier;
 	public static boolean chanceDistMultiplier;
@@ -71,6 +75,15 @@ public class RoughConfig {
 	public static boolean disableBabyZombieEquipment;
 	
 	// Features Config
+	
+	public static boolean blazeFeaturesEnabled;
+	public static boolean blazePushAttackersAway;
+	public static boolean blazeFlameTouch;
+	public static float blazePushDamage;
+	public static float blazeDeathExplosionStrength;
+	public static Mode blazeDeathExplosionType;
+	public static List<String> blazeEntities;
+	
 	public static boolean spiderFeaturesEnabled;
 	public static boolean spiderSlownessCreateWeb;
 	public static int spiderRiderChance;
@@ -92,8 +105,8 @@ public class RoughConfig {
 	public static int zombieChampionChance;
 	public static float zombieLeapHeight;
 	public static List<String> zombieEntities;
-	public static List<String> zombieBreakBlocks;
-	public static List<String> zombieChampionNames;
+	public static List<? extends String> zombieBreakBlocks;
+	public static List<? extends String> zombieChampionNames;
 	
 	public static boolean zombiePigmanFeaturesEnabled;
 	public static boolean zombiePigmanAggressiveTouch;
@@ -110,9 +123,11 @@ public class RoughConfig {
 	public static List<String> hostileHorseEntities;
 	
 	// Attributes Config
-	public static List<String> attributes;
+	
+	public static List<? extends String> attributes;
 	
 	// Fog Config
+	
 	public static boolean bossFogEnabled;
 	public static List<Float> bossFogColor;
 	public static int bossFogMaxDist;
@@ -128,6 +143,7 @@ public class RoughConfig {
 	public static int bossFogDoTDamage;
 
 	// Setup config directory
+	
 	public static void init() {
 		
 		Path configPath = FMLPaths.CONFIGDIR.get();
@@ -143,6 +159,7 @@ public class RoughConfig {
 	}
 	
 	// Register all config files
+	
     public static void register(final ModLoadingContext context) {
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.MODCOMPAT_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.MOD_COMPAT_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SPAWNCONDITIONS_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.SPAWN_CONDITIONS_CONFIG_FILENAME);
@@ -151,4 +168,33 @@ public class RoughConfig {
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.ATTRIBUTES_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.ATTRIBUTES_CONFIG_FILENAME);
         context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.FOG_SPEC, Constants.MOD_CONFIG_DIRECTORY + "/" + Constants.FOG_CONFIG_FILENAME);
     }
+    
+    public static final Predicate<Object> ENTITY_CLASS_VALIDATOR = (obj) -> {
+    	List<Object> entityClasses = Arrays.asList(obj);
+        try {
+        	entityClasses.stream()
+        	.filter(e -> e.getClass().equals(String.class))
+        	.allMatch(e -> e.toString().endsWith(".class"));
+        }
+        catch (Exception e) {
+            // Element is not a class, so return invalid
+            return false;
+        }
+
+        return true;
+    };
+    
+    public static final Predicate<Object> ELEMENT_STRING_VALIDATOR = (obj) -> {
+    	List<Object> elements = Arrays.asList(obj);
+        try {
+        	elements.stream()
+        	.allMatch(e -> e.getClass().equals(String.class));
+        }
+        catch (Exception e) {
+            // Element is not a string, so return invalid
+            return false;
+        }
+
+        return true;
+    };
 }

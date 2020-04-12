@@ -53,7 +53,6 @@ public class Constants {
 		
 		for(EntityType<? extends Entity> clazz : entityType) {
 			regNames.add(EntityType.getKey(clazz).toString());
-			System.out.println("Reg Names: " + EntityType.getKey(clazz).toString());
 		}
 		return regNames;
 	}
@@ -83,6 +82,10 @@ public class Constants {
 	public static final EntityType<?>[] SPIDERS = {
 			EntityType.SPIDER,
 			EntityType.CAVE_SPIDER,
+	};
+	
+	public static final EntityType<?>[] BLAZES = {
+			EntityType.BLAZE,
 	};
 	
 	public static final EntityType<?>[] HOSTILE_HORSES = {

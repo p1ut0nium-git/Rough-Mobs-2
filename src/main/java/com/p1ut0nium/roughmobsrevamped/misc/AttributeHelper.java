@@ -131,8 +131,9 @@ public class AttributeHelper {
 				AttributeModifier modifier = new AttributeModifier(attribute.getUuid(), Constants.unique("mod" + i), attribute.getValue(), attribute.getOperator());
 				instance.applyModifier(modifier);
 				
-				if (instance.getAttribute() == SharedMonsterAttributes.MAX_HEALTH)
+				if (instance.getAttribute() == SharedMonsterAttributes.MAX_HEALTH) {
 					entity.setHealth(entity.getMaxHealth());
+				}
 			}
 			else
 				RoughMobsRevamped.LOGGER.error("Error on attribute modification: \"" + attribute.attribute + "\" is not a valid attribute. Affected Entity: " + entity);
@@ -143,7 +144,7 @@ public class AttributeHelper {
 		entity.getPersistentData().putBoolean(KEY_ATTRIBUTES, true);
 	}
 
-	private static void fillMap(List<String> attributes) {	
+	private static void fillMap(List<? extends String> attributes) {	
 		map = ArrayListMultimap.create();
 		
 		for (String line : attributes) 

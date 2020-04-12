@@ -130,7 +130,7 @@ public class FeatureHelper {
 		// TODO verify the new code works - target.motionY += extraLeap;
 	}
 
-	public static List<Block> getBlocksFromNames(List<String> breakBlocks) {
+	public static List<Block> getBlocksFromNames(List<? extends String> breakBlocks) {
 
 		List<Block> blocks = new ArrayList<Block>();
 		

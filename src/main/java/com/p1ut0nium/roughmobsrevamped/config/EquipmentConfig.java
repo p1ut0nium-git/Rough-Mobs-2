@@ -25,14 +25,14 @@ public class EquipmentConfig {
 	final ForgeConfigSpec.DoubleValue enchantMultiplier;
 	final ForgeConfigSpec.DoubleValue dropChance;
 
-	final ForgeConfigSpec.ConfigValue<List<String>> equipMainhand;
-	final ForgeConfigSpec.ConfigValue<List<String>> equipOffhand;
-	final ForgeConfigSpec.ConfigValue<List<String>> equipHelmet;
-	final ForgeConfigSpec.ConfigValue<List<String>> equipChestplate;
-	final ForgeConfigSpec.ConfigValue<List<String>> equipLeggings;
-	final ForgeConfigSpec.ConfigValue<List<String>> equipBoots;
-	final ForgeConfigSpec.ConfigValue<List<String>> equipWeaponEnchants;
-	final ForgeConfigSpec.ConfigValue<List<String>> equipArmorEnchants;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipMainhand;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipOffhand;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipHelmet;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipChestplate;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipLeggings;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipBoots;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipWeaponEnchants;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> equipArmorEnchants;
 	
 	final ForgeConfigSpec.BooleanValue chanceTimeMultiplier;
 	final ForgeConfigSpec.BooleanValue chanceDistMultiplier;
@@ -43,8 +43,8 @@ public class EquipmentConfig {
 		
 		// Global Equipment Options
 		
-		builder.comment("Options to control equipment spawning across all mobs that can wear equipment.");
 		builder.push("Global Equipment Options");
+		builder.comment("Options to control equipment spawning across all mobs that can wear equipment.");
 		chanceTimeMultiplier = builder
 				.comment("Should Rough Mobs get more gear as it gets closer to midnight?")
 				.define("Time_Multiplier", true);
@@ -64,7 +64,6 @@ public class EquipmentConfig {
 		// TODO make this work for both zombies and skeletons without code duplication
 		
 		builder.push("Zombie Equipment Chances");
-		
 		chancePerWeapon = builder
 				.comment("Chance (1 in X per hand) to give a Zombie a weapon on spawn.",
 						"NOTE: Champions always spawn with weapons.",
@@ -89,28 +88,28 @@ public class EquipmentConfig {
 				.defineInRange("Drop_Chance", Constants.DROP_CHANCE_DEFAULT, 0F, 1F);
 		builder.pop();
 		
-		builder.comment("Add enchanted armor and weapons to a newly spawned zombie. Takes 2-3 values seperated by a semicolon:",
-				"Format: item or enchantment;chance;dimension",
-				"item or enchantment: the item/enchantment id", 
-				"chance: the higher this number the more this item/enchantment gets selected",
-				"dimension: dimension (ID) in which the item/enchantment can be selected (optional! Leave this blank for any dimension)");
 		builder.push("Zombie Equipment");
+		builder.comment("Add enchanted armor and weapons to a newly spawned zombie. Takes 2-3 values seperated by a semicolon.",
+				"Format:              item or enchantment;chance;dimension",
+				"item or enchantment: the item/enchantment id", 
+				"chance:              the higher this number the more this item/enchantment gets selected",
+				"dimension:           dimension (ID) in which the item/enchantment can be selected (optional! Leave this blank for any dimension)");
 		equipMainhand = builder
-				.define("Mainhand_Weapons", Arrays.asList(Constants.DEFAULT_MAINHAND));
+				.defineList("Mainhand_Weapons", Arrays.asList(Constants.DEFAULT_MAINHAND), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		equipOffhand = builder
-				.define("Offhand_Weapons", Arrays.asList(Constants.DEFAULT_OFFHAND));
+				.defineList("Offhand_Weapons", Arrays.asList(Constants.DEFAULT_OFFHAND), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		equipHelmet = builder
-				.define("Helmets", Arrays.asList(Constants.DEFAULT_HELMETS));
+				.defineList("Helmets", Arrays.asList(Constants.DEFAULT_HELMETS), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		equipChestplate = builder
-				.define("Chestplates", Arrays.asList(Constants.DEFAULT_CHESTPLATES));
+				.defineList("Chestplates", Arrays.asList(Constants.DEFAULT_CHESTPLATES), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		equipLeggings = builder
-				.define("Leggings", Arrays.asList(Constants.DEFAULT_LEGGINGS));
+				.defineList("Leggings", Arrays.asList(Constants.DEFAULT_LEGGINGS), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		equipBoots = builder
-				.define("Boots", Arrays.asList(Constants.DEFAULT_BOOTS));
+				.defineList("Boots", Arrays.asList(Constants.DEFAULT_BOOTS), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		equipWeaponEnchants = builder
-				.define("Weapon_Enchantments", Arrays.asList(Constants.DEFAULT_WEAPON_ENCHANTS));
+				.defineList("Weapon_Enchantments", Arrays.asList(Constants.DEFAULT_WEAPON_ENCHANTS), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		equipArmorEnchants = builder
-				.define("Armor_Enchantments", Arrays.asList(Constants.DEFAULT_ARMOR_ENCHANTS));
+				.defineList("Armor_Enchantments", Arrays.asList(Constants.DEFAULT_ARMOR_ENCHANTS), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		builder.pop();
 		
 		// TODO Skeleton Equipment

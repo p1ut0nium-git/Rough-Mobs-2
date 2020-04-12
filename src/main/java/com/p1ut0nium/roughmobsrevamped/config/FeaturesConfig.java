@@ -11,19 +11,28 @@
 package com.p1ut0nium.roughmobsrevamped.config;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
+import net.minecraft.world.Explosion;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 public class FeaturesConfig {
+	
+	// Blaze
+	final BooleanValue blazeFeaturesEnabled;
+	final BooleanValue blazePushAttackersAway;
+	final BooleanValue blazeFlameTouch;
+	final DoubleValue blazePushDamage;
+	final DoubleValue blazeDeathExplosionStrength;
+	final EnumValue<Explosion.Mode> blazeDeathExplosionType;
+	final ConfigValue<List<String>> blazeEntities;
 
 	// Spider
 	final BooleanValue spiderFeaturesEnabled;
@@ -48,10 +57,10 @@ public class FeaturesConfig {
 	final IntValue zombieChampionChance;
 	final DoubleValue zombieLeapHeight;
 	final ConfigValue<List<String>> zombieEntities;
-	final ConfigValue<List<String>> zombieBreakBlocks;
-	final ConfigValue<List<String>> zombieChampionNames;
+	final ConfigValue<List<? extends String>> zombieBreakBlocks;
+	final ConfigValue<List<? extends String>> zombieChampionNames;
 	
-	//Zombie Pigman
+	// Zombie Pigman
 	final BooleanValue zombiePigmanFeaturesEnabled;
 	final BooleanValue zombiePigmanAggressiveTouch;
 	final BooleanValue zombiePigmanAlwaysAggressive;
@@ -69,12 +78,42 @@ public class FeaturesConfig {
 
 	FeaturesConfig(final ForgeConfigSpec.Builder builder) {
 		
+		// Blaze Features
+		
+		builder.push("Blaze Features");
+		blazeFeaturesEnabled = builder
+				.comment("Set to false to disable all Blaze features.")
+				.define("Blaze_FeaturesEnabled", true);
+		blazePushAttackersAway = builder
+				.comment("Set to false to prevent Blazes from pushing attackers away.")
+				.define("Blaze_PushAttackersAway", true);
+		blazePushDamage = builder
+				.comment("The amount of damage done when pushed by a Blaze.")
+				.defineInRange("Blaze_PushDamage", 1.0f, 0.0f, Short.MAX_VALUE);
+		blazeFlameTouch = builder
+				.comment("Set to false to prevent Blazes from igniting entities which touch their hitbox.")
+				.define("Blaze_FlameTouch", true);
+		blazeDeathExplosionStrength = builder
+				.comment("Explosion strength which Blazes create on death.",
+						"Set to 0 to disable this feature ")
+				.defineInRange("Blaze_DeathExplosionStrength", 1.0f, 0.0f, Short.MAX_VALUE);
+		blazeDeathExplosionType = builder
+				.comment("The type of explosion that occurs when a Blaze dies:",
+						"NONE = no effect other than damage to player",
+						"BREAK = break blocks in range; broken blocks drop items",
+						"DESTROY = destroy blocks and items")
+				.defineEnum("Blaze_DeathExplosionType", Explosion.Mode.NONE);
+		blazeEntities = builder
+				.comment("Entities which count as Blaze entities")
+				.define("Blaze_Entities", Constants.getRegNames(Arrays.asList(Constants.BLAZES)));
+		builder.pop();
+		
 		// Hostile Horse Features
 		
 		builder.push("Hostile Horse Features");
 		hostileHorseFeaturesEnabled = builder
 				.comment("Set to false to disable all hostile horse features.")
-				.define("Hostile_Horse_Features_Enabled", true);
+				.define("HostileHorse_FeaturesEnabled", true);
 		hostileHorseBurn = builder
 				.comment("Set this to false to prevent undead horses from burning in sunlight (as long as they have no rider).")
 				.define("HostileHorse_DaylightBurn", true);
@@ -166,10 +205,10 @@ public class FeaturesConfig {
 		zombieBreakBlocks = builder
 				.comment("Blocks which can be destroyed by zombies if they have no attack target.",
 						"Delete all lines to disable this feature.")
-				.define("Zombie_BreakBlocks", Arrays.asList(Constants.DEFAULT_DESTROY_BLOCKS));
+				.defineList("Zombie_BreakBlocks", Arrays.asList(Constants.DEFAULT_DESTROY_BLOCKS), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		zombieChampionNames = builder
 				.comment("A list of names to be used by Zombie Champions.")
-				.define("Zombie_ChampionNames", Arrays.asList(Constants.ZOMBIE_CHAMP_NAMES));
+				.defineList("Zombie_ChampionNames", Arrays.asList(Constants.ZOMBIE_CHAMP_NAMES), RoughConfig.ELEMENT_STRING_VALIDATOR);
 		builder.pop();
 	
 		// Zombie Pigman Features
@@ -198,20 +237,4 @@ public class FeaturesConfig {
 				.define("ZombiePigman_Entities", Constants.getRegNames(Arrays.asList(Constants.ZOMBIE_PIGMEN)));
 		builder.pop();
 	}
-	
-    private static final Predicate<Object> ENTITY_CLASS_VALIDATOR = (obj) -> {
-    	List<Object> entityClasses = Arrays.asList(obj);
-        try {
-        	entityClasses.stream()
-        	.filter(e -> e.getClass().equals(String.class))
-        	.allMatch(e -> e.toString().endsWith(".class"));
-        }
-        catch (Exception e) {
-            // Not all elements are a class, so return invalid
-            return false;
-        }
-
-        System.out.println("All classes");
-        return true;
-    };
 }

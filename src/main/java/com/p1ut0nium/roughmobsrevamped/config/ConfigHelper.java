@@ -72,6 +72,17 @@ public class ConfigHelper {
 	public static void bakeFeatures(final ModConfig config) {
 		featuresConfig = config;
 		
+		RoughConfig.blazeFeaturesEnabled = ConfigHolder.FEATURES.blazeFeaturesEnabled.get();
+		RoughConfig.blazePushAttackersAway = ConfigHolder.FEATURES.blazePushAttackersAway.get();
+		RoughConfig.blazeFlameTouch = ConfigHolder.FEATURES.blazeFlameTouch.get();
+		RoughConfig.blazePushDamage = ConfigHolder.FEATURES.blazePushDamage.get().floatValue();
+		RoughConfig.blazeDeathExplosionStrength = ConfigHolder.FEATURES.blazeDeathExplosionStrength.get().floatValue();
+		RoughConfig.blazeDeathExplosionType = ConfigHolder.FEATURES.blazeDeathExplosionType.get();
+		RoughConfig.blazeEntities = ConfigHolder.FEATURES.blazeEntities.get();
+		
+		RoughConfig.featuresEnabled.put("blaze", ConfigHolder.FEATURES.blazeFeaturesEnabled.get());
+		RoughConfig.entities.put("blaze", ConfigHolder.FEATURES.blazeEntities.get());
+		
 		RoughConfig.hostileHorseFeaturesEnabled = ConfigHolder.FEATURES.hostileHorseFeaturesEnabled.get();
 		RoughConfig.hostileHorseEntities = ConfigHolder.FEATURES.hostileHorseEntities.get();
 		RoughConfig.hostileHorseBurn = ConfigHolder.FEATURES.hostileHorseBurn.get();

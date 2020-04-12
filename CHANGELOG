@@ -1,13 +1,14 @@
 Changelog:
 
-0.1.4: 	Added Zombie Pigman Features (WIP: Still needs AI)
+0.1.5:  Added Blaze features and AI
+		Fixed attributes config issues
+		Fixed config issues for zombie equipment, zombie boss names, and zombie break blocks
+0.1.4: 	Added Zombie Pigman features and AI
 		Added Abilities support
-
 0.1.3: 	Fixed a crash caused by Serene Seasons compatibility (forgot to initialize the season whitelist)
 		Fixed zombie boss spawns
 		Minor tweaks to configs
 		Added zombie pigman and husk bosses
-		
 0.1.2: 	More config options; Added spider config & features; Added hostile horse config & features
 0.1.1: 	Added config system; lots of additional work to update from 1.12.2
 0.1.0: 	Initial alpha release

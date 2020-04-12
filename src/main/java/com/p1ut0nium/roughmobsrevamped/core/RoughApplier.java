@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.boss.IChampion;
+import com.p1ut0nium.roughmobsrevamped.features.BlazeFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.EntityFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
 import com.p1ut0nium.roughmobsrevamped.features.SpiderFeatures;
@@ -51,6 +52,7 @@ public class RoughApplier {
 	public RoughApplier() {
 		MinecraftForge.EVENT_BUS.register(this);
 		
+		FEATURES.add(new BlazeFeatures());
 		FEATURES.add(new ZombieFeatures());
 		FEATURES.add(new ZombiePigmanFeatures());
 		FEATURES.add(new HostileHorseFeatures());
@@ -63,7 +65,6 @@ public class RoughApplier {
 		FEATURES.add(new EndermanFeatures());
 		FEATURES.add(new WitchFeatures().addPotionHandler(FEATURES));
 		FEATURES.add(new SilverfishFeatures());
-		FEATURES.add(new BlazeFeatures());
 		FEATURES.add(new GhastFeatures());
 		FEATURES.add(new MagmaCubeFeatures());
 		FEATURES.add(new WitherFeatures());

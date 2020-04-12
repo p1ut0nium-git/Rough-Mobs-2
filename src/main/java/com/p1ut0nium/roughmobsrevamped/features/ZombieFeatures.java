@@ -55,7 +55,7 @@ public class ZombieFeatures extends EntityFeatures {
 	private EquipmentApplier equipApplier;
 	private BossApplier bossApplier;
 
-	private List<String> breakBlocks;
+	private List<? extends String> breakBlocks;
 	private List<Block> allowedBreakBlocks;
 	
 	public ZombieFeatures() {
