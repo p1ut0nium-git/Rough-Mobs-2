@@ -25,8 +25,6 @@ public class AttributesConfig {
 	
 	AttributesConfig(final ForgeConfigSpec.Builder builder) {
 		
-		// Hostile Horse Features
-		
 		builder.push("Attributes");
 		builder.comment("Add attribute modifiers to entities to change their stats. Takes 4-6 values seperated by a semicolon.",
 				"Format:        entity;attribute;operator;value;dimension;child",
