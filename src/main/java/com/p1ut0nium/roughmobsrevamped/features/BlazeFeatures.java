@@ -49,8 +49,7 @@ public class BlazeFeatures extends EntityFeatures {
 	@Override
 	public void onDefend(Entity target, Entity attacker, Entity immediateAttacker, LivingAttackEvent event) {
 		
-		if (pushAttackersAway && attacker instanceof EntityLivingBase && attacker == immediateAttacker)
-		{
+		if (pushAttackersAway && attacker instanceof EntityLivingBase && attacker == immediateAttacker) {
 			FeatureHelper.knockback(target, (EntityLivingBase) attacker, 1F, 0.05F);
 			attacker.attackEntityFrom(DamageSource.GENERIC, pushStrength);
 			if (flameTouch)
@@ -63,8 +62,7 @@ public class BlazeFeatures extends EntityFeatures {
 	@Override
 	public void onDeath(Entity deadEntity, DamageSource source) {
 		
-		if (deathExplosionStrength > 0 && !(source.getTrueSource() instanceof FakePlayer))
-		{
+		if (deathExplosionStrength > 0 && !(source.getTrueSource() instanceof FakePlayer)) {
 			deadEntity.world.createExplosion(deadEntity, deadEntity.posX, deadEntity.posY, deadEntity.posZ, deathExplosionStrength, deathExplosionDestroyBlocks);
 		}
 	}
