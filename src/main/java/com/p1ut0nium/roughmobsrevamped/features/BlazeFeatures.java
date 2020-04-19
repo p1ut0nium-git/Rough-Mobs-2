@@ -53,7 +53,8 @@ public class BlazeFeatures extends EntityFeatures {
 		{
 			FeatureHelper.knockback(target, (EntityLivingBase) attacker, 1F, 0.05F);
 			attacker.attackEntityFrom(DamageSource.GENERIC, pushStrength);
-			attacker.setFire(8);
+			if (flameTouch)
+				attacker.setFire(8);
 			
 			FeatureHelper.playSound(target, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7f, 1.0f);
 		}
