@@ -1,10 +1,11 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.15.2": {
+    "4.1.1": "Fixed crash/bug with zombiepigman feature when player breaks blocks (see issue #32); Zombie Pigman features and AI should all work now",
     "4.1.0": "Initial alpha release"
   },
   "promos": {
-    "1.15.2-latest": "4.1.0",
-    "1.15.2-recommended": "4.1.0"
+    "1.15.2-latest": "4.1.1",
+    "1.15.2-recommended": "4.1.1"
   }
 }

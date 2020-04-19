@@ -113,13 +113,10 @@ public class RoughApplier {
 	 */
 	private static void addFeatures(EntityJoinWorldEvent event, MonsterEntity entity) {
 		
-		if (entity.getClass().equals(PlayerEntity.class)) {
-			RoughMobsRevamped.LOGGER.debug("Entity is player...skipping addFeatures");
+		if (entity.getClass().equals(PlayerEntity.class))
 			return;
-		} else if (!(entity instanceof MonsterEntity)) {
-			RoughMobsRevamped.LOGGER.debug("Entity " + entity + " is not a monster...skipping addFeatures");
+		else if (!(entity instanceof MonsterEntity))
 			return;
-		}
 		
 		// Loop through the list of Mobs with Features and add equipment to the entity based upon which mob type it is
 		for (EntityFeatures features : FEATURES) {
@@ -133,8 +130,6 @@ public class RoughApplier {
 						}
 					}
 				}
-				// Exit for loop once the correct mob type has been found and features added
-				return;
 			}
 		}
 	}
@@ -147,7 +142,6 @@ public class RoughApplier {
 			if (features.isEntityType(entity)) {
 				if (entity instanceof MonsterEntity)
 					features.addAI(event, entity, entity.goalSelector, entity.targetSelector);
-				return;
 			}
 		}
 	}

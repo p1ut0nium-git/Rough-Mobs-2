@@ -141,8 +141,10 @@ public class ZombieFeatures extends EntityFeatures {
 		if (helmetBurn)
 			goalSelector.addGoal(0, new RoughAISunlightBurnGoal(entity, true));
 		
+		/* TODO
 		if (allowedBreakBlocks.size() > 0)
 			goalSelector.addGoal(1, new RoughAIBreakBlocksGoal(entity, 8, allowedBreakBlocks));
+		*/
 	}
 	
 	@Override

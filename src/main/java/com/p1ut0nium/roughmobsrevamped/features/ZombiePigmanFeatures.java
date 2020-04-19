@@ -10,7 +10,9 @@
  */
 package com.p1ut0nium.roughmobsrevamped.features;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.entity.ai.goal.RoughAIAggressiveTouchGoal;
@@ -67,8 +69,8 @@ public class ZombiePigmanFeatures extends EntityFeatures {
 	@Override
 	public void onBlockBreak(PlayerEntity player, BreakEvent event) {
 		
-		for (EntityType<? extends Entity> clazz : entityTypes) {
-			List<? extends Entity> entities = player.world.getEntitiesWithinAABB(clazz, player.getBoundingBox().expand(aggressiveBlockRange, aggressiveBlockRange, aggressiveBlockRange), null);
+		for (EntityType<? extends Entity> entityType : entityTypes) {
+			List<? extends Entity> entities = player.world.getEntitiesWithinAABB(entityType, player.getBoundingBox().expand(aggressiveBlockRange, aggressiveBlockRange, aggressiveBlockRange), ENTITY_TYPE_VALIDATOR);
 			
 			for (Entity entity : entities) {
 				if (aggressiveBlockChance > 0 && entity instanceof MobEntity && player.world.rand.nextInt(aggressiveBlockChance) == 0) {
@@ -80,4 +82,16 @@ public class ZombiePigmanFeatures extends EntityFeatures {
 			}
 		}
 	}
+
+    public static final Predicate<Entity> ENTITY_TYPE_VALIDATOR = (entity) -> {
+    	List<EntityType<? extends Entity>> entityTypes = Arrays.asList(entity.getType());
+        try {
+        	entityTypes.stream()
+        	.allMatch(e -> e.equals(EntityType.ZOMBIE_PIGMAN));
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
+    };
 }

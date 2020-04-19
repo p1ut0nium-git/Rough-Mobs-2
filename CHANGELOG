@@ -1,3 +1,5 @@
 Changelog:
 
+4.1.1:  Fixed crash/bug with Zombie Pigman feature when player breaks blocks (see issue #32)
+		Zombie Pigman features and AI should all work now
 4.1.0: 	Initial alpha release
