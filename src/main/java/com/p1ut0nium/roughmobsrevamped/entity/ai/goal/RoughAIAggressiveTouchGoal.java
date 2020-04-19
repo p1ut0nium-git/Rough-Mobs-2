@@ -39,9 +39,7 @@ public class RoughAIAggressiveTouchGoal extends Goal {
 	
 	@Override
 	public void tick() {
-		
-		for (PlayerEntity player : players) 
-		{
+		for (PlayerEntity player : players) {
 			entity.setRevengeTarget(player);
 			entity.setAttackTarget(player);
 			FeatureHelper.playSound(entity, SoundEvents.ENTITY_ZOMBIE_PIGMAN_ANGRY);

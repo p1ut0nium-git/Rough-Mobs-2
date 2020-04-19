@@ -11,9 +11,7 @@
 package com.p1ut0nium.roughmobsrevamped.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
@@ -30,9 +28,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -112,13 +108,10 @@ public class RoughApplier {
 	 */
 	private static void addFeatures(EntityJoinWorldEvent event, MonsterEntity entity) {
 		
-		if (entity.getClass().equals(PlayerEntity.class)) {
-			RoughMobsRevamped.LOGGER.debug("Entity is player...skipping addFeatures");
+		if (entity.getClass().equals(PlayerEntity.class))
 			return;
-		} else if (!(entity instanceof MonsterEntity)) {
-			RoughMobsRevamped.LOGGER.debug("Entity " + entity + " is not a monster...skipping addFeatures");
+		else if (!(entity instanceof MonsterEntity))
 			return;
-		}
 		
 		// Loop through the list of Mobs with Features and add equipment to the entity based upon which mob type it is
 		for (EntityFeatures features : FEATURES) {
@@ -132,8 +125,6 @@ public class RoughApplier {
 						}
 					}
 				}
-				// Exit for loop once the correct mob type has been found and features added
-				return;
 			}
 		}
 	}
@@ -146,7 +137,6 @@ public class RoughApplier {
 			if (features.isEntityType(entity)) {
 				if (entity instanceof MonsterEntity)
 					features.addAI(event, entity, entity.goalSelector, entity.targetSelector);
-				return;
 			}
 		}
 	}

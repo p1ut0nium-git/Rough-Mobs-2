@@ -1,5 +1,8 @@
 Changelog:
 
+3.1.7:  
+0.1.6:  Fixed crash/bug with Zombie Pigman feature when player breaks blocks (see issue #32)
+		Zombie Pigman features and AI should all work now
 0.1.5:  Added Blaze features and AI
 		Fixed attributes config issues
 		Fixed config issues for zombie equipment, zombie boss names, and zombie break blocks

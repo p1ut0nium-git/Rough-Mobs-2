@@ -1,6 +1,8 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.14.4": {
+    "3.1.7": "",
+    "0.1.6": "Fixed crash/bug with zombiepigman feature when player breaks blocks (see issue #32); Zombie Pigman features and AI should all work now",
     "0.1.5": "Added Blaze features and AI; Fixed attributes config issues; Fixed config issues for zombie equipment, zombie boss names, and zombie break blocks",
     "0.1.4": "Added initial Zombie Pigman support; Added abilities support",
     "0.1.3": "Fixed a crash caused by Serene Seasons compatibility (forgot to initialize the season whitelist); Fixed zombie boss spawning",
@@ -9,7 +11,7 @@
     "0.1.0": "Initial alpha release"
   },
   "promos": {
-    "1.14.4-latest": "0.1.5",
-    "1.14.4-recommended": "0.1.5"
+    "1.14.4-latest": "0.1.6",
+    "1.14.4-recommended": "0.1.6"
   }
 }

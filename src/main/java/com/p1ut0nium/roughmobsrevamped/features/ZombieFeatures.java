@@ -26,6 +26,7 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
@@ -138,11 +139,13 @@ public class ZombieFeatures extends EntityFeatures {
 		if (babyBurn && entity instanceof ZombieEntity && ((ZombieEntity)entity).isChild() && !entity.isImmuneToFire())
 			goalSelector.addGoal(0, new RoughAISunlightBurnGoal(entity, false));
 		
-		if (helmetBurn)
+		if (helmetBurn && !(entity.getType().equals(EntityType.ZOMBIE_PIGMAN))) // TODO make this more type agnostic
 			goalSelector.addGoal(0, new RoughAISunlightBurnGoal(entity, true));
 		
+		/* TODO
 		if (allowedBreakBlocks.size() > 0)
 			goalSelector.addGoal(1, new RoughAIBreakBlocksGoal(entity, 8, allowedBreakBlocks));
+		*/
 	}
 	
 	@Override

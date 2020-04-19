@@ -13,8 +13,6 @@ package com.p1ut0nium.roughmobsrevamped.reference;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.p1ut0nium.roughmobsrevamped.init.ModEntityTypes;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 
@@ -70,13 +68,13 @@ public class Constants {
 			EntityType.ZOMBIE,
 			EntityType.ZOMBIE_VILLAGER,
 			EntityType.HUSK,
-			EntityType.ZOMBIE_PIGMAN,
-			ModEntityTypes.ZOMBIE_CHAMPION.get()
+			EntityType.ZOMBIE_PIGMAN
+			//ModEntityTypes.ZOMBIE_CHAMPION.get()
 	};
 	
 	public static final EntityType<?>[] ZOMBIE_PIGMEN = {
-			EntityType.ZOMBIE_PIGMAN,
-			ModEntityTypes.ZOMBIE_PIGMAN_CHAMPION.get()
+			EntityType.ZOMBIE_PIGMAN
+			//ModEntityTypes.ZOMBIE_PIGMAN_CHAMPION.get()
 	};
 	
 	public static final EntityType<?>[] SPIDERS = {

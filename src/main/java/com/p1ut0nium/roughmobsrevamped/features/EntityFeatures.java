@@ -16,6 +16,7 @@ import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.compat.GameStagesCompat;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
+import com.p1ut0nium.roughmobsrevamped.core.RoughMobsRevamped;
 import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.darkhax.gamestages.GameStageHelper;
@@ -53,6 +54,8 @@ public abstract class EntityFeatures {
 
 	public boolean isEntityType(MonsterEntity mobEntity) {;
 		EntityType<?> entityType = mobEntity.getType();
+		RoughMobsRevamped.LOGGER.debug("Newly spawned Entity is of type: " + entityType.getName().getFormattedText().toString());
+		
 		ResourceLocation loc = EntityType.getKey(entityType);
 
 		return featuresEnabled && loc != null && entityNames.contains(loc.toString());
