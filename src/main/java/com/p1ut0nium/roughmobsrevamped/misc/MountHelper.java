@@ -78,15 +78,14 @@ public class MountHelper {
 				return;
 			
 			EntityType<?> riderType = riderList.get(RND.nextInt(riderList.size()));
-			
-			// TODO verify riderType.create works - 1.12.2 version -> Entity entity = entry.newInstance(mount.getEntityWorld());
+
 			MobEntity rider = (MobEntity) riderType.create(mount.getEntityWorld());
 			rider.setPosition(mount.posX, mount.posY, mount.posZ);
 			rider.hurtResistantTime = 60;
 			rider.getPersistentData().putBoolean(RIDER, true);
 			
 			mount.getEntityWorld().addEntity(rider);
-			
+
 			if (!rider.isPassenger() && !rider.isBeingRidden() && !mount.isPassenger() && !mount.isBeingRidden())
 				rider.startRiding(mount);
 		}

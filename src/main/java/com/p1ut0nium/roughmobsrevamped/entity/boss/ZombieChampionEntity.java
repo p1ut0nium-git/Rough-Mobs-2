@@ -75,7 +75,8 @@ public class ZombieChampionEntity extends ZombieEntity implements IChampion {
     	super.onAddedToWorld();
 
         if (this.posY >= world.getSeaLevel() && this.world.canBlockSeeSky(this.getPosition()))
-        	((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity((ServerWorld)this.world, this.posX, this.posY, this.posZ, true));
+        	if (!this.world.isRemote)
+            	((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(this.world, this.posX, this.posY, this.posZ, true));
     }
 
 	@Override

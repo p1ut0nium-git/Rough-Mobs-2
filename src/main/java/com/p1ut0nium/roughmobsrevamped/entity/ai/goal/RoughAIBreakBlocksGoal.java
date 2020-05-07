@@ -18,7 +18,6 @@ import com.p1ut0nium.roughmobsrevamped.reference.Constants;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SpawnerBlock;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -31,7 +30,6 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class RoughAIBreakBlocksGoal extends Goal {
 	
@@ -56,7 +54,6 @@ public class RoughAIBreakBlocksGoal extends Goal {
 		this.world = breaker.world;
 		this.allowedBlocks = allowedBlocks;
 	    this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.TARGET));
-		// TODO setMutexBits(3);
 	}
 
 	@Override
@@ -66,8 +63,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 			return false;
 		
 		BlockPos target = getFirstTarget();
-		if (target != null) 
-		{
+		if (target != null) {
 			this.target = target;
 			return true;
 		}
@@ -77,7 +73,6 @@ public class RoughAIBreakBlocksGoal extends Goal {
 	
 	@Override
 	public void startExecuting() {
-		
 		this.breakingTime = 0;
 		this.idleTime = 0;
 		this.block = world.getBlockState(target).getBlock();
@@ -91,9 +86,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 		BlockState state = world.getBlockState(target);
 		
 		if (held != null && held.getItem() instanceof ToolItem) 
-		{
 			multiplier -= ((ToolItem)held.getItem()).getDestroySpeed(held, state)*10;
-		}
 		
 		return (int)(state.getBlockHardness(world, target) * Math.max(0, multiplier) + 10);
 	}
@@ -101,7 +94,7 @@ public class RoughAIBreakBlocksGoal extends Goal {
 	@Override
 	public void tick() {
 		
-		//TODO this.breaker.getNavigator().setPath(breaker.getNavigator().tryMoveToXYZ(x, y, z, speedIn)(target), 1);
+		this.breaker.getNavigator().setPath(breaker.getNavigator().func_179680_a(target, 0), 1.0D);
 		
 		Entity breakerEntity = breaker;
 		while (breakerEntity.isPassenger()) {
@@ -122,26 +115,17 @@ public class RoughAIBreakBlocksGoal extends Goal {
 		
 		curDistance = (int) Math.round(distance);
 		
-		if (distance <= 2 && this.target != null) 
-		{
+		if (distance <= 2 && this.target != null) {
 	        ++this.breakingTime;
 	        int i = (int)((float)this.breakingTime / (float)this.neededTime * 10.0F);
 
-	        if (i != this.previousBreakProgress)
-	        {
+	        if (i != this.previousBreakProgress) {
 	            this.world.sendBlockBreakProgress(this.breaker.getEntityId(), this.target, i);
 	            this.previousBreakProgress = i;
 	        }
 
 	        if (this.breakingTime >= this.neededTime) {
-
-	            // TODO - old - this.world.setBlockToAir(this.target);
-	        	// new method - this.world.setBlockState(this.target, Blocks.AIR.getDefaultState());
-	            // new method - this.world.playEvent(2001, this.target, Block.getStateId(this.world.getBlockState(this.target));
-
-	        	// Or maybe this works?
 	        	this.world.destroyBlock(this.target, true);
-
 	            this.breakingTime = 0;
 	        }
 		}
@@ -163,37 +147,30 @@ public class RoughAIBreakBlocksGoal extends Goal {
 		BlockPos curPos, target = null;
 		double distance, bestDistance = Double.MAX_VALUE;
 		
-		Entity breakerEntity = breaker;
-		while (breakerEntity.isPassenger()) 
-		{
+		Entity breakerEntity = this.breaker;
+		while (breakerEntity.isPassenger()) {
 			breakerEntity = breakerEntity.getRidingEntity();
 		}
 		
-		for (int i = -range; i <= range; i++) 
-		{
-			for (int j = -range; j <= range; j++) 
-			{
-				for (int k = -range; k <= range; k++) 
-				{
+		for (int i = -range; i <= range; i++) {
+			for (int j = -range; j <= range; j++) {
+				for (int k = -range; k <= range; k++) {
 					curPos = new BlockPos(breakerEntity.posX + i, breakerEntity.posY + j, breakerEntity.posZ + k);
 					Block block = world.getBlockState(curPos).getBlock();
 					
 					if (block instanceof SpawnerBlock)
 						return null;
 					
-					if (allowedBlocks.contains(block) && !isBanned(curPos)) 
-					{
+					if (allowedBlocks.contains(block) && !isBanned(curPos)) {
 						positions.add(curPos);
 					}
 				}
 			}
 		}
 
-		for (BlockPos pos : positions)
-		{
+		for (BlockPos pos : positions) {
 			distance = pos.distanceSq(breakerEntity.posX, breakerEntity.posY, breakerEntity.posZ, false);
-			if (distance < bestDistance) 
-			{
+			if (distance < bestDistance) {
 				target = pos;
 				bestDistance = distance;
 			}
@@ -202,38 +179,36 @@ public class RoughAIBreakBlocksGoal extends Goal {
 		return target;
 	}
 	
+	//TODO: Does this work?
 	private void banishTarget() {
-		
-		/* TODO
-		if (breaker.getEntityData().(BANS) == null)
-			breaker.getEntityData().setTag(BANS, new ListNBT());
+
+		if (breaker.getPersistentData().get(BANS) == null) {
+			breaker.getPersistentData().put(BANS, new ListNBT());
+		}
 		
 		CompoundNBT comp = new CompoundNBT();
 		comp.putLong(LONG_POS, target.toLong());
 		
-		((ListNBT)breaker.getEntityData().getTag(BANS)).appendTag(comp);
+		breaker.getPersistentData().put(BANS, comp);
 		
 		this.target = null;
 		resetTask();
-		*/
 	}
 
+	//TODO: Does this work?
 	private boolean isBanned(BlockPos pos) {
 		
-		/* TODO
 		long l = pos.toLong();
-		ListNBT list = (ListNBT) breaker.getPersistentData().getString(BANS);
+		CompoundNBT list = (CompoundNBT) breaker.getPersistentData().get(BANS);
 		
-		if (list == null)
+		if (list == null) {
 			return false;
-		
-		for (int i = 0; i < list.tagCount(); i++)
-		{
-			if (list.getCompound(i).getLong(LONG_POS) == l)
-				return true;
 		}
 		
-		*/
+		for (int i = 0; i < list.size(); i++) {
+			if (list.getLong(LONG_POS) == l)
+				return true;
+		}
 
 		return false;
 	}

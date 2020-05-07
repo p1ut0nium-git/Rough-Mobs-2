@@ -27,7 +27,6 @@ public class RoughAISunlightBurnGoal extends Goal {
 		this.entity = entity;
 		this.helmetMode = helmetMode;
 	    this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.TARGET));
-		// TODO this.setMutexBits(4);
 	}
 	
 	@Override
