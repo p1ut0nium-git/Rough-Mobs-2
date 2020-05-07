@@ -1,11 +1,11 @@
 /*
- * Rough Mobs Revamped for Minecraft Forge 1.14.4
+ * Rough Mobs Revamped for Minecraft Forge 1.15.2
  * 
  * This is a complete revamp of Lellson's Rough Mobs 2
  * 
  * Author: p1ut0nium_94
  * Website: https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped
- * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.14.4
+ * Source: https://github.com/p1ut0nium-git/Rough-Mobs-Revamped/tree/1.15.2
  * 
  */
 package com.p1ut0nium.roughmobsrevamped.features;
@@ -140,11 +140,9 @@ public class ZombieFeatures extends EntityFeatures {
 		
 		if (helmetBurn)
 			goalSelector.addGoal(0, new RoughAISunlightBurnGoal(entity, true));
-		
-		/* TODO
+
 		if (allowedBreakBlocks.size() > 0)
 			goalSelector.addGoal(1, new RoughAIBreakBlocksGoal(entity, 8, allowedBreakBlocks));
-		*/
 	}
 	
 	@Override

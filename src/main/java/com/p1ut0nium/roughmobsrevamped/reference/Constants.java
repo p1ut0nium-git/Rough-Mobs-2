@@ -161,16 +161,12 @@ public class Constants {
 	        "minecraft:potatoes",
 	        "minecraft:wheat",
 	        "minecraft:nether_wart",
-	        "minecraft:reeds",
 	        "minecraft:beetroots",
 	        "minecraft:pumpkin_stem",
 	        "minecraft:melon_stem",
 	        "minecraft:pumpkin",
 	        "minecraft:hay_block",
-	        "minecraft:melon_block",
-			"minecraft:torch",
-			"minecraft:lit_redstone_lamp",
-			"minecraft:lit_pumpkin"
+			"minecraft:torch"
 	};
 	
 	public static final String[] DEFAULT_MAINHAND = {
@@ -287,8 +283,7 @@ public class Constants {
 	public static final EntityType<?>[] DEFAULT_SPIDER_RIDERS = {
 			EntityType.ZOMBIE,
 			EntityType.SKELETON,
-			EntityType.WITCH,
-			EntityType.CAVE_SPIDER
+			EntityType.WITCH
 	};
 	public static final String[] DEFAULT_WITCH_BUFFS = {
 			"strength;1",

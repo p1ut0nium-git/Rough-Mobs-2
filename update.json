@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.15.2": {
+    "4.1.2": "Blazes will no longer use flame touch effect on push attacker away unless Flame Touch is set to true in config; entities should no longer crash server when trying to find and ride a spider mount; removed cave spider from default riders for spider rider; zombies can break blocks now",
     "4.1.1": "Fixed crash/bug with zombiepigman feature when player breaks blocks (see issue #32); Zombie Pigman features and AI should all work now",
     "4.1.0": "Initial alpha release"
   },

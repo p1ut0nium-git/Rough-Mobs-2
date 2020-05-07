@@ -64,9 +64,9 @@ public class SpiderFeatures extends EntityFeatures {
 	}
 
 	@Override
-	public void addAI(EntityJoinWorldEvent event, MobEntity entity, GoalSelector goalSelector, GoalSelector targetSelector) {
-		if (entity instanceof MobEntity)
-			rider.addAI(entity);
+	public void addAI(EntityJoinWorldEvent event, MobEntity spider, GoalSelector goalSelector, GoalSelector targetSelector) {
+		if (spider instanceof MobEntity)
+			rider.addAI(spider);
 	}
 	
 	@Override

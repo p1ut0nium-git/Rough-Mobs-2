@@ -161,11 +161,7 @@ public class RoughApplier {
 		if (event.getWorld().isRemote || event.getEntity() instanceof PlayerEntity || !(event.getEntity() instanceof MonsterEntity))
 			return;
 		
-		MonsterEntity entity = null;
-		
-		if (event.getEntity() instanceof MonsterEntity) {
-			entity = (MonsterEntity) event.getEntity();
-		}
+		MonsterEntity entity = (MonsterEntity) event.getEntity();
 		
 		boolean isBoss = entity instanceof IChampion;
 		boolean canSpawn = SpawnHelper.checkSpawnConditions(event);

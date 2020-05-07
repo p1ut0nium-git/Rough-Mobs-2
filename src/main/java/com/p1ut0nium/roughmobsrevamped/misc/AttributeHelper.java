@@ -103,7 +103,7 @@ public class AttributeHelper {
 			{
 				instance.applyModifier(modifier);
 				if (attribute == SharedMonsterAttributes.MAX_HEALTH) 
-					entity.setHealth(entity.getMaxHealth());	
+					entity.setHealth(entity.getMaxHealth());
 				return true;
 			}
 		}
