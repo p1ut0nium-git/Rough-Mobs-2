@@ -57,7 +57,7 @@ public class RoughAISearchForRiderGoal extends Goal {
 		for (MobEntity entity : entities)
 			if (entity.isAlive() && this.mount != entity && isPossibleRider(entity)) {
 				if (entity.getPersistentData().getInt(MOUNT_SEARCHER) == 0)
-					entity.getPersistentData().putInt(MOUNT_SEARCHER, entity.world.rand.nextInt(chance) == 0 || entity.isPassenger() ? IS_SEARCHER : NO_SEARCHER);
+					entity.getPersistentData().putInt(MOUNT_SEARCHER, entity.world.rand.nextInt(chance) <= 1 || entity.isPassenger() ? IS_SEARCHER : NO_SEARCHER);
 				
 				if (entity.getPersistentData().getInt(MOUNT_SEARCHER) == IS_SEARCHER && !entity.isPassenger()) {
 					this.mountSearcher = entity;
