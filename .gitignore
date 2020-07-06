@@ -14,12 +14,11 @@ out
 .idea
 
 # gradle
-build
-gradle
-gradlew.bat
+build/
 
 # other
 eclipse
 run
-/.gradle/
+.gradle/
 *.ogg
+.DS_Store

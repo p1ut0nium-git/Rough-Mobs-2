@@ -299,7 +299,7 @@ public class RoughApplier {
 	@SubscribeEvent
 	public void onTarget(LivingSetAttackTargetEvent event) {
 		
-		if (!TargetHelper.targetBlockerEnabled() || event.getTarget() == null || !(event.getTarget() instanceof EntityMob) || !(event.getEntityLiving() instanceof EntityMob))
+		if (!TargetHelper.targetBlockerEnabled() || event.getTarget() == null || !(event.getTarget() instanceof EntityLiving) || !(event.getEntityLiving() instanceof EntityLiving))
 			return;
 		
 		Class<? extends Entity> validAttacker = TargetHelper.getBlockerEntityForTarget(event.getTarget());
