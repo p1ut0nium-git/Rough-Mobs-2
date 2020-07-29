@@ -3,6 +3,7 @@ package com.p1ut0nium.roughmobsrevamped.ai.misc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
@@ -68,6 +69,7 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 		this.idleTime = 0;
 		this.block = world.getBlockState(target).getBlock();
 		this.neededTime = getBreakSpeed();
+		this.breaker.getNavigator().setPath(this.breaker.getNavigator().getPathToPos(target), 1);
 	}
 	
 	private int getBreakSpeed() {
@@ -86,8 +88,6 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 
 	@Override
 	public void updateTask() {
-		
-		this.breaker.getNavigator().setPath(breaker.getNavigator().getPathToPos(target), 1);
 		
 		Entity breakerEntity = breaker;
 		while (breakerEntity.isRiding()) 
@@ -108,24 +108,31 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 			banishTarget();
 		
 		curDistance = (int) Math.round(distance);
-		
-		if (distance <= 2 && this.target != null) 
+
+		if (this.target != null)
 		{
-	        ++this.breakingTime;
-	        int i = (int)((float)this.breakingTime / (float)this.neededTime * 10.0F);
+			if(distance <= 2)
+			{
+				++this.breakingTime;
+				int i = (int) ((float) this.breakingTime / (float) this.neededTime * 10.0F);
 
-	        if (i != this.previousBreakProgress)
-	        {
-	            this.world.sendBlockBreakProgress(this.breaker.getEntityId(), this.target, i);
-	            this.previousBreakProgress = i;
-	        }
+				if (i != this.previousBreakProgress)
+				{
+					this.world.sendBlockBreakProgress(this.breaker.getEntityId(), this.target, i);
+					this.previousBreakProgress = i;
+				}
 
-	        if (this.breakingTime >= this.neededTime)
-	        {
-	            this.world.setBlockToAir(this.target);
-	            this.world.playEvent(2001, this.target, Block.getIdFromBlock(this.block));
-	            this.breakingTime = 0;
-	        }
+				if (this.breakingTime >= this.neededTime)
+				{
+					this.world.setBlockToAir(this.target);
+					this.world.playEvent(2001, this.target, Block.getIdFromBlock(this.block));
+					this.breakingTime = 0;
+				}
+			}
+			else if (world.getWorldTime() % 40 == 0)
+			{
+				this.breaker.getNavigator().setPath(this.breaker.getNavigator().getPathToPos(target), 1);
+			}
 		}
 	}
 
