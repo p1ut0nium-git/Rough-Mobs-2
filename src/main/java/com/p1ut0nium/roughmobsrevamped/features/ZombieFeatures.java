@@ -1,7 +1,8 @@
 package com.p1ut0nium.roughmobsrevamped.features;
 
-import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
 import com.p1ut0nium.roughmobsrevamped.ai.combat.RoughAILeapAtTargetChanced;
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAIBreakBlocks;
@@ -50,7 +51,7 @@ public class ZombieFeatures extends EntityFeatures {
 	private BossApplier bossApplier;
 
 	private String[] breakBlocks;
-	private List<Block> allowedBreakBlocks;
+	private Set<Block> allowedBreakBlocks;
 
 	@SuppressWarnings("unchecked")
 	public ZombieFeatures() {
@@ -85,7 +86,7 @@ public class ZombieFeatures extends EntityFeatures {
 	public void postInit() {
 		equipApplier.createPools();
 		bossApplier.postInit();
-		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks);
+		allowedBreakBlocks = FeatureHelper.getBlocksFromNames(breakBlocks, Sets.newIdentityHashSet());
 	}
 	
 	@Override
@@ -136,7 +137,7 @@ public class ZombieFeatures extends EntityFeatures {
 		if (helmetBurn)
 			tasks.addTask(0, new RoughAISunlightBurn((EntityLiving) entity, true));
 		
-		if (allowedBreakBlocks.size() > 0)
+		if (!allowedBreakBlocks.isEmpty())
 			tasks.addTask(1, new RoughAIBreakBlocks((EntityLiving) entity, 8, allowedBreakBlocks));
 	}
 	

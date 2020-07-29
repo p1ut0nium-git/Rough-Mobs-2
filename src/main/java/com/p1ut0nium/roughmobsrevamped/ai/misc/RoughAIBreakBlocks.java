@@ -2,6 +2,7 @@ package com.p1ut0nium.roughmobsrevamped.ai.misc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
 
@@ -27,7 +28,7 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 	protected EntityLiving breaker;
 	protected int range;
 	protected World world;
-	protected List<Block> allowedBlocks;
+	protected Set<Block> allowedBlocks;
 	protected BlockPos target;
 	protected int breakingTime;
 	protected int previousBreakProgress = -1;
@@ -36,7 +37,7 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 	protected int idleTime;
 	protected int curDistance;
 
-	public RoughAIBreakBlocks(EntityLiving breaker, int range, List<Block> allowedBlocks) {
+	public RoughAIBreakBlocks(EntityLiving breaker, int range, Set<Block> allowedBlocks) {
 		this.breaker = breaker;
 		this.range = range;
 		this.world = breaker.world;
@@ -66,7 +67,7 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 		this.breakingTime = 0;
 		this.idleTime = 0;
 		this.block = world.getBlockState(target).getBlock();
-		this.neededTime = getBreakSpeed(); 
+		this.neededTime = getBreakSpeed();
 	}
 	
 	private int getBreakSpeed() {

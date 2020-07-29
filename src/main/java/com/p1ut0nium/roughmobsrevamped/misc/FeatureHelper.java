@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.RoughMobs;
@@ -117,11 +118,8 @@ public class FeatureHelper {
 		target.motionY += extraLeap;
 	}
 
-	public static List<Block> getBlocksFromNames(String[] breakBlocks) {
-
-		List<Block> blocks = new ArrayList<Block>();
-		
-		for (String name : breakBlocks) 
+	public static <T extends Collection<Block>> T getBlocksFromNames(String[] blockNames, T blocks) {
+		for (String name : blockNames)
 		{
 			Block block = Block.getBlockFromName(name);
 			if (block == null) 
@@ -129,7 +127,7 @@ public class FeatureHelper {
 			else
 				blocks.add(block);
 		}
-		
+
 		return blocks;
 	}
 	
