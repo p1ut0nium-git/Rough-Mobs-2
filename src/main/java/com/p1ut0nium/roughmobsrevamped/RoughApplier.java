@@ -296,15 +296,20 @@ public class RoughApplier {
 		}
 	}
 	
+	/*
+	 * When an entity targets another entity
+	 */
 	@SubscribeEvent
 	public void onTarget(LivingSetAttackTargetEvent event) {
 		
 		if (!TargetHelper.targetBlockerEnabled() || event.getTarget() == null || !(event.getTarget() instanceof EntityLiving) || !(event.getEntityLiving() instanceof EntityLiving))
 			return;
 		
-		Class<? extends Entity> validAttacker = TargetHelper.getBlockerEntityForTarget(event.getTarget());
+		// Get the invalid attacker of the victim/target
+		// The invalid attacker cannot attack the target
+		Class<? extends Entity> invalidAttacker = TargetHelper.getBlockerEntityForTarget(event.getTarget());
 		
-		if (validAttacker != null && validAttacker.isInstance(event.getEntityLiving())) {
+		if (invalidAttacker != null && invalidAttacker.isInstance(event.getEntityLiving())) {
 			EntityPlayer player = event.getEntityLiving().getEntityWorld().getNearestAttackablePlayer(event.getEntityLiving(), 32, 32);
 			
 			if (player != null && player.isOnSameTeam(event.getEntityLiving()))
@@ -313,5 +318,9 @@ public class RoughApplier {
 			event.getEntityLiving().setRevengeTarget(player);
 			((EntityLiving)event.getEntityLiving()).setAttackTarget(player);
 		}
+		
+		// else if invalidAttacker = null
+		// we currently do nothing
+		System.out.println("InvalidAttacker = null; do nothing");
 	}
 }

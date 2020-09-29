@@ -94,11 +94,11 @@ public class TargetHelper {
 		}
 	}
 
-	public static Class<? extends Entity> getBlockerEntityForTarget(Entity target) {
+	public static Class<? extends Entity> getBlockerEntityForTarget(Entity targetedEntity) {
 
 		for (TargetEntry entry : BlockerList) 
 		{
-			if (target.getClass().equals(entry.getTargetClass()))
+			if (targetedEntity.getClass().equals(entry.getVictimClass()))
 				return entry.getAttackerClass();
 		}
 		
@@ -109,7 +109,7 @@ public class TargetHelper {
 	public static void setTargets(Entity attacker) {
 		for (TargetEntry entry : AttackerList) {
 			if (attacker.getClass().equals(entry.getAttackerClass()))
-				((EntityLiving)attacker).targetTasks.addTask(1, new EntityAINearestAttackableTarget((EntityCreature) attacker, entry.getTargetClass(), true));
+				((EntityLiving)attacker).targetTasks.addTask(1, new EntityAINearestAttackableTarget((EntityCreature) attacker, entry.getVictimClass(), true));
 		}
 	}
 	
@@ -124,19 +124,19 @@ public class TargetHelper {
 	static class TargetEntry {
 		
 		private final Class<? extends Entity> attackerClass;
-		private final Class<? extends Entity> targetClass;
+		private final Class<? extends Entity> victimClass;
 		
-		public TargetEntry(Class<? extends Entity> attackerClass, Class<? extends Entity> targetClass) {
+		public TargetEntry(Class<? extends Entity> attackerClass, Class<? extends Entity> victimClass) {
 			this.attackerClass = attackerClass;
-			this.targetClass = targetClass;
+			this.victimClass = victimClass;
 		}
 		
 		public Class<? extends Entity> getAttackerClass() {
 			return attackerClass;
 		}
 		
-		public Class<? extends Entity> getTargetClass() {
-			return targetClass;
+		public Class<? extends Entity> getVictimClass() {
+			return victimClass;
 		}
 	}
 }
