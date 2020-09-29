@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 public class WitherFeatures extends EntityFeatures {
 	
 	private boolean pushAttackersAway;
+	private boolean enableKnockBackDamage;
 	private int summonSkeletonTimer;
 	
 	@SuppressWarnings("unchecked")
@@ -28,7 +29,8 @@ public class WitherFeatures extends EntityFeatures {
 	public void initConfig() {
 		super.initConfig();
 		
-		pushAttackersAway = RoughConfig.getBoolean(name, "PushAttackersAway", true, "Set to false to prevent %ss from pushing attackers away");
+		pushAttackersAway = RoughConfig.getBoolean(name, "PushAttackersAway", true, "Set to false to prevent %ss from pushing attackers away.");
+		enableKnockBackDamage = RoughConfig.getBoolean(name, "EnableKnockBackDamage", true, "Set to false to turn off knockback damage.");
 		summonSkeletonTimer = RoughConfig.getInteger(name, "SummonSkeletonTimer", 200, 0, MAX, "Delay in ticks between each spawned Skeleton\nSet to 0 to disable this feature");
 	}
 	
@@ -45,7 +47,8 @@ public class WitherFeatures extends EntityFeatures {
 		if (pushAttackersAway && attacker instanceof EntityLivingBase && attacker == immediateAttacker)
 		{
 			FeatureHelper.knockback(target, (EntityLivingBase) attacker, 1F, 0.05F);
-			attacker.attackEntityFrom(DamageSource.GENERIC, 4F);
+			if (enableKnockBackDamage)
+				attacker.attackEntityFrom(DamageSource.GENERIC, 4F);
 			
 			FeatureHelper.playSound(target, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, 0.7f, 1.0f);
 		}

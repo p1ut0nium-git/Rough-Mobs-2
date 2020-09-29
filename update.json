@@ -1,6 +1,7 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/rough-mobs-revamped/files",
   "1.12.2": {
+  	"2.3.19": "Added config option to disable knockback damage from Wither - See issue #48",
     "2.3.18": "Merged Pull Request #47 - Improves zombie block breaking AI performance",
     "2.3.17": "Target Blocker Friendly Fire Crash - Fixes Issue #17; Blazes will no longer use flame touch effect on push attacker away unless Flame Touch is set to true in config.",
     "2.3.16": "Added blaze config features: set push damage when attacked; toggle item/block destruction on explosion death",
@@ -35,7 +36,7 @@
     "2.0.16": "Fixed Issue: Boss mobs would only spawn with normal equipment. Boss mobs now spawn with boss equipment as specified in the config file."
   },
   "promos": {
-    "1.12.2-latest": "2.3.18",
-    "1.12.2-recommended": "2.3.18"
+    "1.12.2-latest": "2.3.19",
+    "1.12.2-recommended": "2.3.19"
   }
 }
