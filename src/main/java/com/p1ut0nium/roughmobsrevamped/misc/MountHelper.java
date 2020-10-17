@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.p1ut0nium.roughmobsrevamped.ai.misc.RoughAISearchForRider;
+import com.p1ut0nium.roughmobsrevamped.config.NewRoughConfig;
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
 import com.p1ut0nium.roughmobsrevamped.features.HostileHorseFeatures;
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
@@ -46,10 +47,12 @@ public class MountHelper {
 		}
 		
 		public void initConfigs() {
-			
-			chance = RoughConfig.getInteger(name, "RiderChance", defaultChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a " + name + " to spawn with another entity riding it\nSet to 0 to disable this feature");
-			entities = RoughConfig.getStringArray(name, "RiderEntities", defaultEntities, "Entities which may ride on " + name + "s");
-			randomRiderChance = RoughConfig.getInteger(name, "RiderChanceRandom", 10, 0, Short.MAX_VALUE, "Chance (1 in X) that a randomly spawned entity from the RiderEntities list can start riding on random " + name + "s\nSet to 0 to disable this feature");
+
+			RoughConfig.getConfig().addCustomCategoryComment("Riders", "Configuration options for mobs which can ride other mobs");
+
+			chance = NewRoughConfig.getInteger("Rider_Chance", "", defaultChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a rideable entity to spawn with another entity riding it\nSet to 0 to disable this feature");
+			entities = NewRoughConfig.getStringArray("Rider_Entities", "", defaultEntities, "Entities which may ride on rideable entities");
+			randomRiderChance = NewRoughConfig.getInteger("random_Rider_Chance", "", 10, 0, Short.MAX_VALUE, "Chance (1 in X) that a randomly spawned entity from the RiderEntities list can start riding on random rideable entity\nSet to 0 to disable this feature");
 		}
 		
 		public void postInit() {

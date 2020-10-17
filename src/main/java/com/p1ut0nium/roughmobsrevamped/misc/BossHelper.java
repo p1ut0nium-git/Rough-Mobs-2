@@ -209,7 +209,8 @@ public class BossHelper {
 
 			return null;
 		}
-		
+
+
 		public abstract void addBossFeatures(Entity boss);
 	}
 
