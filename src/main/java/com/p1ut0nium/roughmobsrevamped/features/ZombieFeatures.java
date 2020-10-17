@@ -66,7 +66,7 @@ public class ZombieFeatures extends EntityFeatures {
 			
 			@Override
 			public void addBossFeatures(Entity entity) {
-				if (SpawnHelper.disableBabyZombies() == false) {
+				if (!SpawnHelper.disableBabyZombies()) {
 					for (int i = 0; i < 4; i++) 
 					{
 						EntityZombie zombieMinion = new EntityZombie(entity.getEntityWorld());

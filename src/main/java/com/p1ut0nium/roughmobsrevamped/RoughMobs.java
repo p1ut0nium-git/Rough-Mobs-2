@@ -13,6 +13,7 @@ package com.p1ut0nium.roughmobsrevamped;
 
 import javax.annotation.Nonnull;
 
+import com.p1ut0nium.roughmobsrevamped.config.NewRoughConfig;
 import org.apache.logging.log4j.Logger;
 
 import com.p1ut0nium.roughmobsrevamped.config.RoughConfig;
@@ -51,6 +52,7 @@ public class RoughMobs {
 		logger = event.getModLog();
 		
 		new RoughConfig(event);
+		new NewRoughConfig(event);
 		
 		RegistryHandler.preInitRegistries();
 		
