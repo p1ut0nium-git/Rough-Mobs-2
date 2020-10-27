@@ -321,6 +321,7 @@ public class RoughApplier {
 		
 		// else if invalidAttacker = null
 		// we currently do nothing
-		System.out.println("InvalidAttacker = null; do nothing");
+		// however, spams console so is commented out
+		// System.out.println("InvalidAttacker = null; do nothing");
 	}
 }
