@@ -3,7 +3,11 @@ package com.p1ut0nium.roughmobsrevamped.ai.misc;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -11,6 +15,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.util.math.BlockPos;
 
 public class RoughAISearchForRider extends EntityAIBase {
 
@@ -25,11 +30,7 @@ public class RoughAISearchForRider extends EntityAIBase {
 
     protected EntityLiving mountSearcher;
 
-    protected static Cache<UUID, Integer> searcherCache =
-        CacheBuilder
-            .newBuilder()
-            .maximumSize(128)
-            .build();
+    protected static Map<UUID, Integer> searcherCache = new HashMap<>();
 
     public RoughAISearchForRider(EntityLiving entity, List<Class<? extends Entity>> possibleRiders, int range,
                                  int chance) {
@@ -51,21 +52,29 @@ public class RoughAISearchForRider extends EntityAIBase {
             .getEntitiesWithinAABB(EntityLiving.class, entity.getEntityBoundingBox().grow(range));
 
         for (EntityLiving searcher : entities) {
-            if (!searcher.isDead && this.entity != searcher && isPossibleRider(searcher)) {
+            if (!searcher.isDead && this.entity != searcher && !searcher.isRiding()) {
                 UUID uuid = searcher.getUniqueID();
-                Integer searchState = searcherCache.getIfPresent(uuid);
+                Integer searchState = searcherCache.get(uuid);
 
-                if (
-                    searchState == null
-                        && searcher.getEntityData().getInteger(MOUNT_SEARCHER) == 0
-                ) {
-                    searchState =
-                        searcher.world.rand.nextInt(chance) == 0 || searcher.isRiding() ? IS_SEARCHER : NO_SEARCHER;
-                    searcherCache.put(uuid, searchState);
-                    searcher.getEntityData().setInteger(MOUNT_SEARCHER, searchState);
-                }
+                if (searcherCache.size() >= 128) { searcherCache.clear(); }
 
-                if (searchState != null && searchState == IS_SEARCHER && !searcher.isRiding()) {
+                if (searchState == null) {
+                    int mountSearcherData = searcher.getEntityData().getInteger(MOUNT_SEARCHER);
+                    if (mountSearcherData == 0) {
+                        searchState =
+                            searcher.world.rand.nextInt(chance) == 0 || searcher.isRiding() ? IS_SEARCHER : NO_SEARCHER;
+                        searcher.getEntityData().setInteger(MOUNT_SEARCHER, searchState);
+                    } else {
+                        searchState = mountSearcherData;
+                    }
+
+                    if (searchState == IS_SEARCHER) {
+                        mountSearcher = searcher;
+                        searcherCache.put(uuid, searchState);
+                        return true;
+                    }
+                    
+                } else if (searchState == IS_SEARCHER) {
                     mountSearcher = searcher;
                     return true;
                 }

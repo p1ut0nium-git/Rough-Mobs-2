@@ -155,7 +155,7 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 
                         if (block instanceof BlockMobSpawner) { return null; }
 
-                        while (blockCache.size() >= 256) blockCache.clear();
+                        if (blockCache.size() >= 256) blockCache.clear();
 
                         if (allowedBlocks.contains(block) && !isBanned(curPos)) {
                             positions.add(curPos);
