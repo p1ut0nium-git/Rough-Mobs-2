@@ -36,6 +36,7 @@ public class MountHelper {
 		private String[] entities;
 		private int chance;
 		private int randomRiderChance;
+		private int rangeToSearchRider;
 		
 		private List<EntityEntry> entries;
 		
@@ -50,6 +51,7 @@ public class MountHelper {
 			chance = RoughConfig.getInteger(name, "RiderChance", defaultChance, 0, Short.MAX_VALUE, "Chance (1 in X) for a " + name + " to spawn with another entity riding it\nSet to 0 to disable this feature");
 			entities = RoughConfig.getStringArray(name, "RiderEntities", defaultEntities, "Entities which may ride on " + name + "s");
 			randomRiderChance = RoughConfig.getInteger(name, "RiderChanceRandom", 10, 0, Short.MAX_VALUE, "Chance (1 in X) that a randomly spawned entity from the RiderEntities list can start riding on random " + name + "s\nSet to 0 to disable this feature");
+			rangeToSearchRider = RoughConfig.getInteger(name, "RangeToSearchRider", 32, 0, Short.MAX_VALUE, "Range for " + name + "to search rider");
 		}
 		
 		public void postInit() {
@@ -58,7 +60,7 @@ public class MountHelper {
 		
 		public void addAI(EntityLiving mount) {
 			if (randomRiderChance > 0)
-				mount.tasks.addTask(1, new RoughAISearchForRider(mount, getPossibleRiders(), 32, randomRiderChance));
+				mount.tasks.addTask(1, new RoughAISearchForRider(mount, getPossibleRiders(), rangeToSearchRider, randomRiderChance));
 		}
 		
 		public void tryAddRider(EntityLivingBase mount) {
