@@ -1,7 +1,5 @@
 package com.p1ut0nium.roughmobsrevamped.ai.misc;
 
-import com.google.common.cache.CacheBuilder;
-import com.ibm.icu.impl.CacheBase;
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -142,7 +140,6 @@ public class RoughAIBreakBlocks extends EntityAIBase {
 
         List<BlockPos> positions = new ArrayList<>();
         BlockPos curPos, target = null;
-        double distance, bestDistance = Double.MAX_VALUE;
 
         Entity breakerEntity = breaker;
         while (breakerEntity.isRiding()) {
