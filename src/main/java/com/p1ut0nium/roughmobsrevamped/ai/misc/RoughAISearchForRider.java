@@ -1,13 +1,9 @@
 package com.p1ut0nium.roughmobsrevamped.ai.misc;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.p1ut0nium.roughmobsrevamped.util.Constants;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -15,7 +11,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.util.math.BlockPos;
 
 public class RoughAISearchForRider extends EntityAIBase {
 
