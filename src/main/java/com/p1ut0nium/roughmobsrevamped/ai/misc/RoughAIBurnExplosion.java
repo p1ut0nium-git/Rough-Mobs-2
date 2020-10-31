@@ -5,7 +5,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 
 public class RoughAIBurnExplosion extends EntityAIBase {
 
-	private EntityCreeper creeper;
+	private final EntityCreeper creeper;
 	
 	public RoughAIBurnExplosion(EntityCreeper creeper) {
 		this.creeper = creeper;

@@ -27,7 +27,7 @@ public class RoughAISunlightBurn extends EntityAIBase {
         	return false;
 		
         ItemStack itemstack = entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-        if (itemstack != null && !itemstack.isEmpty()) 
+        if (!itemstack.isEmpty())
         {
         	if (helmetMode)
         		return !entity.isBurning();

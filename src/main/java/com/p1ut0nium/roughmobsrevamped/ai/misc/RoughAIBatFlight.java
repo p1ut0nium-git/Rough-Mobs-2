@@ -76,13 +76,7 @@ public class RoughAIBatFlight extends EntityAIBase {
                 diffX = (double) currentFlightTarget.getX() + 0.5D - hostileBat.posX;
                 diffY = (double) currentFlightTarget.getY() + 0.1D - hostileBat.posY;
                 diffZ = (double) currentFlightTarget.getZ() + 0.5D - hostileBat.posZ;
-            }
-            else if (currentFlightTarget != null) {
-                diffX = (double) currentFlightTarget.getX() + 0.5D - hostileBat.posX;
-                diffY = (double) currentFlightTarget.getY() + 0.1D - hostileBat.posY;
-                diffZ = (double) currentFlightTarget.getZ() + 0.5D - hostileBat.posZ;           	
-            }
-            else {
+            } else {
                 diffX = diffY = diffZ = 0D;
             }
         }
@@ -114,9 +108,9 @@ public class RoughAIBatFlight extends EntityAIBase {
         // Follow the boss around when a player is not in range
         if (boss != null) {
 	        for (int i = 0; i < 10; i++) {
-	            x = (int)boss.getPosition().getX() + rnd.nextInt(7) - rnd.nextInt(7);
-	            y = (int)boss.getPosition().getY() + rnd.nextInt(6) - 2 + BAT_OWNER_FOLLOW_Y_OFFSET;
-	            z = (int)boss.getPosition().getZ() + rnd.nextInt(7) - rnd.nextInt(7);
+	            x = boss.getPosition().getX() + rnd.nextInt(7) - rnd.nextInt(7);
+	            y = boss.getPosition().getY() + rnd.nextInt(6) - 2 + BAT_OWNER_FOLLOW_Y_OFFSET;
+	            z = boss.getPosition().getZ() + rnd.nextInt(7) - rnd.nextInt(7);
 	
 	            orig = new Vec3d(hostileBat.posX, hostileBat.posY, hostileBat.posZ);
 	            dest = new Vec3d(x + 0.5D, y + 0.5D, z + 0.5D);

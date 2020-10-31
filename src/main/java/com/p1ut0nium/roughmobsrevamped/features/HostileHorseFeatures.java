@@ -29,6 +29,7 @@ public class HostileHorseFeatures extends EntityFeatures {
 	private boolean horseBurn;
 	private int randomRiderChance; 
 	private boolean canDespawn;
+	private int rangeToSearchRider;
 	
 	@SuppressWarnings("unchecked")
 	public HostileHorseFeatures() {
@@ -42,6 +43,7 @@ public class HostileHorseFeatures extends EntityFeatures {
 		horseBurn = RoughConfig.getBoolean(name, "Burn", true, "Set this to false to prevent undead horses from burning in sunlight (as long as they have no rider)");
 		randomRiderChance = RoughConfig.getInteger(name, "RandomRiderChance", 3, 0, MAX, "Chance (1 in X) that a random skeleton or zombie starts riding unmounted hostile horses around it");
 		canDespawn = RoughConfig.getBoolean(name, "CanDespawn", true, "Set to false to prevent undead horses summoned through this mod from despawning");
+		rangeToSearchRider = RoughConfig.getInteger(name, "RangeToSearchRider", 32, 0, Short.MAX_VALUE, "Range for " + name + " to search rider");
 	}
 	
 	@Override
@@ -56,7 +58,7 @@ public class HostileHorseFeatures extends EntityFeatures {
 			});
 		
 		if (entity instanceof EntityLiving && randomRiderChance > 0)
-			tasks.addTask(1, new RoughAISearchForRider((EntityLiving) entity, getRiders(entity), 32, randomRiderChance));
+			tasks.addTask(1, new RoughAISearchForRider((EntityLiving) entity, getRiders(entity), rangeToSearchRider, randomRiderChance));
 		
 		if (entity instanceof EntityLivingBase && shouldDespawn(entity))
 			tasks.addTask(1, new RoughAIDespawn((EntityLivingBase) entity));
