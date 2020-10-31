@@ -12,9 +12,9 @@ import net.minecraft.potion.PotionEffect;
 
 public class RoughAIAddEffect extends EntityAIBase {
 	
-	private EntityLiving entity;
-	private Potion effect;
-	private double range;
+	private final EntityLiving entity;
+	private final Potion effect;
+	private final double range;
 	
 	public RoughAIAddEffect(EntityLiving entity, Potion effect, double range) {
 		this.entity = entity;
@@ -39,7 +39,7 @@ public class RoughAIAddEffect extends EntityAIBase {
 	private List<EntityLivingBase> GetEntities() {
 		
 		List<EntityLivingBase> allLiving = entity.world.getEntitiesWithinAABB(EntityLivingBase.class, entity.getEntityBoundingBox().grow(range));
-		List<EntityLivingBase> friendlyLiving = new ArrayList<EntityLivingBase>();
+		List<EntityLivingBase> friendlyLiving = new ArrayList<>();
 		
 		for (EntityLivingBase living : allLiving)
 			if (!(living instanceof EntityMob))
